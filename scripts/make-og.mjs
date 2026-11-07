@@ -16,6 +16,12 @@ const dist = path.join(root, 'dist');
 const site = yaml.load(fs.readFileSync(path.join(root, 'content/site.yaml'), 'utf8'));
 const contact = yaml.load(fs.readFileSync(path.join(root, 'content/contact.yaml'), 'utf8'));
 
+// پرترهٔ کوچک برای کارت اشتراک‌گذاری (به‌صورت data URI داخل SVG جاسازی می‌شود)
+const portraitPath = path.join(root, 'scripts/assets/og-portrait.jpg');
+const portraitUri = fs.existsSync(portraitPath)
+  ? `data:image/jpeg;base64,${fs.readFileSync(portraitPath).toString('base64')}`
+  : '';
+
 const FONTS = [
   path.join(root, 'scripts/fonts/Estedad-Regular.ttf'),
   path.join(root, 'scripts/fonts/Estedad-Black.ttf'),
@@ -67,6 +73,13 @@ const ogSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}
 
   <line x1="1136" y1="72" x2="1136" y2="558" stroke="#f4eee1" stroke-opacity="0.14"/>
   <line x1="88" y1="470" x2="1100" y2="470" stroke="#f4eee1" stroke-opacity="0.16"/>
+
+  ${
+    portraitUri
+      ? `<image href="${portraitUri}" x="88" y="96" width="216" height="270" preserveAspectRatio="xMidYMid slice" clip-path="inset(0)"/>
+  <rect x="88" y="366" width="216" height="1" fill="#d3784f" fill-opacity="0.55"/>`
+      : ''
+  }
 
   <circle cx="1096" cy="94" r="5" fill="#d3784f"/>
   <text x="1060" y="100" text-anchor="end" font-family="Estedad" font-size="19" fill="#f4eee1" fill-opacity="0.6">آمادهٔ همکاری — ${location}</text>

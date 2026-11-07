@@ -19,9 +19,9 @@ hero:
     کار کند، نه فقط روشن بماند.
   primary_cta_label: مشاهدهٔ رزومه
   secondary_cta_label: گفت‌وگو با ایمیل
-  portrait_image: ''
-  portrait_alt: جای‌نگهدار تصویر پرتره
-  portrait_caption: تصویر پرتره به‌زودی
+  portrait_image: /media/portrait-960.webp
+  portrait_alt: پرترهٔ امیرمحمود خاکنه، پس‌زمینهٔ تیره
+  portrait_caption: ''
   # سه نشانهٔ کوتاه که در پایین بخش نخست نمایش داده می‌شوند
   highlights:
     - label: در حال یادگیری

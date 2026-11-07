@@ -4,6 +4,14 @@ import { asset } from '../lib/urls';
 
 const { portrait_image, portrait_alt, portrait_caption } = site.hero;
 
+/**
+ * نسخه‌های ریسپانسیو فقط برای تصویر پیش‌فرض سایت ساخته شده‌اند.
+ * اگر مالک سایت از پنل تصویر دیگری بارگذاری کند، همان تک‌فایل استفاده می‌شود
+ * تا هیچ آدرس شکسته‌ای در srcset نماند.
+ */
+const hasResponsiveSet = /^\/media\/portrait-960\.webp$/.test(portrait_image);
+const small = portrait_image.replace('-960', '-480');
+
 // بدون تصویر واقعی، هیچ قاب یا چهرهٔ ساختگی نمایش داده نمی‌شود؛
 // بخش نخست در آن حالت کاملاً تایپوگرافی است.
 ---
@@ -14,10 +22,13 @@ const { portrait_image, portrait_alt, portrait_caption } = site.hero;
       <div class="portrait__frame">
         <img
           src={asset(portrait_image)}
+          srcset={hasResponsiveSet ? `${asset(small)} 480w, ${asset(portrait_image)} 960w` : undefined}
+          sizes={hasResponsiveSet ? '(max-width: 720px) 60vw, (max-width: 1080px) 34vw, 27vw' : undefined}
           alt={portrait_alt || `تصویر ${site.identity.name_fa}`}
-          width="900"
-          height="1200"
+          width={hasResponsiveSet ? '960' : undefined}
+          height={hasResponsiveSet ? '1200' : undefined}
           loading="eager"
+          fetchpriority="high"
           decoding="async"
         />
       </div>

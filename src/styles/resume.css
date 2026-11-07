@@ -67,13 +67,29 @@ body {
 }
 
 .cv-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 0.5rem 1.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 0.35rem 8mm;
   padding-block-end: 0.7rem;
   border-block-end: 2px solid var(--cv-ink);
+}
+
+.cv-head__main {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+}
+
+.cv-contact {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.cv-photo {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: start;
 }
 
 .cv-kicker {
@@ -125,6 +141,19 @@ body {
   border-block-end: 1px solid var(--cv-line);
   overflow-wrap: anywhere;
   font-size: 8.2pt;
+}
+
+.cv-photo {
+  width: 30mm;
+  margin: 0;
+}
+
+.cv-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
 }
 
 .cv-cols {
@@ -282,6 +311,10 @@ body {
   .cv-name {
     font-size: 21pt;
   }
+
+  .cv-photo {
+    width: 24mm;
+  }
 }
 
 @page {
@@ -310,11 +343,20 @@ body {
     font-size: 22pt;
   }
 
+  .cv-photo {
+    width: 26mm;
+  }
+
   a {
     color: inherit;
   }
 
   .cv-section {
     break-inside: avoid;
+  }
+
+  /* رزومه آدرس ایمیل را به‌صورت متن دارد؛ تکرار آدرس در پرانتز لازم نیست */
+  .sheet a::after {
+    content: none;
   }
 }
