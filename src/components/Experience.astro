@@ -1,0 +1,81 @@
+---
+import { experience } from '../lib/content';
+import SectionHead from './SectionHead.astro';
+import { fa } from '../lib/digits';
+
+interface Props {
+  index: number;
+}
+const { index } = Astro.props;
+---
+
+<section class="section" id="experience" aria-labelledby="experience-heading">
+  <div class="wrap">
+    <SectionHead index={index} title="تجربه" labelEn="Experience" id="experience-heading" />
+    {
+      experience.items.map((job) => (
+        <article class="exp">
+          <div class="exp__aside" data-reveal>
+            <p class="exp__duration">
+              {job.duration_label || job.employment}
+              <span>مدت همکاری</span>
+            </p>
+            <div>
+              <h3 class="exp__org">{job.organization}</h3>
+              <p class="exp__role">{job.role}</p>
+              <div class="exp__meta">
+                {(job.start_label || job.end_label) && (
+                  <span class="chip chip--copper">
+                    {job.start_label}
+                    {job.end_label && job.end_label !== job.start_label ? ` — ${job.end_label}` : ''}
+                  </span>
+                )}
+                {job.employment && <span class="chip">{job.employment}</span>}
+                {job.location && <span class="chip">{job.location}</span>}
+              </div>
+            </div>
+            {job.summary && <p class="exp__summary">{job.summary}</p>}
+          </div>
+
+          <div>
+            <div class="exp__groups">
+              {job.groups.map((group, groupIndex) => (
+                <section class="exp__group" data-reveal style={`--reveal-delay:${groupIndex + 1}`}>
+                  <h4 class="exp__group-title">
+                    {group.title}
+                    <span>{fa(String(groupIndex + 1).padStart(2, '0'))}</span>
+                  </h4>
+                  <ul class="exp__list">
+                    {group.items.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                </section>
+              ))}
+            </div>
+
+            {job.note && (
+              <aside class="exp__note" data-reveal>
+                <b>یادداشت صادقانه</b>
+                <span>{job.note}</span>
+              </aside>
+            )}
+
+            {job.tags.length > 0 && (
+              <ul class="exp__tags" data-reveal aria-label="واژه‌های کلیدی">
+                {job.tags.map((tag) => (
+                  <li>{tag}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </article>
+      ))
+    }
+    {
+      experience.items.length === 0 && (
+        <p class="exp__summary">در حال حاضر تجربهٔ کاری ثبت‌شده‌ای برای نمایش وجود ندارد.</p>
+      )
+    }
+  </div>
+</section>

@@ -1,0 +1,66 @@
+/* چاپ‌نامهٔ پنجرهٔ پیش‌نمایش پنل مدیریت */
+
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('../fonts/Vazirmatn-Variable.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('../fonts/SpaceGrotesk-Variable.woff2') format('woff2-variations');
+  font-weight: 300 700;
+  font-display: swap;
+}
+
+body {
+  direction: rtl;
+  text-align: right;
+  font-family: 'Vazirmatn', system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.9;
+  color: #111c1b;
+  background: #f5efe3;
+  padding: 16px 18px;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.5;
+  margin: 0 0 0.5rem;
+}
+
+h1 {
+  font-size: 1.45rem;
+}
+
+h2 {
+  font-size: 1.15rem;
+  border-bottom: 1px solid rgba(17, 28, 27, 0.18);
+  padding-bottom: 0.35rem;
+}
+
+p {
+  margin: 0 0 0.6rem;
+}
+
+a {
+  color: #b4522a;
+}
+
+ul {
+  padding-inline-start: 1.2rem;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid rgba(17, 28, 27, 0.16);
+  margin: 1rem 0;
+}

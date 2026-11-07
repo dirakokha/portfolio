@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Skills from '../components/Skills.astro';
+import Experience from '../components/Experience.astro';
+import Projects from '../components/Projects.astro';
+import Education from '../components/Education.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+import { activeSections } from '../lib/content';
+
+const sections = activeSections();
+const sectionOf = (id: string) => sections.find((section) => section.id === id);
+---
+
+<Base>
+  <Header />
+  <main id="main">
+    <Hero />
+    {
+      sections.map((section) => {
+        switch (section.id) {
+          case 'about':
+            return <About index={section.index} />;
+          case 'skills':
+            return <Skills index={section.index} />;
+          case 'experience':
+            return <Experience index={section.index} />;
+          case 'projects':
+            return <Projects index={section.index} />;
+          case 'education':
+            return <Education index={section.index} />;
+          case 'contact':
+            return <Contact index={section.index} />;
+          default:
+            return null;
+        }
+      })
+    }
+  </main>
+  <Footer />
+</Base>

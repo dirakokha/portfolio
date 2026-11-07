@@ -1,0 +1,292 @@
+# ─────────────────────────────────────────────────────────────────────────────
+#  پیکربندی Decap CMS
+#  این فایل یک «الگو» است: در زمان build، اسکریپت scripts/gen-admin-config.mjs
+#  آن را با آدرس واقعی سایت جایگزین و در public/admin/config.yml می‌نویسد.
+#  جای‌نگهدارها (آدرس سایت، آدرس پروکسی ورود، مخزن و شاخه) خودکار پر می‌شوند.
+# ─────────────────────────────────────────────────────────────────────────────
+
+backend:
+  name: github
+  repo: __REPO__
+  branch: __BRANCH__
+  # پروکسی ورود (OAuth) روی همان دامنه؛ کلیدهای محرمانه فقط سمت سرور نگه‌داری می‌شوند
+  base_url: __API_BASE__
+  auth_endpoint: auth
+__LOCAL_BACKEND__
+
+site_url: __SITE_URL__
+logo_url: __LOGO_URL__
+display_url: __SITE_URL__
+locale: fa
+publish_mode: simple
+
+media_folder: public/media
+public_folder: /media
+
+collections:
+  - name: content
+    label: محتوای سایت
+    label_singular: فایل
+    description: >-
+      هر مورد یکی از بخش‌های سایت است. پس از تغییر، دکمهٔ «انتشار» را بزنید تا
+      سایت دوباره ساخته شود.
+    files:
+      - name: site
+        label: ۱ — اطلاعات پایه و بخش‌ها
+        file: content/site.yaml
+        fields:
+          - label: هویت
+            name: identity
+            widget: object
+            fields:
+              - { label: نام فارسی, name: name_fa, widget: string }
+              - { label: نام انگلیسی, name: name_en, widget: string, hint: 'دقیقاً AMIRMAHMOUD KHAKNEH نوشته شود' }
+              - { label: عنوان حرفه‌ای, name: role_fa, widget: string }
+              - { label: محل (فارسی), name: location_fa, widget: string }
+              - { label: محل (انگلیسی), name: location_en, widget: string }
+              - { label: نمایش نشان «آمادهٔ همکاری», name: available, widget: boolean, default: true }
+              - { label: متن کوتاه وضعیت, name: availability_note, widget: string, required: false }
+          - label: بخش نخست (قهرمان)
+            name: hero
+            widget: object
+            fields:
+              - { label: خط بالای عنوان, name: kicker, widget: string, required: false }
+              - label: معرفی کوتاه
+                name: intro
+                widget: text
+                hint: 'دو تا سه جمله؛ بدون ادعای اضافه'
+              - { label: متن دکمهٔ اصلی, name: primary_cta_label, widget: string }
+              - { label: متن دکمهٔ دوم, name: secondary_cta_label, widget: string }
+              - label: تصویر پرتره
+                name: portrait_image
+                widget: image
+                required: false
+                hint: 'اگر خالی بماند، ترکیب گرافیکی جای‌نگهدار نمایش داده می‌شود'
+              - { label: متن جانشین پرتره, name: portrait_alt, widget: string, required: false }
+              - { label: توضیح زیر پرتره, name: portrait_caption, widget: string, required: false }
+              - label: سه نشانهٔ کوتاه
+                name: highlights
+                widget: list
+                collapsed: true
+                summary: '{{fields.label}} — {{fields.value}}'
+                fields:
+                  - { label: برچسب, name: label, widget: string }
+                  - { label: مقدار, name: value, widget: string }
+              - label: نوار متحرک
+                name: ticker
+                widget: string
+                required: false
+                hint: 'موارد را با علامت · از هم جدا کنید'
+          - label: سئو و اشتراک‌گذاری
+            name: seo
+            widget: object
+            fields:
+              - { label: عنوان صفحه, name: title, widget: string }
+              - { label: توضیح متا, name: description, widget: text }
+              - { label: کلیدواژه‌ها, name: keywords, widget: string, required: false }
+              - { label: تصویر اشتراک‌گذاری, name: og_image, widget: string, required: false }
+              - { label: زبان سایت, name: locale, widget: string, required: false }
+          - label: ترتیب و نمایش بخش‌ها
+            name: sections
+            widget: list
+            hint: 'با کشیدن هر ردیف، ترتیب بخش‌ها را در سایت تغییر دهید. بخش «نمونه‌کارها» تا وقتی نمونه‌کار منتشرشده نداشته باشید پنهان می‌ماند.'
+            collapsed: true
+            summary: '{{fields.label}}'
+            fields:
+              - label: بخش
+                name: id
+                widget: select
+                options:
+                  - { label: درباره, value: about }
+                  - { label: مهارت‌ها, value: skills }
+                  - { label: تجربه, value: experience }
+                  - { label: نمونه‌کارها, value: projects }
+                  - { label: تحصیلات و گواهینامه‌ها, value: education }
+                  - { label: تماس, value: contact }
+              - { label: عنوان نمایشی, name: label, widget: string }
+              - { label: نمایش داده شود, name: visible, widget: boolean, default: true }
+
+      - name: about
+        label: ۲ — دربارهٔ من
+        file: content/about.yaml
+        fields:
+          - { label: عنوان بخش, name: title, widget: string }
+          - { label: برچسب انگلیسی, name: label_en, widget: string }
+          - { label: جملهٔ آغازین, name: lead, widget: text }
+          - label: پاراگراف‌ها
+            name: paragraphs
+            widget: list
+            field: { label: پاراگراف, name: paragraph, widget: text }
+          - label: واقعیت‌های کوتاه
+            name: facts
+            widget: list
+            collapsed: true
+            summary: '{{fields.label}}'
+            fields:
+              - { label: برچسب, name: label, widget: string }
+              - { label: مقدار, name: value, widget: string }
+          - { label: نقل‌قول, name: quote, widget: text, required: false }
+
+      - name: contact
+        label: ۳ — تماس و شبکه‌ها
+        file: content/contact.yaml
+        fields:
+          - { label: ایمیل عمومی, name: email, widget: string }
+          - { label: موضوع پیش‌فرض ایمیل, name: email_subject, widget: string, required: false }
+          - { label: شمارهٔ تلفن, name: phone, widget: string, required: false, hint: 'خالی بماند تا نمایش داده نشود' }
+          - label: نمایش شمارهٔ تلفن در سایت
+            name: phone_visible
+            widget: boolean
+            default: false
+            hint: 'فقط اگر اجازهٔ انتشار عمومی دارید روشن کنید'
+          - { label: محل, name: location_label, widget: string, required: false }
+          - { label: توضیح زمان پاسخ, name: response_note, widget: text, required: false }
+          - { label: وضعیت همکاری, name: availability, widget: text, required: false }
+          - label: شبکه‌های اجتماعی
+            name: socials
+            widget: list
+            required: false
+            collapsed: true
+            summary: '{{fields.label}}'
+            hint: 'هر ردیف تا وقتی «نمایش» روشن نشود در سایت دیده نمی‌شود'
+            fields:
+              - { label: نام, name: label, widget: string }
+              - { label: نام کاربری, name: handle, widget: string, required: false }
+              - { label: نشانی, name: url, widget: string }
+              - { label: نمایش, name: visible, widget: boolean, default: false }
+
+      - name: experience
+        label: ۴ — تجربهٔ کاری
+        file: content/experience.yaml
+        fields:
+          - label: تجربه‌ها
+            name: items
+            widget: list
+            collapsed: true
+            summary: '{{fields.organization}} — {{fields.role}}'
+            fields:
+              - { label: سازمان, name: organization, widget: string }
+              - { label: نقش, name: role, widget: string }
+              - { label: شروع, name: start_label, widget: string, hint: 'مثلاً آذر ۱۴۰۴' }
+              - { label: پایان, name: end_label, widget: string, required: false }
+              - { label: مدت, name: duration_label, widget: string, required: false, hint: 'مثلاً یک ماه' }
+              - { label: نوع همکاری, name: employment, widget: string, required: false, hint: 'مثلاً تمام‌وقت' }
+              - { label: محل, name: location, widget: string, required: false }
+              - { label: خلاصه, name: summary, widget: text, required: false }
+              - label: گروه‌های وظایف
+                name: groups
+                widget: list
+                collapsed: false
+                summary: '{{fields.title}}'
+                fields:
+                  - { label: عنوان گروه, name: title, widget: string }
+                  - label: وظایف
+                    name: items
+                    widget: list
+                    field: { label: وظیفه, name: item, widget: string }
+              - { label: یادداشت صادقانه, name: note, widget: text, required: false }
+              - label: واژه‌های کلیدی
+                name: tags
+                widget: list
+                required: false
+                field: { label: واژه, name: tag, widget: string }
+
+      - name: skills
+        label: ۵ — مهارت‌ها
+        file: content/skills.yaml
+        fields:
+          - label: دسته‌ها
+            name: categories
+            widget: list
+            collapsed: true
+            summary: '{{fields.title}}'
+            fields:
+              - { label: شناسه (انگلیسی و یکتا), name: id, widget: string }
+              - { label: عنوان, name: title, widget: string }
+              - { label: برچسب انگلیسی, name: label_en, widget: string, required: false }
+              - { label: توضیح دسته, name: note, widget: text, required: false }
+              - label: مهارت‌ها
+                name: items
+                widget: list
+                collapsed: true
+                summary: '{{fields.name}}'
+                fields:
+                  - { label: نام, name: name, widget: string }
+                  - { label: نام انگلیسی, name: name_en, widget: string, required: false }
+                  - label: وضعیت
+                    name: state
+                    widget: select
+                    default: familiar
+                    options:
+                      - { label: در کار واقعی, value: working }
+                      - { label: دوره دیده‌شده, value: course }
+                      - { label: در حال یادگیری, value: learning }
+                      - { label: آشنایی مقدماتی, value: familiar }
+                      - { label: دانش آکادمیک, value: academic }
+                  - { label: توضیح کوتاه, name: context, widget: string, required: false }
+
+      - name: education
+        label: ۶ — تحصیلات
+        file: content/education.yaml
+        fields:
+          - label: مقاطع
+            name: items
+            widget: list
+            collapsed: true
+            summary: '{{fields.field}}'
+            fields:
+              - { label: رشته, name: field, widget: string }
+              - { label: مقطع, name: degree, widget: string, required: false }
+              - { label: دانشگاه, name: institution, widget: string, required: false }
+              - { label: دورهٔ زمانی, name: period_label, widget: string, required: false }
+              - { label: محل, name: location, widget: string, required: false }
+              - { label: وضعیت, name: status, widget: string, required: false }
+              - { label: توضیح, name: note, widget: text, required: false }
+
+      - name: certifications
+        label: ۷ — دوره‌ها و گواهینامه‌ها
+        file: content/certifications.yaml
+        fields:
+          - label: دوره‌ها
+            name: items
+            widget: list
+            collapsed: true
+            summary: '{{fields.title}}'
+            fields:
+              - { label: عنوان دوره, name: title, widget: string }
+              - { label: ارائه‌دهنده, name: provider, widget: string, required: false }
+              - { label: سال, name: year_label, widget: string, required: false }
+              - { label: وضعیت, name: status, widget: string, required: false }
+              - label: فایل گواهی
+                name: certificate_file
+                widget: file
+                required: false
+                hint: 'PDF یا تصویر گواهی؛ فقط اگر واقعاً موجود است بارگذاری کنید'
+              - { label: نشانی تأیید گواهی, name: credential_url, widget: string, required: false }
+              - { label: توضیح, name: note, widget: text, required: false }
+
+      - name: projects
+        label: ۸ — نمونه‌کارها
+        file: content/projects.yaml
+        fields:
+          - label: نمونه‌کارها
+            name: items
+            widget: list
+            collapsed: true
+            summary: '{{fields.title}}'
+            hint: 'تا زمانی که هیچ نمونه‌کاری «منتشرشده» نباشد، این بخش در سایت پنهان می‌ماند'
+            fields:
+              - { label: عنوان, name: title, widget: string }
+              - { label: شناسهٔ کوتاه, name: slug, widget: string, required: false }
+              - { label: خلاصه, name: summary, widget: text, required: false }
+              - { label: سال, name: year_label, widget: string, required: false }
+              - { label: وضعیت, name: status, widget: string, required: false, hint: 'مثلاً در حال ساخت / تمام‌شده' }
+              - { label: منتشر شود, name: published, widget: boolean, default: false }
+              - { label: تصویر شاخص, name: cover_image, widget: image, required: false }
+              - label: فناوری‌ها
+                name: technologies
+                widget: list
+                required: false
+                field: { label: فناوری, name: tech, widget: string }
+              - { label: نشانی کد منبع, name: source_url, widget: string, required: false }
+              - { label: نشانی نسخهٔ زنده, name: demo_url, widget: string, required: false }

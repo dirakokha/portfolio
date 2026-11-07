@@ -1,0 +1,97 @@
+---
+import { contact, publicPhone, socialLinks, site } from '../lib/content';
+import SectionHead from './SectionHead.astro';
+import { mailtoHref, asset } from '../lib/urls';
+
+interface Props {
+  index: number;
+}
+const { index } = Astro.props;
+const mailTo = mailtoHref(contact.email, contact.email_subject);
+---
+
+<section class="contact" id="contact" aria-labelledby="contact-title">
+  <div class="wrap contact__inner">
+    <div>
+      <span class="eyebrow" data-reveal>GET IN TOUCH</span>
+      <h2 class="contact__title" id="contact-title" data-reveal>تماس</h2>
+      <p class="contact__note" data-reveal>{contact.response_note}</p>
+
+      <a class="contact__email" href={mailTo} data-reveal>{contact.email}</a>
+
+      <div class="contact__actions" data-reveal>
+        <a class="btn btn--cream" href={mailTo}>
+          نوشتن ایمیل
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2 4h12v8H2z" stroke="currentColor" stroke-width="1.3"></path>
+            <path d="m2.4 4.4 5.6 4 5.6-4" stroke="currentColor" stroke-width="1.3"></path>
+          </svg>
+        </a>
+        <button class="btn btn--ghost-cream" type="button" id="copy-email" data-email={contact.email}>
+          رونوشت نشانی
+        </button>
+        <a class="btn btn--ghost-cream" href={asset('/resume/')}>
+          نسخهٔ چاپی / PDF
+        </a>
+        <span class="copy-status" id="copy-status" role="status" aria-live="polite"></span>
+      </div>
+    </div>
+
+    <div class="contact__aside" data-reveal>
+      <dl class="contact__fact">
+        <dt>محل</dt>
+        <dd>{contact.location_label}</dd>
+      </dl>
+      <dl class="contact__fact">
+        <dt>وضعیت</dt>
+        <dd>{contact.availability}</dd>
+      </dl>
+      {
+        publicPhone && (
+          <dl class="contact__fact">
+            <dt>تلفن</dt>
+            <dd>
+              <a class="link-underline latin" href={`tel:${publicPhone.replace(/\s/g, '')}`} dir="ltr">
+                {publicPhone}
+              </a>
+            </dd>
+          </dl>
+        )
+      }
+      {
+        socialLinks.length > 0 && (
+          <dl class="contact__fact">
+            <dt>شبکه‌ها</dt>
+            <dd class="contact__socials">
+              {socialLinks.map((social) => (
+                <a href={social.url} rel="noopener noreferrer me" target="_blank">
+                  {social.label}
+                  {social.handle && <span class="latin">/ {social.handle}</span>}
+                </a>
+              ))}
+            </dd>
+          </dl>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  const button = document.getElementById('copy-email') as HTMLButtonElement | null;
+  const status = document.getElementById('copy-status');
+
+  button?.addEventListener('click', async () => {
+    const email = button.dataset.email || '';
+    if (!email) return;
+    try {
+      await navigator.clipboard.writeText(email);
+      if (status) status.textContent = 'نشانی رونوشت شد.';
+    } catch {
+      if (status) status.textContent = `رونوشت ناموفق بود؛ نشانی: ${email}`;
+    }
+    window.setTimeout(() => {
+      if (status) status.textContent = '';
+    }, 4000);
+  });
+</script>

@@ -1,0 +1,122 @@
+---
+import '../styles/site.css';
+import { site, contact, socialLinks } from '../lib/content';
+import { asset, absolute } from '../lib/urls';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = site.seo.title,
+  description = site.seo.description,
+  image = site.seo.og_image,
+  noindex = false,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = absolute(image);
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.identity.name_fa,
+  alternateName: site.identity.name_en,
+  jobTitle: site.identity.role_fa,
+  description: site.seo.description,
+  email: `mailto:${contact.email}`,
+  url: canonical.href,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'رودهن',
+    addressRegion: 'تهران',
+    addressCountry: 'IR',
+  },
+  knowsLanguage: ['fa', 'en'],
+  knowsAbout: ['پشتیبانی فناوری اطلاعات', 'نصب ویندوز', 'عیب‌یابی سخت‌افزار', 'Python', 'HTML', 'CSS'],
+  alumniOf: {
+    '@type': 'CollegeOrUniversity',
+    name: 'دانشگاه علمی‌کاربردی گسترش انفورماتیک ایران',
+  },
+  ...(socialLinks.length ? { sameAs: socialLinks.map((social) => social.url) } : {}),
+};
+---
+
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {site.seo.keywords && <meta name="keywords" content={site.seo.keywords} />}
+    <link rel="canonical" href={canonical.href} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="author" content={site.identity.name_fa} />
+    <meta name="theme-color" content="#0d1917" />
+    <meta name="color-scheme" content="light" />
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:site_name" content={site.identity.name_fa} />
+    <meta property="og:locale" content={site.seo.locale} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`کارت معرفی ${site.identity.name_fa}`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="icon" href={asset('/favicon.svg')} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={asset('/apple-touch-icon.png')} />
+    <link rel="manifest" href={asset('/site.webmanifest')} />
+
+    <link
+      rel="preload"
+      href={asset('/fonts/Vazirmatn-Variable.woff2')}
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href={asset('/fonts/SpaceGrotesk-Variable.woff2')}
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+
+    <script is:inline>
+      (function () {
+        var html = document.documentElement;
+        try {
+          if (!('IntersectionObserver' in window)) return;
+          if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+          html.classList.add('js');
+          window.addEventListener('load', function () {
+            setTimeout(function () {
+              document.querySelectorAll('[data-reveal]:not(.is-in)').forEach(function (el) {
+                el.classList.add('is-in');
+              });
+            }, 2600);
+          });
+        } catch (error) {
+          /* اگر جاوااسکریپت ناقص اجرا شود، محتوا بدون انیمیشن نمایش داده می‌شود */
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">رفتن به محتوای اصلی</a>
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "name": "amirmahmoud-khakneh-portfolio",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "وب‌سایت شخصی و رزومهٔ امیرمحمود خاکنه — ایستا، رایگان، و قابل مدیریت با Decap CMS",
+  "scripts": {
+    "dev": "node scripts/gen-admin-config.mjs && node scripts/copy-cms.mjs && astro dev",
+    "build": "node scripts/gen-admin-config.mjs && node scripts/copy-cms.mjs && astro build && node scripts/make-og.mjs",
+    "cms": "CMS_LOCAL=1 node scripts/gen-admin-config.mjs && decap-server",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^5.18.2",
+    "js-yaml": "^4.1.0",
+    "zod": "^4.6.7",
+    "decap-cms": "^3.17.3"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "decap-server": "^3.4.0"
+  }
+}

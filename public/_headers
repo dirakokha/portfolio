@@ -1,0 +1,22 @@
+# سربرگ‌های امنیتی و کش برای Cloudflare Pages
+# (GitHub Pages این فایل را نادیده می‌گیرد؛ در آن صورت این سربرگ‌ها اعمال نمی‌شوند.)
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), camera=(), microphone=(), interest-cohort=()
+  Cross-Origin-Opener-Policy: same-origin-allow-popups
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/admin/*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+
+/api/*
+  Cache-Control: no-store
