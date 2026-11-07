@@ -1,7 +1,7 @@
 ---
 import { contact, publicPhone, socialLinks, site } from '../lib/content';
-import SectionHead from './SectionHead.astro';
 import { mailtoHref, asset } from '../lib/urls';
+import { fa } from '../lib/digits';
 
 interface Props {
   index: number;
@@ -10,88 +10,73 @@ const { index } = Astro.props;
 const mailTo = mailtoHref(contact.email, contact.email_subject);
 ---
 
-<section class="contact" id="contact" aria-labelledby="contact-title">
-  <div class="wrap contact__inner">
-    <div>
-      <span class="eyebrow" data-reveal>GET IN TOUCH</span>
-      <h2 class="contact__title" id="contact-title" data-reveal>تماس</h2>
-      <p class="contact__note" data-reveal>{contact.response_note}</p>
+<section class="contact" id="contact" aria-labelledby="contact-heading">
+  <div class="wrap section__grid">
+    <header class="sh">
+      <p class="sh__num" aria-hidden="true">{fa(String(index).padStart(2, '0'))}</p>
+      <h2 class="sh__title" id="contact-heading">تماس</h2>
+      <p class="sh__aside">{contact.response_note}</p>
+    </header>
 
-      <a class="contact__email" href={mailTo} data-reveal>{contact.email}</a>
+    <div class="section__body">
+      <a class="contact__email" href={mailTo} dir="ltr">{contact.email}</a>
 
-      <div class="contact__actions" data-reveal>
-        <a class="btn btn--cream" href={mailTo}>
+      <div class="contact__actions">
+        <a class="btn btn--light" href={mailTo}>
           نوشتن ایمیل
           <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
             <path d="M2 4h12v8H2z" stroke="currentColor" stroke-width="1.3"></path>
             <path d="m2.4 4.4 5.6 4 5.6-4" stroke="currentColor" stroke-width="1.3"></path>
           </svg>
         </a>
-        <button class="btn btn--ghost-cream" type="button" id="copy-email" data-email={contact.email}>
-          رونوشت نشانی
-        </button>
-        <a class="btn btn--ghost-cream" href={asset('/resume/')}>
-          نسخهٔ چاپی / PDF
-        </a>
-        <span class="copy-status" id="copy-status" role="status" aria-live="polite"></span>
+        <a class="link-line" href={asset('/resume/')}>نسخهٔ چاپی / PDF</a>
       </div>
-    </div>
 
-    <div class="contact__aside" data-reveal>
-      <dl class="contact__fact">
-        <dt>محل</dt>
-        <dd>{contact.location_label}</dd>
+      <dl class="contact__facts">
+        {
+          contact.location_label && (
+            <div>
+              <dt>محل</dt>
+              <dd>{contact.location_label}</dd>
+            </div>
+          )
+        }
+        {
+          publicPhone && (
+            <div>
+              <dt>تلفن</dt>
+              <dd dir="ltr">{publicPhone}</dd>
+            </div>
+          )
+        }
+        {
+          contact.availability && (
+            <div>
+              <dt>نوع همکاری</dt>
+              <dd>{contact.availability}</dd>
+            </div>
+          )
+        }
+        {
+          socialLinks.length > 0 && (
+            <div>
+              <dt>شبکه‌ها</dt>
+              <dd class="contact__socials">
+                {socialLinks.map((social) => (
+                  <a class="link-line" href={social.url} rel="noopener noreferrer me" target="_blank">
+                    {social.label || social.handle}
+                  </a>
+                ))}
+              </dd>
+            </div>
+          )
+        }
       </dl>
-      <dl class="contact__fact">
-        <dt>وضعیت</dt>
-        <dd>{contact.availability}</dd>
-      </dl>
-      {
-        publicPhone && (
-          <dl class="contact__fact">
-            <dt>تلفن</dt>
-            <dd>
-              <a class="link-underline latin" href={`tel:${publicPhone.replace(/\s/g, '')}`} dir="ltr">
-                {publicPhone}
-              </a>
-            </dd>
-          </dl>
-        )
-      }
-      {
-        socialLinks.length > 0 && (
-          <dl class="contact__fact">
-            <dt>شبکه‌ها</dt>
-            <dd class="contact__socials">
-              {socialLinks.map((social) => (
-                <a href={social.url} rel="noopener noreferrer me" target="_blank">
-                  {social.label}
-                  {social.handle && <span class="latin">/ {social.handle}</span>}
-                </a>
-              ))}
-            </dd>
-          </dl>
-        )
-      }
+
+      <p class="contact__sign">
+        <span>{site.identity.name_fa}</span>
+        <span lang="en" dir="ltr">{site.identity.name_en}</span>
+      </p>
     </div>
   </div>
 </section>
-
-<script>
-  const button = document.getElementById('copy-email') as HTMLButtonElement | null;
-  const status = document.getElementById('copy-status');
-
-  button?.addEventListener('click', async () => {
-    const email = button.dataset.email || '';
-    if (!email) return;
-    try {
-      await navigator.clipboard.writeText(email);
-      if (status) status.textContent = 'نشانی رونوشت شد.';
-    } catch {
-      if (status) status.textContent = `رونوشت ناموفق بود؛ نشانی: ${email}`;
-    }
-    window.setTimeout(() => {
-      if (status) status.textContent = '';
-    }, 4000);
-  });
-</script>

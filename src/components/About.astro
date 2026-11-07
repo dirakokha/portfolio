@@ -9,40 +9,36 @@ const { index } = Astro.props;
 ---
 
 <section class="section" id="about" aria-labelledby="about-heading">
-  <div class="wrap">
-    <SectionHead index={index} title={about.title} labelEn={about.label_en} id="about-heading" />
-    <div class="about">
-      <div>
-        <p class="about__lead" data-reveal>{about.lead}</p>
-        <div class="about__body">
-          {
-            about.paragraphs.map((paragraph, i) => (
-              <p data-reveal style={`--reveal-delay:${i + 1}`}>
-                {paragraph}
-              </p>
-            ))
-          }
-        </div>
-      </div>
-      <div class="about__side">
+  <div class="wrap section__grid">
+    <SectionHead index={index} title={about.title} id="about-heading" aside="کوتاه دربارهٔ مسیر و تمرکز فعلی" />
+
+    <div class="section__body">
+      {about.lead && <p class="lead" data-reveal>{about.lead}</p>}
+
+      <div class="prose">
         {
-          about.facts.length > 0 && (
-            <dl class="about__facts" data-reveal>
-              {about.facts.map((fact) => (
-                <div class="about__fact">
-                  <dt>{fact.label}</dt>
-                  <dd>{fact.value}</dd>
-                </div>
-              ))}
-            </dl>
-          )
+          about.paragraphs.map((paragraph, i) => (
+            <p data-reveal style={`--i:${i}`}>
+              {paragraph}
+            </p>
+          ))
         }
-        {about.quote && (
-          <blockquote class="about__quote" data-reveal style="--reveal-delay:1">
-            {about.quote}
-          </blockquote>
-        )}
       </div>
+
+      {
+        about.facts.length > 0 && (
+          <dl class="facts" data-reveal>
+            {about.facts.map((fact) => (
+              <div class="facts__row">
+                <dt>{fact.label}</dt>
+                <dd>{fact.value}</dd>
+              </div>
+            ))}
+          </dl>
+        )
+      }
+
+      {about.quote && <blockquote class="pull" data-reveal>{about.quote}</blockquote>}
     </div>
   </div>
 </section>

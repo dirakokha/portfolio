@@ -42,7 +42,6 @@ const siteSchema = z.object({
     highlights: z
       .array(z.object({ label: z.string().default(''), value: z.string().default('') }))
       .default([]),
-    ticker: z.string().default(''),
   }),
   seo: z.object({
     title: z.string(),
@@ -64,7 +63,6 @@ const siteSchema = z.object({
 
 const aboutSchema = z.object({
   title: z.string().default('درباره'),
-  label_en: z.string().default('About'),
   lead: z.string().default(''),
   paragraphs: z.array(z.string()).default([]),
   facts: z.array(z.object({ label: z.string().default(''), value: z.string().default('') })).default([]),
@@ -119,7 +117,6 @@ const skillsSchema = z.object({
       z.object({
         id: z.string(),
         title: z.string(),
-        label_en: z.string().default(''),
         note: z.string().default(''),
         items: z.array(itemSchema).default([]),
       }),

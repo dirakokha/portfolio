@@ -1,27 +1,26 @@
 ---
 import { site, contact } from '../lib/content';
 import { asset, mailtoHref } from '../lib/urls';
-import { faDate } from '../lib/digits';
+import { faDate, faYear } from '../lib/digits';
 
 const builtOn = faDate(new Date());
-const year = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { year: 'numeric' }).format(new Date());
+const year = faYear(new Date());
 ---
 
 <footer class="site-footer">
-  <div class="wrap footer__inner">
-    <div>
-      <p style="margin:0 0 0.25rem;color:rgba(247,242,231,.78);font-size:.82rem">
-        {site.identity.name_fa} — <span class="latin" style="letter-spacing:.18em;font-size:.66rem">{site.identity.name_en}</span>
-      </p>
-      <p class="footer__colophon">
-        این سایت ایستا ساخته شده است: بدون ردیاب، بدون کوکی تحلیلی و بدون درخواست به سرویس بیرونی برای نمایش
-        محتوا. آخرین به‌روزرسانی داده‌های عمومی: {builtOn} ({year}).
-      </p>
-    </div>
-    <nav class="footer__links" aria-label="پیوندهای پای‌برگ">
-      <a class="link-underline" href={asset('/resume/')}>رزومهٔ چاپی</a>
-      <a class="link-underline" href={mailtoHref(contact.email, contact.email_subject)}>ایمیل</a>
-      <a class="link-underline" href={asset('/admin/')} rel="nofollow">پنل مدیریت</a>
+  <div class="wrap site-footer__inner">
+    <p class="site-footer__colophon">
+      این سایت ایستا ساخته شده است: بدون ردیاب، بدون کوکی تحلیلی و بدون درخواست به سرویس
+      بیرونی برای نمایش محتوا. آخرین به‌روزرسانی داده‌های عمومی: {builtOn} ({year}).
+    </p>
+    <nav class="site-footer__links" aria-label="پیوندهای پای‌برگ">
+      <a class="link-line" href={asset('/resume/')}>رزومهٔ چاپی</a>
+      <a class="link-line" href={mailtoHref(contact.email, contact.email_subject)}>ایمیل</a>
+      <a class="link-line" href={asset('/admin/')} rel="nofollow">پنل مدیریت</a>
     </nav>
+    <p class="site-footer__sign">
+      <span>{site.identity.name_fa}</span>
+      <span lang="en" dir="ltr">{site.identity.name_en}</span>
+    </p>
   </div>
 </footer>

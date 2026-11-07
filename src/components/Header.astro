@@ -1,37 +1,20 @@
 ---
 import { site, activeSections } from '../lib/content';
 import { asset } from '../lib/urls';
+import Arrow from './Arrow.astro';
 
 const sections = activeSections();
-const enIndex: Record<string, string> = {
-  about: 'About',
-  skills: 'Skills',
-  experience: 'Experience',
-  projects: 'Projects',
-  education: 'Education',
-  contact: 'Contact',
-};
 const resumeHref = asset('/resume/');
 ---
 
 <header class="site-header" id="site-header">
-  <div class="wrap header-inner">
+  <div class="wrap site-header__inner">
     <a class="brand" href={asset('/')} aria-label={`${site.identity.name_fa} — صفحهٔ اصلی`}>
-      <svg class="brand__mark" viewBox="0 0 32 40" fill="none" aria-hidden="true">
-        <path
-          d="M1 39V17.5C1 8.4 7.7 1 16 1s15 7.4 15 16.5V39"
-          stroke="currentColor"
-          stroke-width="1.4"
-          stroke-linejoin="round"></path>
-        <circle cx="16" cy="25" r="2.6" fill="#b4522a"></circle>
-      </svg>
-      <span class="brand__text">
-        <span class="brand__name">{site.identity.name_fa}</span>
-        <span class="brand__latin">{site.identity.name_en}</span>
-      </span>
+      <span class="brand__name">{site.identity.name_fa}</span>
+      <span class="brand__latin" lang="en" dir="ltr">{site.identity.name_en}</span>
     </a>
 
-    <nav class="main-nav" aria-label="بخش‌های صفحه">
+    <nav class="nav" aria-label="بخش‌های صفحه">
       <ul>
         {
           sections.map((section) => (
@@ -45,54 +28,41 @@ const resumeHref = asset('/resume/');
       </ul>
     </nav>
 
-    <div class="header-actions">
-      <a class="btn btn--solid" href={resumeHref}>
-        رزومهٔ چاپی
-        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path
-            d="M10 3.5 5.5 8l4.5 4.5"
-            stroke="currentColor"
-            stroke-width="1.4"
-            stroke-linecap="round"
-            stroke-linejoin="round"></path>
-        </svg>
-      </a>
-    </div>
+    <a class="header-resume" href={resumeHref}>
+      رزومه
+      <Arrow dir="forward" />
+    </a>
 
-    <details class="nav-drawer">
-      <summary aria-label="فهرست بخش‌ها">فهرست</summary>
-      <div class="nav-drawer__panel">
+    <details class="drawer">
+      <summary aria-label="فهرست بخش‌ها">
+        <span class="drawer__bars" aria-hidden="true"><i></i><i></i></span>
+      </summary>
+      <div class="drawer__panel">
         <nav aria-label="فهرست بخش‌ها (موبایل)">
           <ul>
             {
               sections.map((section) => (
                 <li>
-                  <a href={`#${section.id}`}>
-                    <span>{section.label}</span>
-                    <span>{enIndex[section.id]}</span>
-                  </a>
+                  <a href={`#${section.id}`}>{section.label}</a>
                 </li>
               ))
             }
-            <li class="nav-drawer__cta">
-              <a href={resumeHref}>
-                <span>رزومهٔ چاپی</span>
-                <span>Resume</span>
-              </a>
+            <li>
+              <a href={resumeHref}>رزومهٔ چاپی</a>
             </li>
           </ul>
         </nav>
       </div>
     </details>
   </div>
-  <div class="progress-rail" aria-hidden="true"><i id="read-progress"></i></div>
+  <div class="header-progress" aria-hidden="true"><i id="read-progress"></i></div>
 </header>
 
 <script>
   const header = document.getElementById('site-header');
   const progress = document.getElementById('read-progress');
   const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]'));
-  const drawer = document.querySelector<HTMLDetailsElement>('.nav-drawer');
+  const drawer = document.querySelector<HTMLDetailsElement>('.drawer');
 
   let queued = false;
   function onScroll() {
@@ -101,7 +71,9 @@ const resumeHref = asset('/resume/');
     requestAnimationFrame(() => {
       queued = false;
       const y = window.scrollY;
-      header?.classList.toggle('is-stuck', y > 12);
+      const heroHeight = window.innerHeight * 0.7;
+      header?.classList.toggle('is-solid', y > heroHeight);
+      header?.classList.toggle('is-scrolled', y > 8);
       const doc = document.documentElement;
       const max = doc.scrollHeight - window.innerHeight;
       const ratio = max > 0 ? Math.min(1, Math.max(0, y / max)) : 0;
@@ -115,10 +87,7 @@ const resumeHref = asset('/resume/');
 
   // بخش فعال در فهرست
   const targets = links
-    .map((link) => ({
-      link,
-      section: document.getElementById(link.dataset.navLink || ''),
-    }))
+    .map((link) => ({ link, section: document.getElementById(link.dataset.navLink || '') }))
     .filter((entry): entry is { link: HTMLAnchorElement; section: HTMLElement } => !!entry.section);
 
   if ('IntersectionObserver' in window && targets.length) {
@@ -126,11 +95,9 @@ const resumeHref = asset('/resume/');
       (entries) => {
         entries.forEach((entry) => {
           const target = targets.find((item) => item.section === entry.target);
-          if (!target) return;
-          if (entry.isIntersecting) {
-            links.forEach((link) => link.removeAttribute('aria-current'));
-            target.link.setAttribute('aria-current', 'true');
-          }
+          if (!target || !entry.isIntersecting) return;
+          links.forEach((link) => link.removeAttribute('aria-current'));
+          target.link.setAttribute('aria-current', 'true');
         });
       },
       { rootMargin: '-45% 0px -45% 0px', threshold: 0 },

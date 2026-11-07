@@ -2,6 +2,7 @@
 import { education, certifications } from '../lib/content';
 import SectionHead from './SectionHead.astro';
 import { asset } from '../lib/urls';
+import Arrow from './Arrow.astro';
 
 interface Props {
   index: number;
@@ -10,67 +11,81 @@ const { index } = Astro.props;
 ---
 
 <section class="section" id="education" aria-labelledby="education-heading">
-  <div class="wrap">
-    <SectionHead index={index} title="تحصیلات و گواهینامه‌ها" labelEn="Education" id="education-heading" />
-    <div class="edu">
-      <div class="edu__col" data-reveal>
-        <h3>
-          تحصیلات
-          <span>EDUCATION</span>
-        </h3>
+  <div class="wrap section__grid">
+    <SectionHead
+      index={index}
+      title="تحصیلات و گواهینامه‌ها"
+      id="education-heading"
+      aside="مدرک و دوره‌های واقعی؛ گواهی‌ای که وجود ندارد نمایش داده نمی‌شود."
+    />
+
+    <div class="section__body">
+      <div class="edu-grid">
+      <section class="edu" data-reveal>
+        <h3 class="edu__label">تحصیلات</h3>
         {
           education.items.map((item) => (
             <article class="edu__item">
-              <h4>{item.field}</h4>
-              <p class="edu__degree">{item.degree}</p>
-              <p class="edu__inst">{item.institution}</p>
-              <div class="edu__row">
-                {item.status && <span class="chip chip--copper">{item.status}</span>}
-                {item.location && <span class="chip">{item.location}</span>}
-                {item.period_label && item.period_label !== item.status && (
-                  <span class="chip">{item.period_label}</span>
-                )}
-              </div>
+              <h4 class="edu__field">{item.field}</h4>
+              <p class="edu__line">
+                {item.degree}
+                {item.institution && <span> — {item.institution}</span>}
+              </p>
+              <p class="edu__meta">
+                {item.status && <span class="is-strong">{item.status}</span>}
+                {item.period_label && item.period_label !== item.status && <span>{item.period_label}</span>}
+                {item.location && <span>{item.location}</span>}
+              </p>
               {item.note && <p class="edu__note">{item.note}</p>}
             </article>
           ))
         }
-        {
-          education.items.length === 0 && <p class="edu__note">موردی ثبت نشده است.</p>
-        }
-      </div>
+        {education.items.length === 0 && <p class="edu__note">موردی ثبت نشده است.</p>}
+      </section>
 
-      <div class="edu__col" data-reveal style="--reveal-delay:1">
-        <h3>
-          دوره‌ها و گواهینامه‌ها
-          <span>CERTIFICATES</span>
-        </h3>
+      <section class="edu" data-reveal>
+        <h3 class="edu__label">دوره‌ها و گواهینامه‌ها</h3>
         {
           certifications.items.map((cert) => (
             <article class="edu__item">
-              <h4>{cert.title}</h4>
-              <p class="edu__inst">{cert.provider}</p>
-              <div class="edu__row">
-                {cert.year_label && <span class="cert__year">{cert.year_label}</span>}
-                {cert.status && <span class="chip">{cert.status}</span>}
-              </div>
+              <h4 class="edu__field">{cert.title}</h4>
+              <p class="edu__line">
+                {cert.provider}
+                {cert.year_label && <span> — {cert.year_label}</span>}
+              </p>
+              {cert.status && (
+                <p class="edu__meta">
+                  <span class="is-strong">{cert.status}</span>
+                </p>
+              )}
               {cert.note && <p class="edu__note">{cert.note}</p>}
               {cert.credential_url && (
-                <a class="cert__file link-underline" href={cert.credential_url} rel="noopener noreferrer" target="_blank">
-                  صفحهٔ تأیید گواهی ↗
+                <a
+                  class="link-line"
+                  href={cert.credential_url}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  صفحهٔ تأیید گواهی
+                  <Arrow dir="external" />
                 </a>
               )}
               {cert.certificate_file && (
-                <a class="cert__file link-underline" href={asset(cert.certificate_file)} target="_blank" rel="noopener">
-                  مشاهدهٔ فایل گواهی ↗
+                <a
+                  class="link-line"
+                  href={asset(cert.certificate_file)}
+                  target="_blank"
+                  rel="noopener"
+                >
+                  مشاهدهٔ فایل گواهی
+                  <Arrow dir="external" />
                 </a>
               )}
             </article>
           ))
         }
-        {
-          certifications.items.length === 0 && <p class="edu__note">موردی ثبت نشده است.</p>
-        }
+        {certifications.items.length === 0 && <p class="edu__note">موردی ثبت نشده است.</p>}
+      </section>
       </div>
     </div>
   </div>
