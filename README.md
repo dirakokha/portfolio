@@ -9,6 +9,10 @@
 - پنل مدیریت: `/admin/`
 - هزینهٔ اجباری نگه‌داری: **صفر**.
 
+**آدرس سایت (GitHub Pages):** <https://dirakokha.github.io/portfolio/>
+در این نسخه فقط نمایش عمومی فعال است؛ برای ویرایش از پنل، میزبانی روی Cloudflare
+Pages (یا انتشار `workers/oauth/`) لازم است — بخش ۵ و `docs/DEPLOY.md`.
+
 ---
 
 ## ۱) چرا این معماری؟

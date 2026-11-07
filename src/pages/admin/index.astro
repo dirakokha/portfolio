@@ -36,6 +36,14 @@ export const prerender = true;
 
     <a class="admin-back" href="../">→ بازگشت به وب‌سایت</a>
 
+    <div id="oauth-notice" class="admin-notice" hidden>
+      <b>ورود به پنل در این نسخه فعال نیست</b>
+      <p>
+        سایت عمومی کامل و مستقل کار می‌کند؛ فقط ویرایش از پنل به پروکسی ورود GitHub نیاز دارد
+        (متغیر <code>OAUTH_BASE_URL</code>). راهنمای راه‌اندازی: <code>docs/DEPLOY.md</code>.
+      </p>
+    </div>
+
     <script is:inline src="./decap-cms.js"></script>
     <script is:inline>
       (function () {
@@ -51,6 +59,18 @@ export const prerender = true;
             }
           }
         }
+
+        // اگر پروکسی ورود تنظیم نشده باشد، یک یادآوری کوتاه نمایش داده می‌شود
+        fetch('./cms-status.json', { cache: 'no-store' })
+          .then(function (response) {
+            return response.ok ? response.json() : null;
+          })
+          .then(function (status) {
+            if (!status) return;
+            var notice = document.getElementById('oauth-notice');
+            if (notice && !status.oauthConfigured && !status.localBackend) notice.hidden = false;
+          })
+          .catch(function () {});
 
         if (!window.DecapCms) {
           fail('بستهٔ Decap CMS در دسترس نیست.');

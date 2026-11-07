@@ -27,4 +27,14 @@ const config = fs
 
 fs.mkdirSync(path.dirname(outPath), { recursive: true });
 fs.writeFileSync(outPath, config);
+
+// وضعیت ورود به پنل، برای نمایش یادآوری در صفحهٔ /admin
+const status = {
+  repo,
+  branch,
+  oauthBase: apiBase,
+  oauthConfigured: Boolean(process.env.OAUTH_BASE_URL),
+  localBackend: useLocalBackend,
+};
+fs.writeFileSync(path.join(root, 'public/admin/cms-status.json'), JSON.stringify(status, null, 2));
 console.log(`✓ public/admin/config.yml  (repo: ${repo}@${branch} · oauth: ${apiBase}${useLocalBackend ? ' · local backend' : ''})`);
