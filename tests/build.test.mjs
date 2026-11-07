@@ -109,3 +109,23 @@ test('کد عمومی سایت به CMS وابسته نیست', () => {
   assert.ok(!/decap|netlify|admin\/config/i.test(html), 'صفحهٔ عمومی نباید به CMS ارجاع دهد');
   assert.ok(!/<script[^>]+src="[^"]*admin/i.test(html));
 });
+
+test('پرترهٔ واقعی با نسخهٔ ریسپانسیو و ابعاد مشخص در بخش نخست می‌آید', () => {
+  const html = readDist('index.html');
+  assert.match(html, /<img[^>]+src="\/media\/portrait-960\.webp"/);
+  assert.match(html, /srcset="[^"]*\/media\/portrait-480\.webp 480w[^"]*\/media\/portrait-960\.webp 960w"/);
+  assert.match(html, /width="960" height="1200"/);
+  assert.match(html, /alt="[^"]*امیرمحمود خاکنه[^"]*"/);
+  for (const file of ['portrait-480.webp', 'portrait-960.webp', 'portrait-print.webp']) {
+    const full = path.join(dist, 'media', file);
+    assert.ok(fs.existsSync(full), `تصویر ${file} در خروجی نیست`);
+    assert.ok(fs.statSync(full).size > 4000, `تصویر ${file} خالی یا ناقص است`);
+  }
+});
+
+test('رزومهٔ چاپی پرترهٔ کوچک را با متن جانشین دارد', () => {
+  const html = readDist('resume/index.html');
+  assert.match(html, /class="cv-photo"/);
+  assert.match(html, /\/media\/portrait-print\.webp/);
+  assert.match(html, /width="360" height="450"/);
+});

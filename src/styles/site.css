@@ -682,8 +682,47 @@ html.is-intro-open {
   align-items: stretch;
 }
 
+.hero__mid.has-portrait {
+  grid-template-columns: minmax(0, 7.6fr) minmax(0, 3.4fr);
+  grid-template-rows: auto auto;
+}
+
 .hero__mid.has-portrait .hero__type {
-  grid-column: 1 / 2;
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.hero__mid.has-portrait .portrait {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: end;
+}
+
+/* با وجود پرتره، سه نشانهٔ کوتاه زیر ستون متن می‌آیند تا هیرو یک صفحه بماند */
+.hero__mid.has-portrait .hero__side {
+  grid-column: 1;
+  grid-row: 2;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 0 0;
+  border-top: 1px solid var(--night-rule);
+}
+
+.hero__mid.has-portrait .hero__facts {
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.8rem 1.4rem;
+  width: 100%;
+}
+
+.hero__mid.has-portrait .hero__scroll {
+  display: none;
+}
+
+.hero__mid.has-portrait .hero__name {
+  font-size: clamp(2.6rem, 9.2vw, 7.6rem);
 }
 
 .hero__type {
@@ -865,26 +904,34 @@ html.is-intro-open {
 .portrait {
   margin: 0;
   align-self: end;
+  justify-self: center;
+  width: 100%;
+  max-width: 380px;
 }
 
 .portrait__frame {
   position: relative;
   aspect-ratio: 4 / 5;
   overflow: hidden;
-  background: var(--night-2);
+  /* پلاک پرتره: قاب مویی تا لبهٔ تصویر عمدی به نظر برسد */
+  border: 1px solid rgba(244, 238, 225, 0.16);
+  outline: 1px solid rgba(244, 238, 225, 0.04);
+  outline-offset: 6px;
 }
 
+/* سیاه‌وسفید و اصلاح سطح سیاه در خود فایل تصویر اعمال شده است
+   (بدون فیلتر CSS، تا در همهٔ مرورگرها و در چاپ یکسان دیده شود) */
 .portrait__frame img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 30%;
-  filter: grayscale(1) contrast(1.06);
+  object-position: center 28%;
 }
 
 .portrait figcaption {
   margin-top: 0.7rem;
   font-size: 0.72rem;
+  text-align: center;
   color: var(--cream-muted);
 }
 
@@ -1539,10 +1586,6 @@ html.js [data-reveal].is-in {
     display: none;
   }
 
-  .drawer {
-    display: block;
-  }
-
   .brand__latin {
     display: none;
   }
@@ -1578,6 +1621,41 @@ html.js [data-reveal].is-in {
   }
 }
 
+@media (max-width: 780px) {
+  /* در موبایل چیدمان ستونی می‌شود؛ جای هر قلم بازنشانی می‌شود */
+  .hero__mid.has-portrait {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+  }
+
+  .hero__mid.has-portrait .hero__type,
+  .hero__mid.has-portrait .hero__side,
+  .hero__mid.has-portrait .portrait {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .hero__mid.has-portrait .portrait {
+    max-width: 200px;
+    justify-self: start;
+    margin-top: 0.4rem;
+    order: 2;
+  }
+
+  .hero__mid.has-portrait .hero__side {
+    order: 3;
+  }
+
+  .hero__mid.has-portrait .hero__name {
+    font-size: clamp(2.9rem, 12.4vw, 4.6rem);
+  }
+
+  .drawer {
+    display: block;
+  }
+
+}
+
 @media (max-width: 720px) {
   .cat__list {
     columns: 1;
@@ -1597,13 +1675,23 @@ html.js [data-reveal].is-in {
   }
 
   .portrait {
-    max-width: 320px;
+    max-width: 240px;
+    justify-self: start;
+  }
+
+  .portrait figcaption {
+    text-align: start;
   }
 }
 
 @media (max-width: 460px) {
   .hero {
     padding-block: calc(var(--header-h) + 28px) 26px;
+  }
+
+  .hero__kicker {
+    font-size: 0.72rem;
+    gap: 0.15rem 0.5rem;
   }
 
   .hero__top {

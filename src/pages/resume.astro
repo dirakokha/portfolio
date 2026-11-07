@@ -18,6 +18,8 @@ import '../styles/resume.css';
 const identity = site.identity;
 const mailTo = mailtoHref(contact.email, contact.email_subject);
 const hasProjects = activeSections().some((section) => section.id === 'projects');
+// نسخهٔ کوچک و بهینهٔ پرتره فقط وقتی وجود دارد که مالک سایت تصویر را بارگذاری کرده باشد.
+const cvPhoto = site.hero.portrait_image ? '/media/portrait-print.webp' : '';
 ---
 
 <Base
@@ -45,6 +47,18 @@ const hasProjects = activeSections().some((section) => section.id === 'projects'
         <li><span>محل</span><b>{contact.location_label || identity.location_fa}</b></li>
         {publicPhone && <li><span>تلفن</span><b dir="ltr">{publicPhone}</b></li>}
       </ul>
+      {cvPhoto && (
+        <figure class="cv-photo">
+          <img
+            src={asset(cvPhoto)}
+            alt={`پرترهٔ ${identity.name_fa}`}
+            width="360"
+            height="450"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+      )}
     </header>
 
     <section class="cv-section">
