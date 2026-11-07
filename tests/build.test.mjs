@@ -129,3 +129,24 @@ test('رزومهٔ چاپی پرترهٔ کوچک را با متن جانشین 
   assert.match(html, /\/media\/portrait-print\.webp/);
   assert.match(html, /width="360" height="450"/);
 });
+
+test('جملهٔ کلیدی به‌صورت تمام‌عرض و با متن واقعی خودش رندر می‌شود', () => {
+  const html = readDist('index.html');
+  assert.match(html, /class="statement"/);
+  assert.match(html, /data-statement/);
+  assert.match(html, /فناوری وقتی ارزش دارد/);
+});
+
+test('لایهٔ حرکت در دسترس است و حالت کاهش حرکت را احترام می‌گذارد', () => {
+  const cssDir = path.join(dist, '_astro');
+  const css = fs
+    .readdirSync(cssDir)
+    .filter((f) => f.endsWith('.css'))
+    .map((f) => fs.readFileSync(path.join(cssDir, f), 'utf8'))
+    .join('\n');
+  assert.match(css, /prefers-reduced-motion:\s*reduce/);
+  assert.match(css, /--hero-shift/);
+  assert.match(css, /data-reveal/);
+  const html = readDist('index.html');
+  assert.match(html, /--hero-shift/, 'پارالاکس باید از اسکریپت تنظیم شود');
+});

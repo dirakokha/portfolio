@@ -1,0 +1,27 @@
+---
+import { about, site } from '../lib/content';
+
+/**
+ * لحظهٔ تمام‌عرض صفحه: یک جملهٔ واقعی از خودِ او، بزرگ و تنها.
+ * متن با اسکرول روشن می‌شود؛ بدون جاوااسکریپت هم کامل و خوانا می‌ماند.
+ */
+const quote = about.quote;
+---
+
+{
+  quote && (
+    <section class="statement" aria-label="جملهٔ کلیدی">
+      <div class="wrap statement__inner">
+        <p class="statement__mark">یک جمله که همه‌چیز را خلاصه می‌کند</p>
+        <blockquote class="statement__quote" data-statement>
+          {quote}
+        </blockquote>
+        <p class="statement__foot">
+          <span>{site.identity.name_fa}</span>
+          <span aria-hidden="true">—</span>
+          <span>{site.identity.role_fa}</span>
+        </p>
+      </div>
+    </section>
+  )
+}

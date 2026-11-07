@@ -77,8 +77,8 @@ const hasPortrait = Boolean(hero.portrait_image);
       {
         hero.highlights.length > 0 && (
           <dl class="hero__facts">
-            {hero.highlights.map((item) => (
-              <div>
+            {hero.highlights.map((item, i) => (
+              <div style={`--i:${i}`}>
                 <dt>{item.label}</dt>
                 <dd>{item.value}</dd>
               </div>
@@ -130,7 +130,7 @@ const hasPortrait = Boolean(hero.portrait_image);
           if (event.animationName === 'intro-out') finish();
         });
         if (skip) skip.addEventListener('click', finish);
-        setTimeout(finish, 2200);
+        setTimeout(finish, 1900);
       }
     } catch (error) {
       finish();
