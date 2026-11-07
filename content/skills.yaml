@@ -1,0 +1,111 @@
+# مهارت‌ها — به‌جای درصد و نوار پیشرفت، هر مورد یک «وضعیت» واقعی دارد:
+#   working  = در کار واقعی استفاده شده
+#   course   = دوره یا آموزش گذرانده شده
+#   learning = در حال یادگیری
+#   familiar = آشنایی مقدماتی
+#   academic = دانش آکادمیک، بدون تجربهٔ عملی قابل ارائه
+
+categories:
+  - id: it-support
+    title: پشتیبانی فناوری اطلاعات
+    label_en: IT Support
+    note: کارهای روزمرهٔ پشتیبانی که در محیط واقعی انجام شده‌اند.
+    items:
+      - name: نصب و راه‌اندازی ویندوز
+        name_en: Windows Installation
+        state: working
+        context: نصب کامل ویندوز، تنظیمات اولیه و آماده‌سازی سیستم برای کاربر.
+      - name: نصب نرم‌افزار و درایور
+        name_en: Software & Drivers
+        state: working
+        context: نصب و به‌روزرسانی نرم‌افزارها و درایورهای سخت‌افزاری.
+      - name: نگهداری روتین سیستم
+        name_en: System Maintenance
+        state: working
+        context: آماده‌سازی، به‌روز نگه‌داشتن و مرتب‌سازی سیستم‌های کاری.
+      - name: عیب‌یابی سخت‌افزار و نرم‌افزار
+        name_en: Troubleshooting
+        state: working
+        context: پیدا کردن علت خرابی‌های رایج و رفع آن‌ها.
+      - name: اینترنت و پرینتر
+        name_en: Network & Printer Issues
+        state: working
+        context: رفع مشکلات اتصال، پرینتر شبکه‌ای و تنظیمات پایه.
+
+  - id: programming
+    title: برنامه‌نویسی و وب
+    label_en: Programming
+    note: دروس و دوره‌های گذرانده‌شده؛ بدون ادعای تجربهٔ حرفه‌ای.
+    items:
+      - name: پایتون
+        name_en: Python
+        state: course
+        context: دورهٔ جامع پایتون (مکتب‌خونه) را کامل گذرانده‌ام؛ دانش فعلی نیاز به مرور و تمرین دارد.
+      - name: HTML
+        name_en: HTML
+        state: course
+        context: ساختار صفحه، متادیتا، عنوان‌ها، پاراگراف، لینک، تصویر، لیست، جدول و فرم؛ مقدمه‌ای از SVG.
+      - name: CSS
+        name_en: CSS
+        state: learning
+        context: در حال تمرین چیدمان، تایپوگرافی و طراحی واکنش‌گرا.
+      - name: JavaScript
+        name_en: JavaScript
+        state: learning
+        context: در حال یادگیری مبانی زبان و کار با DOM.
+
+  - id: creative
+    title: ابزارهای خلاقیت
+    label_en: Creative Tools
+    note: ویرایش تصویر و ویدیو برای محتوای شبکه‌های اجتماعی.
+    items:
+      - name: Adobe Premiere Pro
+        name_en: Premiere Pro
+        state: working
+        context: تدوین و تولید ویدیو برای اینستاگرام و یوتیوب.
+      - name: Adobe Photoshop
+        name_en: Photoshop
+        state: working
+        context: ویرایش تصویر و آماده‌سازی محتوای بصری.
+
+  - id: office
+    title: نرم‌افزارهای اداری
+    label_en: Office
+    note: آشنایی کاربردی در حد نیاز کار روزمره.
+    items:
+      - name: Microsoft Word
+        name_en: Word
+        state: familiar
+        context: تنظیم و ویرایش اسناد متنی.
+      - name: Microsoft PowerPoint
+        name_en: PowerPoint
+        state: familiar
+        context: ساخت و ویرایش ارائهٔ ساده.
+
+  - id: english
+    title: زبان انگلیسی
+    label_en: English
+    note: مهارت‌ها یکسان نیستند؛ سطح رسمی (CEFR) ارزیابی نشده است.
+    items:
+      - name: خواندن متون فنی
+        name_en: Reading
+        state: working
+        context: قوی‌ترین مهارت؛ مطالعهٔ مستندات و راهنماها.
+      - name: شنیدن و درک
+        name_en: Listening
+        state: familiar
+        context: درک محتوای آموزشی و ویدیوهای فنی.
+      - name: گرامر و نوشتن
+        name_en: Grammar & Writing
+        state: learning
+        context: نیازمند تمرین بیشتر.
+
+  - id: networks
+    title: شبکه
+    label_en: Networks
+    note: مرتبط با رشتهٔ تحصیلی؛ تجربهٔ عملی قابل ارائه در این حوزه وجود ندارد.
+    items:
+      - name: مبانی شبکه
+        name_en: Networking Fundamentals
+        state: academic
+        context: مفاهیم پایه در حد دروس دانشگاهی؛ پیکربندی روتر و ابزارهای حرفه‌ای شبکه در سابقه نیست.

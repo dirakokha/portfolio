@@ -1,0 +1,317 @@
+/* نسخهٔ چاپی رزومه — کاغذ A4، بدون عناصر تزئینی */
+
+:root {
+  --cv-ink: #16211f;
+  --cv-muted: #566058;
+  --cv-line: rgba(22, 33, 31, 0.18);
+  --cv-copper: #9c4522;
+}
+
+body {
+  background: #e7e2d7;
+  color: var(--cv-ink);
+  font-size: 10.4pt;
+  line-height: 1.85;
+}
+
+.print-bar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  padding: 0.75rem clamp(1rem, 4vw, 3rem);
+  background: var(--panel);
+  color: rgba(247, 242, 231, 0.8);
+  font-size: 0.78rem;
+}
+
+.print-bar__back {
+  flex: 0 0 auto;
+  color: var(--cream);
+  font-weight: 500;
+}
+
+.print-bar__hint {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  color: rgba(247, 242, 231, 0.6);
+  font-size: 0.74rem;
+}
+
+.print-bar__btn {
+  background: var(--cream);
+  color: var(--panel);
+  border: 0;
+  border-radius: 1px;
+  padding: 0.5rem 1.1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.print-bar__btn:hover {
+  background: var(--copper-light);
+}
+
+.sheet {
+  width: min(210mm, calc(100% - 2rem));
+  margin: clamp(1.25rem, 4vw, 2.75rem) auto 4rem;
+  background: #fff;
+  color: var(--cv-ink);
+  padding: 16mm 15mm 13mm;
+  box-shadow: 0 30px 60px -40px rgba(22, 33, 31, 0.55);
+}
+
+.cv-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  padding-block-end: 0.7rem;
+  border-block-end: 2px solid var(--cv-ink);
+}
+
+.cv-kicker {
+  font-size: 8.6pt;
+  letter-spacing: 0;
+  color: var(--cv-copper);
+  margin: 0 0 0.15rem;
+}
+
+.cv-name {
+  font-family: var(--font-display);
+  font-size: 25pt;
+  line-height: 1.25;
+  margin: 0;
+  font-weight: 700;
+}
+
+.cv-name-en {
+  font-family: var(--font-latin);
+  font-size: 7.4pt;
+  letter-spacing: 0.3em;
+  color: var(--cv-muted);
+  margin: 0.35rem 0 0;
+  direction: ltr;
+  text-align: right;
+}
+
+.cv-contact {
+  display: grid;
+  gap: 0.12rem;
+  font-size: 8.6pt;
+  text-align: start;
+}
+
+.cv-contact li {
+  display: flex;
+  gap: 0.45rem;
+  align-items: baseline;
+}
+
+.cv-contact span {
+  color: var(--cv-muted);
+  min-width: 2.6rem;
+}
+
+.cv-contact a {
+  text-decoration: none;
+  border-block-end: 1px solid var(--cv-line);
+  overflow-wrap: anywhere;
+  font-size: 8.2pt;
+}
+
+.cv-cols {
+  display: grid;
+  grid-template-columns: 1.62fr 1fr;
+  gap: 0 8mm;
+  margin-block-start: 0.9rem;
+}
+
+.cv-section {
+  margin-block-end: 0.85rem;
+  break-inside: avoid;
+}
+
+.cv-h2 {
+  font-family: var(--font-display);
+  font-size: 10.5pt;
+  font-weight: 700;
+  margin: 0 0 0.4rem;
+  padding-block-end: 0.2rem;
+  border-block-end: 1px solid var(--cv-ink);
+  letter-spacing: 0;
+}
+
+.cv-lead {
+  margin: 0 0 0.35rem;
+  font-size: 9.4pt;
+  line-height: 1.9;
+}
+
+.cv-text {
+  margin: 0 0 0.3rem;
+  font-size: 9pt;
+  color: var(--cv-muted);
+  line-height: 1.85;
+}
+
+.cv-job,
+.cv-edu {
+  margin-block-end: 0.55rem;
+}
+
+.cv-job__head h3,
+.cv-edu h3 {
+  font-size: 10pt;
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+.cv-org {
+  margin: 0.1rem 0 0;
+  font-size: 8.8pt;
+  color: var(--cv-muted);
+}
+
+.cv-org span {
+  color: var(--cv-copper);
+}
+
+.cv-meta {
+  margin: 0.1rem 0 0;
+  font-size: 8.4pt;
+  color: var(--cv-muted);
+}
+
+.cv-job__groups {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 6mm;
+  margin-block-start: 0.3rem;
+}
+
+.cv-job__groups h4 {
+  font-size: 8.4pt;
+  margin: 0 0 0.1rem;
+  color: var(--cv-copper);
+  font-weight: 700;
+}
+
+.cv-list {
+  list-style: disc;
+  padding-inline-start: 1rem;
+  margin: 0;
+  font-size: 8.6pt;
+  line-height: 1.75;
+}
+
+.cv-list li {
+  margin-block-end: 0.05rem;
+}
+
+.cv-skills {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0;
+  font-size: 8.6pt;
+}
+
+.cv-skills dt {
+  font-weight: 700;
+  font-size: 8.8pt;
+}
+
+.cv-skills dd {
+  margin: 0;
+  color: var(--cv-muted);
+  line-height: 1.7;
+}
+
+.cv-certs {
+  display: grid;
+  gap: 0.3rem;
+  font-size: 8.6pt;
+}
+
+.cv-certs li {
+  display: grid;
+  gap: 0.05rem;
+}
+
+.cv-certs span {
+  color: var(--cv-muted);
+}
+
+.cv-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.35rem 1rem;
+  margin-block-start: 0.5rem;
+  padding-block-start: 0.4rem;
+  border-block-start: 1px solid var(--cv-line);
+  font-size: 7.6pt;
+  color: var(--cv-muted);
+}
+
+.cv-foot span:first-child {
+  font-family: var(--font-latin);
+  letter-spacing: 0.18em;
+}
+
+@media (max-width: 720px) {
+  .sheet {
+    padding: 10mm 7mm;
+    width: calc(100% - 1rem);
+  }
+
+  .cv-cols,
+  .cv-job__groups {
+    grid-template-columns: 1fr;
+  }
+
+  .cv-name {
+    font-size: 21pt;
+  }
+}
+
+@page {
+  size: A4;
+  margin: 12mm 14mm;
+}
+
+@media print {
+  body {
+    background: #fff;
+  }
+
+  .sheet {
+    width: auto;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .print-bar {
+    display: none !important;
+  }
+
+  .cv-name {
+    font-size: 22pt;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  .cv-section {
+    break-inside: avoid;
+  }
+}

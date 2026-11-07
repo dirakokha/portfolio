@@ -1,0 +1,21 @@
+# وابستگی‌ها
+node_modules/
+
+# خروجی ساخت
+dist/
+.astro/
+
+# فایل‌های تولیدشدهٔ پنل مدیریت (در زمان build ساخته می‌شوند)
+public/admin/config.yml
+public/admin/cms-status.json
+public/admin/decap-cms.js
+public/admin/*.decap-cms.js
+public/admin/*.wasm
+
+# فایل‌های موقت و سیستم‌عامل
+.DS_Store
+*.log
+.env
+.env.*
+!.env.example
+.wrangler/

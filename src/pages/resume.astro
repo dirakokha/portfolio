@@ -1,0 +1,172 @@
+---
+import Base from '../layouts/Base.astro';
+import {
+  site,
+  about,
+  contact,
+  publicPhone,
+  experience,
+  skills,
+  education,
+  certifications,
+  activeSections,
+} from '../lib/content';
+import { mailtoHref, asset } from '../lib/urls';
+import { fa } from '../lib/digits';
+import '../styles/resume.css';
+
+const identity = site.identity;
+const mailTo = mailtoHref(contact.email, contact.email_subject);
+const hasProjects = activeSections().some((section) => section.id === 'projects');
+---
+
+<Base
+  title={`رزومهٔ چاپی — ${identity.name_fa}`}
+  description={`نسخهٔ چاپی و قابل ذخیره به‌صورت PDF از رزومهٔ ${identity.name_fa}، ${identity.role_fa}.`}
+  noindex={false}
+>
+  <div class="print-bar">
+    <a class="print-bar__back" href={asset('/')}>→ بازگشت به وب‌سایت</a>
+    <p class="print-bar__hint">
+      این صفحه برای کاغذ A4 تنظیم شده است. با «چاپ» می‌توانید نسخهٔ PDF بسازید.
+    </p>
+    <button class="print-bar__btn" type="button" id="print-btn">چاپ / ذخیرهٔ PDF</button>
+  </div>
+
+  <main class="sheet" id="main">
+    <header class="cv-head">
+      <div class="cv-head__main">
+        <p class="cv-kicker">{identity.role_fa}</p>
+        <h1 class="cv-name">{identity.name_fa}</h1>
+        <p class="cv-name-en">{identity.name_en}</p>
+      </div>
+      <ul class="cv-contact">
+        <li><span>ایمیل</span><a href={mailTo} dir="ltr">{contact.email}</a></li>
+        <li><span>محل</span><b>{contact.location_label || identity.location_fa}</b></li>
+        {publicPhone && <li><span>تلفن</span><b dir="ltr">{publicPhone}</b></li>}
+      </ul>
+    </header>
+
+    <section class="cv-section">
+      <h2 class="cv-h2">خلاصهٔ حرفه‌ای</h2>
+      <p class="cv-lead">{about.lead}</p>
+      {about.paragraphs[0] && <p class="cv-text">{about.paragraphs[0]}</p>}
+    </section>
+
+    <div class="cv-cols">
+      <div class="cv-col cv-col--main">
+        <section class="cv-section">
+          <h2 class="cv-h2">تجربهٔ کاری</h2>
+          {
+            experience.items.map((job) => (
+              <article class="cv-job">
+                <div class="cv-job__head">
+                  <h3>{job.role}</h3>
+                  <p class="cv-org">
+                    {job.organization}
+                    <span>
+                      {(job.start_label || '') +
+                        (job.end_label && job.end_label !== job.start_label ? ` — ${job.end_label}` : '')}
+                      {job.duration_label ? ` · ${job.duration_label}` : ''}
+                      {job.employment ? ` · ${job.employment}` : ''}
+                    </span>
+                  </p>
+                </div>
+                {job.summary && <p class="cv-text">{job.summary}</p>}
+                <div class="cv-job__groups">
+                  {job.groups.map((group) => (
+                    <div>
+                      <h4>{group.title}</h4>
+                      <ul class="cv-list">
+                        {group.items.map((item) => (
+                          <li>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </article>
+            ))
+          }
+          {experience.items.length === 0 && <p class="cv-text">موردی ثبت نشده است.</p>}
+        </section>
+
+        <section class="cv-section">
+          <h2 class="cv-h2">تحصیلات</h2>
+          {
+            education.items.map((item) => (
+              <article class="cv-edu">
+                <h3>{item.field}</h3>
+                <p class="cv-org">
+                  {item.degree} — {item.institution}
+                </p>
+                {(() => {
+                  const meta = Array.from(new Set([item.status, item.period_label].filter(Boolean)));
+                  return meta.length ? <p class="cv-meta">{meta.join(' · ')}</p> : null;
+                })()}
+              </article>
+            ))
+          }
+        </section>
+
+        {
+          hasProjects && (
+            <section class="cv-section">
+              <h2 class="cv-h2">نمونه‌کارها</h2>
+              <ul class="cv-list">
+                {/* نمونه‌کارها فقط با دادهٔ واقعی و منتشرشده نمایش داده می‌شوند */}
+              </ul>
+            </section>
+          )
+        }
+      </div>
+
+      <aside class="cv-col cv-col--side">
+        <section class="cv-section">
+          <h2 class="cv-h2">مهارت‌ها</h2>
+          <dl class="cv-skills">
+            {
+              skills.categories.map((category) => (
+                <div>
+                  <dt>{category.title}</dt>
+                  <dd>{category.items.map((item) => item.name).join('، ')}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </section>
+
+        <section class="cv-section">
+          <h2 class="cv-h2">دوره‌ها و گواهینامه‌ها</h2>
+          <ul class="cv-certs">
+            {
+              certifications.items.map((cert) => (
+                <li>
+                  <b>{cert.title}</b>
+                  <span>
+                    {[cert.provider, cert.year_label].filter(Boolean).join(' · ')}
+                  </span>
+                </li>
+              ))
+            }
+          </ul>
+        </section>
+
+        <section class="cv-section">
+          <h2 class="cv-h2">زبان</h2>
+          <p class="cv-text">فارسی (زبان مادری) · انگلیسی (خواندن و شنیدن قوی‌تر از گرامر و نوشتن)</p>
+        </section>
+      </aside>
+    </div>
+
+    <footer class="cv-foot">
+      <span>{identity.name_en}</span>
+      <span dir="ltr">{contact.email}</span>
+      <span>{fa(new Date().getFullYear())} — نسخهٔ ساخته‌شده از دادهٔ همین سایت</span>
+    </footer>
+  </main>
+
+  <script>
+    document.getElementById('print-btn')?.addEventListener('click', () => window.print());
+  </script>
+</Base>

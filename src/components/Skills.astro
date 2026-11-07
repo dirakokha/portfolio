@@ -1,0 +1,65 @@
+---
+import { skills, stateLabels } from '../lib/content';
+import SectionHead from './SectionHead.astro';
+
+interface Props {
+  index: number;
+}
+const { index } = Astro.props;
+
+const legend: { state: string; label: string }[] = [
+  { state: 'working', label: 'در کار واقعی' },
+  { state: 'course', label: 'دوره دیده‌شده' },
+  { state: 'learning', label: 'در حال یادگیری' },
+  { state: 'familiar', label: 'آشنایی مقدماتی' },
+  { state: 'academic', label: 'دانش آکادمیک' },
+];
+---
+
+<section class="section section--paper-2" id="skills" aria-labelledby="skills-heading">
+  <div class="wrap">
+    <SectionHead index={index} title="مهارت‌ها" labelEn="Skills" id="skills-heading" />
+    <div class="skills__grid">
+      {
+        skills.categories.map((category, i) => (
+          <div class="skill-cat" data-reveal style={`--reveal-delay:${i % 3}`}>
+            <div class="skill-cat__head">
+              <h3 class="skill-cat__title">{category.title}</h3>
+              <span class="skill-cat__en" lang="en" dir="ltr">
+                {category.label_en}
+              </span>
+            </div>
+            {category.note && <p class="skill-cat__note">{category.note}</p>}
+            <ul class="skill-list">
+              {category.items.map((skill) => (
+                <li class="skill">
+                  <span class="skill__name">
+                    {skill.name}
+                    {skill.name_en && (
+                      <span class="skill__en" lang="en" dir="ltr">
+                        {skill.name_en}
+                      </span>
+                    )}
+                  </span>
+                  <span class={`state state--${skill.state}`}>{stateLabels[skill.state]}</span>
+                  {skill.context && <span class="skill__context">{skill.context}</span>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+    <div class="skills__legend">
+      <p>راهنمای وضعیت:</p>
+      {
+        legend.map((item) => (
+          <span>
+            <i class={`is-${item.state}`} aria-hidden="true" />
+            {item.label}
+          </span>
+        ))
+      }
+    </div>
+  </div>
+</section>

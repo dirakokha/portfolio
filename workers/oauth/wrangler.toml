@@ -1,0 +1,8 @@
+name = "khakneh-oauth"
+main = "index.js"
+compatibility_date = "2025-01-01"
+
+# کلیدهای محرمانه را با دستور زیر تنظیم کنید (نه در این فایل):
+#   npx wrangler secret put GITHUB_CLIENT_ID
+#   npx wrangler secret put GITHUB_CLIENT_SECRET
+#   npx wrangler secret put ALLOWED_GITHUB_LOGIN

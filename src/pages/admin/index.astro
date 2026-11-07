@@ -1,0 +1,102 @@
+---
+// پنل مدیریت (Decap CMS) — بدون پوستهٔ سایت، برای سبک ماندن و استقلال کامل
+export const prerender = true;
+---
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#0d1917" />
+    <title>پنل مدیریت — امیرمحمود خاکنه</title>
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./admin.css" />
+</head>
+<body>
+<div id="nc-root"></div>
+
+    <noscript>
+      <div class="admin-fallback">
+        <h1>پنل مدیریت به جاوااسکریپت نیاز دارد</h1>
+        <p>برای ویرایش محتوا، جاوااسکریپت مرورگر را فعال کنید.</p>
+        <p><a href="../">بازگشت به وب‌سایت</a></p>
+      </div>
+    </noscript>
+
+    <div id="load-error" class="admin-fallback" hidden>
+      <h1>پنل مدیریت بارگذاری نشد</h1>
+      <p>
+        فایل‌های پنل پیدا نشدند یا مرورگر آن‌ها را مسدود کرده است. اگر سایت را تازه نصب کرده‌اید،
+        یک بار دستور <code>npm run build</code> را اجرا کنید.
+      </p>
+      <p>وب‌سایت عمومی مستقل از این پنل کار می‌کند و بدون آن هم کامل نمایش داده می‌شود.</p>
+      <p><a href="../">بازگشت به وب‌سایت</a></p>
+    </div>
+
+    <a class="admin-back" href="../">→ بازگشت به وب‌سایت</a>
+
+    <div id="oauth-notice" class="admin-notice" hidden>
+      <b>ورود به پنل در این نسخه فعال نیست</b>
+      <p>
+        سایت عمومی کامل و مستقل کار می‌کند؛ فقط ویرایش از پنل به پروکسی ورود GitHub نیاز دارد
+        (متغیر <code>OAUTH_BASE_URL</code>). راهنمای راه‌اندازی: <code>docs/DEPLOY.md</code>.
+      </p>
+    </div>
+
+    <script is:inline src="./decap-cms.js"></script>
+    <script is:inline>
+      (function () {
+        var error = document.getElementById('load-error');
+
+        function fail(message) {
+          if (error) {
+            error.hidden = false;
+            if (message) {
+              var p = document.createElement('p');
+              p.textContent = message;
+              error.appendChild(p);
+            }
+          }
+        }
+
+        // اگر پروکسی ورود تنظیم نشده باشد، یک یادآوری کوتاه نمایش داده می‌شود
+        fetch('./cms-status.json', { cache: 'no-store' })
+          .then(function (response) {
+            return response.ok ? response.json() : null;
+          })
+          .then(function (status) {
+            if (!status) return;
+            var notice = document.getElementById('oauth-notice');
+            if (notice && !status.oauthConfigured && !status.localBackend) notice.hidden = false;
+          })
+          .catch(function () {});
+
+        if (!window.DecapCms) {
+          fail('بستهٔ Decap CMS در دسترس نیست.');
+          return;
+        }
+
+        try {
+          // چاپ‌نامهٔ پیش‌نمایش، هم‌خوان با تایپوگرافی سایت
+          window.DecapCms.registerPreviewStyle('./preview.css');
+
+          // پیکربندی از فایل ./config.yml خوانده می‌شود
+          window.DecapCms.init();
+        } catch (e) {
+          fail(e && e.message ? e.message : String(e));
+        }
+
+        // پس از بارگذاری، اگر ریشهٔ پنل خالی ماند، پیام خطا نشان داده می‌شود
+        window.setTimeout(function () {
+          var root = document.getElementById("nc-root");
+          if (root && root.children.length === 0 && error && error.hidden) {
+            // در حالت ورود، ریشه پر می‌شود؛ این بررسی فقط نبود کامل رابط را می‌گیرد
+            var hasContent = document.body.textContent.trim().length > 0;
+            if (!hasContent) fail('رابط پنل رندر نشد.');
+          }
+        }, 4000);
+      })();
+    </script>
+</body>
+</html>

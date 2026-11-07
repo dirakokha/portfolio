@@ -1,0 +1,171 @@
+/* پوستهٔ فارسی و راست‌به‌چپ پنل مدیریت */
+
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('../fonts/Vazirmatn-Variable.woff2') format('woff2-variations'),
+    url('../fonts/Vazirmatn-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('../fonts/SpaceGrotesk-Variable.woff2') format('woff2-variations'),
+    url('../fonts/SpaceGrotesk-Variable.woff2') format('woff2');
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --admin-ink: #111c1b;
+  --admin-paper: #f5efe3;
+  --admin-copper: #b4522a;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: var(--admin-paper);
+  color: var(--admin-ink);
+}
+
+#nc-root {
+  min-height: 100vh;
+}
+
+/* نشان پنل در صفحهٔ ورود */
+img[alt='Logo'] {
+  max-height: 46px;
+  width: auto;
+}
+
+body,
+body * {
+  font-family: 'Vazirmatn', system-ui, -apple-system, 'Segoe UI', Tahoma, sans-serif !important;
+}
+
+/* اعداد و نشانی‌های لاتین در فرم‌ها */
+body input[dir='ltr'],
+body textarea[dir='ltr'] {
+  font-family: 'Space Grotesk', 'Vazirmatn', monospace !important;
+}
+
+/* فرم‌ها: متن راست‌چین */
+body input:not([type='checkbox']):not([type='radio']),
+body textarea,
+body select {
+  direction: rtl;
+  text-align: right;
+}
+
+body input[type='url'],
+body input[inputmode='url'] {
+  direction: ltr;
+  text-align: left;
+}
+
+/* نوار بالای پنل */
+body header a,
+body header button {
+  letter-spacing: 0;
+}
+
+/* لینک بازگشت به سایت در گوشهٔ پنل */
+.admin-back {
+  position: fixed;
+  bottom: 12px;
+  left: 14px;
+  right: auto;
+  z-index: 9999;
+  font-size: 12px;
+  color: #6b7370;
+  background: rgba(245, 239, 227, 0.92);
+  border: 1px solid rgba(17, 28, 27, 0.16);
+  border-radius: 2px;
+  padding: 5px 10px;
+  text-decoration: none;
+}
+
+.admin-back:hover {
+  color: var(--admin-copper);
+  border-color: var(--admin-copper);
+}
+
+/* یادآوری تنظیم پروکسی ورود */
+.admin-notice {
+  position: fixed;
+  inset-block-start: 64px;
+  inset-inline-end: 16px;
+  z-index: 9998;
+  max-width: 22rem;
+  background: #fffaf2;
+  border: 1px solid rgba(180, 82, 42, 0.35);
+  border-inline-start: 3px solid var(--admin-copper);
+  border-radius: 2px;
+  padding: 0.75rem 0.9rem;
+  font-size: 0.78rem;
+  line-height: 1.9;
+  color: #43372f;
+  box-shadow: 0 12px 30px -18px rgba(17, 28, 27, 0.5);
+}
+
+.admin-notice[hidden] {
+  display: none;
+}
+
+.admin-notice b {
+  display: block;
+  margin-block-end: 0.25rem;
+  color: var(--admin-ink);
+}
+
+.admin-notice p {
+  margin: 0;
+}
+
+.admin-notice code {
+  background: rgba(17, 28, 27, 0.06);
+  padding: 0 0.25rem;
+  direction: ltr;
+  display: inline-block;
+}
+
+/* پیام خطای بارگذاری */
+.admin-fallback {
+  max-width: 32rem;
+  margin: 12vh auto;
+  padding: 1.5rem;
+  border: 1px solid rgba(17, 28, 27, 0.18);
+  border-inline-start: 3px solid var(--admin-copper);
+  background: #fff;
+  line-height: 2;
+  font-size: 0.95rem;
+}
+
+.admin-fallback h1 {
+  font-size: 1.15rem;
+  margin: 0 0 0.75rem;
+}
+
+.admin-fallback code {
+  background: rgba(17, 28, 27, 0.06);
+  padding: 0.1rem 0.35rem;
+  border-radius: 2px;
+  direction: ltr;
+  display: inline-block;
+}
+
+.admin-fallback a {
+  color: var(--admin-copper);
+}
+
+/* در حالت راست‌به‌چپ، فاصلهٔ آیکون‌ها و متن‌ها در دکمه‌هاقرینه می‌شود */
+[class*='ToolbarContainer'] svg,
+[class*='ToolbarButton'] svg {
+  margin-inline-end: 0;
+  margin-inline-start: 6px;
+}
