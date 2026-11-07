@@ -120,10 +120,12 @@ const personSchema = {
     <slot />
     <script>
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const items = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal], .sh'));
+      const statement = document.querySelector<HTMLElement>('[data-statement]');
+      const hero = document.querySelector<HTMLElement>('.hero');
 
       // ظاهر شدن تدریجی بخش‌ها هنگام اسکرول
-      const reveals = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));
-      if (reveals.length && 'IntersectionObserver' in window && !reduceMotion.matches) {
+      if (items.length && 'IntersectionObserver' in window && !reduceMotion.matches) {
         document.documentElement.classList.add('js');
         const io = new IntersectionObserver(
           (entries) => {
@@ -133,12 +135,45 @@ const personSchema = {
               io.unobserve(entry.target);
             });
           },
-          { rootMargin: '0px 0px -12% 0px', threshold: 0.08 },
+          { rootMargin: '0px 0px -10% 0px', threshold: 0.08 },
         );
-        reveals.forEach((el) => io.observe(el));
+        items.forEach((el) => io.observe(el));
       } else {
-        reveals.forEach((el) => el.classList.add('is-in'));
+        items.forEach((el) => el.classList.add('is-in'));
       }
+
+      // حرکت‌های وابسته به اسکرول: پارالاکس بخش نخست + روشن شدن جملهٔ کلیدی
+      let queued = false;
+
+      function frame() {
+        queued = false;
+        if (reduceMotion.matches) return;
+        const y = window.scrollY;
+        const vh = window.innerHeight;
+
+        if (hero) {
+          const shift = Math.min(y * 0.07, 56);
+          const fade = Math.min(y / (vh * 0.9), 1) * 0.32;
+          hero.style.setProperty('--hero-shift', shift.toFixed(1));
+          hero.style.setProperty('--hero-fade', fade.toFixed(3));
+        }
+
+        if (statement) {
+          const rect = statement.getBoundingClientRect();
+          const p = (vh * 0.92 - rect.top) / (vh * 0.72);
+          statement.style.setProperty('--p', Math.max(0, Math.min(1, p)).toFixed(3));
+        }
+      }
+
+      function queue() {
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(frame);
+      }
+
+      window.addEventListener('scroll', queue, { passive: true });
+      window.addEventListener('resize', queue, { passive: true });
+      frame();
     </script>
   </body>
 </html>

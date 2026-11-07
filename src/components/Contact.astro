@@ -19,9 +19,9 @@ const mailTo = mailtoHref(contact.email, contact.email_subject);
     </header>
 
     <div class="section__body">
-      <a class="contact__email" href={mailTo} dir="ltr">{contact.email}</a>
+      <a class="contact__email" href={mailTo} dir="ltr" data-reveal>{contact.email}</a>
 
-      <div class="contact__actions">
+      <div class="contact__actions" data-reveal style="--i:1">
         <a class="btn btn--light" href={mailTo}>
           نوشتن ایمیل
           <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">

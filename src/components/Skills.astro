@@ -28,8 +28,8 @@ const legend = [
     <div class="section__body">
       <div class="skills">
         {
-          skills.categories.map((category) => (
-            <section class="cat" data-reveal>
+          skills.categories.map((category, i) => (
+            <section class="cat" data-reveal style={`--i:${i}`}>
               <header class="cat__head">
                 <h3 class="cat__title">{category.title}</h3>
                 {category.note && <p class="cat__note">{category.note}</p>}

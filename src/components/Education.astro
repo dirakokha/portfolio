@@ -21,7 +21,7 @@ const { index } = Astro.props;
 
     <div class="section__body">
       <div class="edu-grid">
-      <section class="edu" data-reveal>
+      <section class="edu" data-reveal style="--i:0">
         <h3 class="edu__label">تحصیلات</h3>
         {
           education.items.map((item) => (
@@ -43,7 +43,7 @@ const { index } = Astro.props;
         {education.items.length === 0 && <p class="edu__note">موردی ثبت نشده است.</p>}
       </section>
 
-      <section class="edu" data-reveal>
+      <section class="edu" data-reveal style="--i:1">
         <h3 class="edu__label">دوره‌ها و گواهینامه‌ها</h3>
         {
           certifications.items.map((cert) => (
