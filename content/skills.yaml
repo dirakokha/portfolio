@@ -8,7 +8,6 @@
 categories:
   - id: it-support
     title: پشتیبانی فناوری اطلاعات
-    label_en: IT Support
     note: کارهای روزمرهٔ پشتیبانی که در محیط واقعی انجام شده‌اند.
     items:
       - name: نصب و راه‌اندازی ویندوز
@@ -34,7 +33,6 @@ categories:
 
   - id: programming
     title: برنامه‌نویسی و وب
-    label_en: Programming
     note: دروس و دوره‌های گذرانده‌شده؛ بدون ادعای تجربهٔ حرفه‌ای.
     items:
       - name: پایتون
@@ -56,7 +54,6 @@ categories:
 
   - id: creative
     title: ابزارهای خلاقیت
-    label_en: Creative Tools
     note: ویرایش تصویر و ویدیو برای محتوای شبکه‌های اجتماعی.
     items:
       - name: Adobe Premiere Pro
@@ -70,7 +67,6 @@ categories:
 
   - id: office
     title: نرم‌افزارهای اداری
-    label_en: Office
     note: آشنایی کاربردی در حد نیاز کار روزمره.
     items:
       - name: Microsoft Word
@@ -84,7 +80,6 @@ categories:
 
   - id: english
     title: زبان انگلیسی
-    label_en: English
     note: مهارت‌ها یکسان نیستند؛ سطح رسمی (CEFR) ارزیابی نشده است.
     items:
       - name: خواندن متون فنی
@@ -102,7 +97,6 @@ categories:
 
   - id: networks
     title: شبکه
-    label_en: Networks
     note: مرتبط با رشتهٔ تحصیلی؛ تجربهٔ عملی قابل ارائه در این حوزه وجود ندارد.
     items:
       - name: مبانی شبکه

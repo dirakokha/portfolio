@@ -1,0 +1,27 @@
+---
+import { site } from '../lib/content';
+import { asset } from '../lib/urls';
+
+const { portrait_image, portrait_alt, portrait_caption } = site.hero;
+
+// بدون تصویر واقعی، هیچ قاب یا چهرهٔ ساختگی نمایش داده نمی‌شود؛
+// بخش نخست در آن حالت کاملاً تایپوگرافی است.
+---
+
+{
+  portrait_image && (
+    <figure class="portrait">
+      <div class="portrait__frame">
+        <img
+          src={asset(portrait_image)}
+          alt={portrait_alt || `تصویر ${site.identity.name_fa}`}
+          width="900"
+          height="1200"
+          loading="eager"
+          decoding="async"
+        />
+      </div>
+      {portrait_caption && <figcaption>{portrait_caption}</figcaption>}
+    </figure>
+  )
+}

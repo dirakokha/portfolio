@@ -56,7 +56,7 @@ const personSchema = {
     <link rel="canonical" href={canonical.href} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <meta name="author" content={site.identity.name_fa} />
-    <meta name="theme-color" content="#0d1917" />
+    <meta name="theme-color" content="#0f1514" />
     <meta name="color-scheme" content="light" />
 
     <meta property="og:type" content="profile" />
@@ -87,7 +87,7 @@ const personSchema = {
     />
     <link
       rel="preload"
-      href={asset('/fonts/SpaceGrotesk-Variable.woff2')}
+      href={asset('/fonts/Estedad-Variable.woff2')}
       as="font"
       type="font/woff2"
       crossorigin
@@ -118,5 +118,27 @@ const personSchema = {
   <body>
     <a class="skip-link" href="#main">رفتن به محتوای اصلی</a>
     <slot />
+    <script>
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      // ظاهر شدن تدریجی بخش‌ها هنگام اسکرول
+      const reveals = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));
+      if (reveals.length && 'IntersectionObserver' in window && !reduceMotion.matches) {
+        document.documentElement.classList.add('js');
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              entry.target.classList.add('is-in');
+              io.unobserve(entry.target);
+            });
+          },
+          { rootMargin: '0px 0px -12% 0px', threshold: 0.08 },
+        );
+        reveals.forEach((el) => io.observe(el));
+      } else {
+        reveals.forEach((el) => el.classList.add('is-in'));
+      }
+    </script>
   </body>
 </html>

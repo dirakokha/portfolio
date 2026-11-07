@@ -1,6 +1,9 @@
 /**
  * ساخت تصویر اشتراک‌گذاری (Open Graph) و آیکون‌ها از فایل‌های SVG.
  * اجرا: node scripts/make-og.mjs  (پس از build)
+ *
+ * فونت‌های این اسکریپت در scripts/fonts هستند و به خروجی سایت ارسال نمی‌شوند؛
+ * فقط برای رندر تصویر در زمان build استفاده می‌شوند.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -13,9 +16,12 @@ const dist = path.join(root, 'dist');
 const site = yaml.load(fs.readFileSync(path.join(root, 'content/site.yaml'), 'utf8'));
 const contact = yaml.load(fs.readFileSync(path.join(root, 'content/contact.yaml'), 'utf8'));
 
-const FONT = path.join(root, 'public/fonts/AzarMehrSerif-Bold.ttf');
+const FONTS = [
+  path.join(root, 'scripts/fonts/Estedad-Regular.ttf'),
+  path.join(root, 'scripts/fonts/Estedad-Black.ttf'),
+];
 const fontOptions = {
-  font: { fontFiles: [FONT], loadSystemFonts: false, defaultFontFamily: 'AzarMehrMonospaced' },
+  font: { fontFiles: FONTS, loadSystemFonts: false, defaultFontFamily: 'Estedad' },
 };
 
 function render(svg, width) {
@@ -37,36 +43,40 @@ const location = site.identity.location_fa;
 /* ── کارت اشتراک‌گذاری ۱۲۰۰×۶۳۰ ─────────────────────────────────────── */
 const W = 1200;
 const H = 630;
-const archCenterX = 190;
+
 const ogSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
-  <rect width="${W}" height="${H}" fill="#f5efe3"/>
-  <g stroke="#111c1b" stroke-opacity="0.07">
-    <line x1="300" y1="0" x2="300" y2="${H}"/>
-    <line x1="600" y1="0" x2="600" y2="${H}"/>
-    <line x1="900" y1="0" x2="900" y2="${H}"/>
-  </g>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0" stop-color="#0c1211"/>
+      <stop offset="0.55" stop-color="#0f1514"/>
+      <stop offset="1" stop-color="#0c1312"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.92" cy="0" r="0.75">
+      <stop offset="0" stop-color="#a8451f" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#a8451f" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="0.05" cy="1" r="0.6">
+      <stop offset="0" stop-color="#2c6a5e" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#2c6a5e" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
 
-  <g transform="translate(${archCenterX}, ${H / 2})">
-    <g fill="none" stroke="#111c1b" stroke-opacity="0.10">
-      <circle r="60"/>
-      <circle r="95"/>
-      <circle r="130"/>
-      <circle r="170"/>
-    </g>
-    <circle r="130" fill="none" stroke="#b4522a" stroke-opacity="0.55" stroke-dasharray="3 9"/>
-    <path d="M-118,178 L-118,-10 A118,110 0 0 1 118,-10 L118,178" fill="none" stroke="#111c1b" stroke-opacity="0.5" stroke-width="2"/>
-    <line x1="-118" y1="180" x2="118" y2="180" stroke="#b4522a" stroke-width="3"/>
-  </g>
+  <rect width="${W}" height="${H}" fill="url(#bg)"/>
+  <rect width="${W}" height="${H}" fill="url(#glow)"/>
+  <rect width="${W}" height="${H}" fill="url(#glow2)"/>
 
-  <text x="${W - 80}" y="150" text-anchor="end" font-family="AzarMehrMonospaced" font-size="76" fill="#111c1b">${nameFa}</text>
-  <text x="${W - 80}" y="205" text-anchor="end" font-family="AzarMehrMonospaced" font-size="26" letter-spacing="9" fill="#b4522a">${nameEn}</text>
-  <line x1="${W - 80}" y1="250" x2="${W - 620}" y2="250" stroke="#111c1b" stroke-opacity="0.3"/>
-  <text x="${W - 80}" y="305" text-anchor="end" font-family="AzarMehrMonospaced" font-size="30" fill="#2b3634">${role}، ${location}</text>
-  <text x="${W - 80}" y="352" text-anchor="end" font-family="AzarMehrMonospaced" font-size="25" fill="#59625f">پشتیبانی سیستم، تولید محتوا، در حال یادگیری وب</text>
+  <line x1="1136" y1="72" x2="1136" y2="558" stroke="#f4eee1" stroke-opacity="0.14"/>
+  <line x1="88" y1="470" x2="1100" y2="470" stroke="#f4eee1" stroke-opacity="0.16"/>
 
-  <line x1="80" y1="${H - 96}" x2="${W - 80}" y2="${H - 96}" stroke="#111c1b" stroke-opacity="0.18"/>
-  <text x="${W - 80}" y="${H - 52}" text-anchor="end" font-family="AzarMehrMonospaced" font-size="22" fill="#59625f">${contact.email}</text>
-  <text x="80" y="${H - 52}" font-family="AzarMehrMonospaced" font-size="20" letter-spacing="6" fill="#b4522a">PORTFOLIO / CV</text>
+  <circle cx="1096" cy="94" r="5" fill="#d3784f"/>
+  <text x="1060" y="100" text-anchor="end" font-family="Estedad" font-size="19" fill="#f4eee1" fill-opacity="0.6">آمادهٔ همکاری — ${location}</text>
+
+  <text x="1100" y="300" text-anchor="end" font-family="Estedad" font-weight="900" font-size="92" letter-spacing="-2" fill="#f4eee1">${nameFa}</text>
+  <text x="1100" y="352" text-anchor="end" font-family="Estedad" font-weight="500" font-size="21" letter-spacing="9" fill="#d3784f">${nameEn}</text>
+  <text x="1100" y="420" text-anchor="end" font-family="Estedad" font-size="27" fill="#f4eee1" fill-opacity="0.72">${role} — پشتیبانی سیستم، تولید محتوا، در حال یادگیری وب</text>
+
+  <text x="88" y="524" font-family="Estedad" font-weight="500" font-size="20" letter-spacing="5" fill="#f4eee1" fill-opacity="0.42">PORTFOLIO / CV</text>
+  <text x="1100" y="524" text-anchor="end" font-family="Estedad" font-size="21" fill="#f4eee1" fill-opacity="0.66">${contact.email}</text>
 </svg>`;
 
 save('og.png', render(ogSvg, W));
@@ -81,10 +91,10 @@ function iconSvg(size, padded = true) {
   const pathTop = top;
   const base = s - inset;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${s}" height="${s}" viewBox="0 0 ${s} ${s}">
-  <rect width="${s}" height="${s}" fill="#0d1917"/>
+  <rect width="${s}" height="${s}" fill="#0f1514"/>
   <path d="M${inset},${base} L${inset},${pathTop + radius * 0.55} A${radius},${radius * 0.78} 0 0 1 ${inset + w},${pathTop + radius * 0.55} L${inset + w},${base}"
-        fill="none" stroke="#f7f2e7" stroke-width="${Math.max(1.6, s * 0.045)}"/>
-  <circle cx="${s / 2}" cy="${base - w * 0.3}" r="${s * 0.065}" fill="#b4522a"/>
+        fill="none" stroke="#f4eee1" stroke-width="${Math.max(1.6, s * 0.045)}"/>
+  <circle cx="${s / 2}" cy="${base - w * 0.3}" r="${s * 0.062}" fill="#d3784f"/>
 </svg>`;
 }
 

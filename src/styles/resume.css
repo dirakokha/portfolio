@@ -1,14 +1,14 @@
 /* نسخهٔ چاپی رزومه — کاغذ A4، بدون عناصر تزئینی */
 
 :root {
-  --cv-ink: #16211f;
-  --cv-muted: #566058;
-  --cv-line: rgba(22, 33, 31, 0.18);
-  --cv-copper: #9c4522;
+  --cv-ink: #12181a;
+  --cv-muted: #5b6360;
+  --cv-line: rgba(18, 24, 26, 0.2);
+  --cv-copper: #a8451f;
 }
 
 body {
-  background: #e7e2d7;
+  background: var(--paper-2);
   color: var(--cv-ink);
   font-size: 10.4pt;
   line-height: 1.85;
@@ -24,7 +24,7 @@ body {
   justify-content: space-between;
   gap: 0.75rem 1.5rem;
   padding: 0.75rem clamp(1rem, 4vw, 3rem);
-  background: var(--panel);
+  background: var(--night);
   color: rgba(247, 242, 231, 0.8);
   font-size: 0.78rem;
 }
@@ -45,7 +45,7 @@ body {
 
 .print-bar__btn {
   background: var(--cream);
-  color: var(--panel);
+  color: var(--night);
   border: 0;
   border-radius: 1px;
   padding: 0.5rem 1.1rem;
@@ -54,16 +54,16 @@ body {
 }
 
 .print-bar__btn:hover {
-  background: var(--copper-light);
+  background: var(--accent-light);
 }
 
 .sheet {
   width: min(210mm, calc(100% - 2rem));
   margin: clamp(1.25rem, 4vw, 2.75rem) auto 4rem;
-  background: #fff;
+  background: #fbf7ee;
   color: var(--cv-ink);
   padding: 16mm 15mm 13mm;
-  box-shadow: 0 30px 60px -40px rgba(22, 33, 31, 0.55);
+  box-shadow: 0 34px 70px -46px rgba(18, 24, 26, 0.6);
 }
 
 .cv-head {
@@ -86,13 +86,14 @@ body {
 .cv-name {
   font-family: var(--font-display);
   font-size: 25pt;
-  line-height: 1.25;
+  line-height: 1.2;
   margin: 0;
-  font-weight: 700;
+  font-weight: 900;
+  letter-spacing: -0.02em;
 }
 
 .cv-name-en {
-  font-family: var(--font-latin);
+  font-family: var(--font-text);
   font-size: 7.4pt;
   letter-spacing: 0.3em;
   color: var(--cv-muted);
@@ -140,8 +141,8 @@ body {
 
 .cv-h2 {
   font-family: var(--font-display);
-  font-size: 10.5pt;
-  font-weight: 700;
+  font-size: 10.8pt;
+  font-weight: 800;
   margin: 0 0 0.4rem;
   padding-block-end: 0.2rem;
   border-block-end: 1px solid var(--cv-ink);
@@ -168,7 +169,8 @@ body {
 
 .cv-job__head h3,
 .cv-edu h3 {
-  font-size: 10pt;
+  font-family: var(--font-display);
+  font-size: 10.4pt;
   margin: 0;
   font-weight: 700;
   line-height: 1.6;
@@ -262,7 +264,7 @@ body {
 }
 
 .cv-foot span:first-child {
-  font-family: var(--font-latin);
+  font-family: var(--font-text);
   letter-spacing: 0.18em;
 }
 
@@ -296,6 +298,7 @@ body {
     width: auto;
     margin: 0;
     padding: 0;
+    background: #fff;
     box-shadow: none;
   }
 

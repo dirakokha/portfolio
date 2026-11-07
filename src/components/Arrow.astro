@@ -1,0 +1,33 @@
+---
+interface Props {
+  dir?: 'forward' | 'external';
+  class?: string;
+}
+
+const { dir = 'forward', class: cls = 'ico' } = Astro.props;
+---
+
+<svg class={cls} viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">
+  {
+    dir === 'forward' ? (
+      <path
+        d="M10 3.5 5.5 8l4.5 4.5"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    ) : (
+      <>
+        <path d="M5 11 11 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        <path
+          d="M5.6 5H11v5.4"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </>
+    )
+  }
+</svg>

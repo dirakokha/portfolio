@@ -1,10 +1,6 @@
-Copyright (c) 2018, opentypeshop (opentypeshop.com),
-with Reserved Font Name AzarMehrMonospaced.
+Copyright 2021 The Estedad Project Authors (https://github.com/aminabedi68/Estedad)
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
-This license is copied below, and is also available with a FAQ at:
-http://scripts.sil.org/OFL
-
 
 -----------------------------------------------------------
 SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007

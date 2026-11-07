@@ -7,59 +7,66 @@ interface Props {
 }
 const { index } = Astro.props;
 
-const legend: { state: string; label: string }[] = [
+const legend = [
   { state: 'working', label: 'در کار واقعی' },
   { state: 'course', label: 'دوره دیده‌شده' },
   { state: 'learning', label: 'در حال یادگیری' },
-  { state: 'familiar', label: 'آشنایی مقدماتی' },
   { state: 'academic', label: 'دانش آکادمیک' },
+  { state: 'familiar', label: 'آشنایی مقدماتی' },
 ];
 ---
 
-<section class="section section--paper-2" id="skills" aria-labelledby="skills-heading">
-  <div class="wrap">
-    <SectionHead index={index} title="مهارت‌ها" labelEn="Skills" id="skills-heading" />
-    <div class="skills__grid">
-      {
-        skills.categories.map((category, i) => (
-          <div class="skill-cat" data-reveal style={`--reveal-delay:${i % 3}`}>
-            <div class="skill-cat__head">
-              <h3 class="skill-cat__title">{category.title}</h3>
-              <span class="skill-cat__en" lang="en" dir="ltr">
-                {category.label_en}
-              </span>
-            </div>
-            {category.note && <p class="skill-cat__note">{category.note}</p>}
-            <ul class="skill-list">
-              {category.items.map((skill) => (
-                <li class="skill">
-                  <span class="skill__name">
-                    {skill.name}
-                    {skill.name_en && (
-                      <span class="skill__en" lang="en" dir="ltr">
-                        {skill.name_en}
-                      </span>
-                    )}
-                  </span>
-                  <span class={`state state--${skill.state}`}>{stateLabels[skill.state]}</span>
-                  {skill.context && <span class="skill__context">{skill.context}</span>}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))
-      }
-    </div>
-    <div class="skills__legend">
-      <p>راهنمای وضعیت:</p>
-      {
-        legend.map((item) => (
-          <span>
-            <i class={`is-${item.state}`} aria-hidden="true" />
-            {item.label}
-          </span>
-        ))
-      }
+<section class="section" id="skills" aria-labelledby="skills-heading">
+  <div class="wrap section__grid">
+    <SectionHead
+      index={index}
+      title="مهارت‌ها"
+      id="skills-heading"
+      aside="برای هر مهارت یک وضعیت واقعی ثبت شده است؛ نمره و درصد در کار نیست."
+    />
+
+    <div class="section__body">
+      <div class="skills">
+        {
+          skills.categories.map((category) => (
+            <section class="cat" data-reveal>
+              <header class="cat__head">
+                <h3 class="cat__title">{category.title}</h3>
+                {category.note && <p class="cat__note">{category.note}</p>}
+              </header>
+              <ul class="cat__list">
+                {category.items.map((skill) => (
+                  <li class="skill">
+                    <span class="skill__name">
+                      {skill.name}
+                      {skill.name_en && (
+                        <span class="skill__en" lang="en" dir="ltr">
+                          {skill.name_en}
+                        </span>
+                      )}
+                    </span>
+                    <span class="skill__lead" aria-hidden="true"></span>
+                    <span class={`skill__state is-${skill.state}`}>
+                      {stateLabels[skill.state]}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))
+        }
+      </div>
+
+      <ul class="legend" aria-label="راهنمای وضعیت مهارت‌ها">
+        {
+          legend.map((item) => (
+            <li class={`is-${item.state}`}>
+              <i aria-hidden="true" />
+              {item.label}
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </div>
 </section>

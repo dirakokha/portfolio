@@ -2,6 +2,7 @@
 import { projects } from '../lib/content';
 import SectionHead from './SectionHead.astro';
 import { asset } from '../lib/urls';
+import Arrow from './Arrow.astro';
 
 interface Props {
   index: number;
@@ -12,59 +13,60 @@ const { index } = Astro.props;
 // منتشرشده وجود داشته باشد. اگر فهرست خالی باشد، چیزی رندر نمی‌شود.
 ---
 
-{projects.length > 0 && (
-<section class="section section--paper-2" id="projects" aria-labelledby="projects-heading">
-  <div class="wrap">
-    <SectionHead index={index} title="نمونه‌کارها" labelEn="Projects" id="projects-heading" />
-    <div class="projects">
-      {
-        projects.map((project, i) => (
-          <article class="project" data-reveal style={`--reveal-delay:${i % 3}`}>
-            <div class="project__media">
-              {project.cover_image ? (
-                <img
-                  src={asset(project.cover_image)}
-                  alt={`تصویر نمونه‌کار ${project.title}`}
-                  width="800"
-                  height="600"
-                  loading="lazy"
-                  decoding="async"
-                />
-              ) : (
-                <div class="project__placeholder" aria-hidden="true">
-                  <span>{project.year_label}</span>
+{
+  projects.length > 0 && (
+    <section class="section" id="projects" aria-labelledby="projects-heading">
+      <div class="wrap section__grid">
+        <SectionHead index={index} title="نمونه‌کارها" id="projects-heading" />
+
+        <div class="section__body">
+          <div class="projects">
+            {projects.map((project) => (
+              <article class="project" data-reveal>
+                <div class="project__media">
+                  {project.cover_image ? (
+                    <img
+                      src={asset(project.cover_image)}
+                      alt={`تصویر نمونه‌کار ${project.title}`}
+                      width="800"
+                      height="600"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : (
+                    <div class="project__placeholder" aria-hidden="true">
+                      <span>{project.year_label}</span>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-            <div class="project__body">
-              <h3 class="project__title">{project.title}</h3>
-              {project.summary && <p class="project__summary">{project.summary}</p>}
-              <div class="exp__meta">
-                {project.status && <span class="chip chip--copper">{project.status}</span>}
-                {project.year_label && <span class="chip">{project.year_label}</span>}
-                {project.technologies.map((tech) => (
-                  <span class="chip" lang="en" dir="ltr">
-                    {tech}
-                  </span>
-                ))}
-              </div>
-              <div class="project__links">
-                {project.demo_url && (
-                  <a class="link-underline" href={project.demo_url} rel="noopener noreferrer" target="_blank">
-                    مشاهدهٔ آنلاین ↗
-                  </a>
-                )}
-                {project.source_url && (
-                  <a class="link-underline" href={project.source_url} rel="noopener noreferrer" target="_blank">
-                    کد منبع ↗
-                  </a>
-                )}
-              </div>
-            </div>
-          </article>
-        ))
-      }
-    </div>
-  </div>
-</section>
-)}
+                <div class="project__body">
+                  <h3 class="project__title">{project.title}</h3>
+                  {project.summary && <p class="project__summary">{project.summary}</p>}
+                  <p class="project__meta">
+                    {[project.status, project.year_label, project.technologies.join(' · ')]
+                      .filter(Boolean)
+                      .join(' · ')}
+                  </p>
+                  <div class="project__links">
+                    {project.demo_url && (
+                      <a class="link-line" href={project.demo_url} rel="noopener noreferrer" target="_blank">
+                        مشاهدهٔ آنلاین
+                        <Arrow dir="external" />
+                      </a>
+                    )}
+                    {project.source_url && (
+                      <a class="link-line" href={project.source_url} rel="noopener noreferrer" target="_blank">
+                        کد منبع
+                        <Arrow dir="external" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}

@@ -4,19 +4,15 @@ import { fa } from '../lib/digits';
 interface Props {
   index: number;
   title: string;
-  labelEn?: string;
   aside?: string;
   id?: string;
 }
 
-const { index, title, labelEn = '', aside = '', id = '' } = Astro.props;
+const { index, title, aside = '', id = '' } = Astro.props;
 ---
 
-<header class="section-head" data-reveal>
-  <span class="section-head__index">{fa(String(index).padStart(2, '0'))}</span>
-  <h2 class="section-head__title" id={id || undefined}>
-    {title}
-    {aside && <small>{aside}</small>}
-  </h2>
-  <span class="section-head__en">{labelEn}</span>
+<header class="sh">
+  <p class="sh__num" aria-hidden="true">{fa(String(index).padStart(2, '0'))}</p>
+  <h2 class="sh__title" id={id || undefined}>{title}</h2>
+  {aside && <p class="sh__aside">{aside}</p>}
 </header>
