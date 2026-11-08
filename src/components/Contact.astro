@@ -1,5 +1,5 @@
 ---
-import { contact, publicPhone, socialLinks, site } from '../lib/content';
+import { contact, publicPhone, socialLinks } from '../lib/content';
 import { mailtoHref, asset } from '../lib/urls';
 import { fa } from '../lib/digits';
 
@@ -72,11 +72,6 @@ const mailTo = mailtoHref(contact.email, contact.email_subject);
           )
         }
       </dl>
-
-      <p class="contact__sign">
-        <span>{site.identity.name_fa}</span>
-        <span lang="en" dir="ltr">{site.identity.name_en}</span>
-      </p>
     </div>
   </div>
 </section>

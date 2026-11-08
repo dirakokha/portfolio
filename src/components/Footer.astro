@@ -1,26 +1,19 @@
 ---
-import { site, contact } from '../lib/content';
+import { contact } from '../lib/content';
 import { asset, mailtoHref } from '../lib/urls';
-import { faDate, faYear } from '../lib/digits';
+import { faYear } from '../lib/digits';
 
-const builtOn = faDate(new Date());
-const year = faYear(new Date());
 ---
 
 <footer class="site-footer">
   <div class="wrap site-footer__inner">
-    <p class="site-footer__colophon">
-      این سایت ایستا ساخته شده است: بدون ردیاب، بدون کوکی تحلیلی و بدون درخواست به سرویس
-      بیرونی برای نمایش محتوا. آخرین به‌روزرسانی داده‌های عمومی: {builtOn} ({year}).
-    </p>
     <nav class="site-footer__links" aria-label="پیوندهای پای‌برگ">
       <a class="link-line" href={asset('/resume/')}>رزومهٔ چاپی</a>
       <a class="link-line" href={mailtoHref(contact.email, contact.email_subject)}>ایمیل</a>
       <a class="link-line" href={asset('/admin/')} rel="nofollow">پنل مدیریت</a>
     </nav>
     <p class="site-footer__sign">
-      <span>{site.identity.name_fa}</span>
-      <span lang="en" dir="ltr">{site.identity.name_en}</span>
+      <span>{faYear(new Date())}</span>
     </p>
   </div>
 </footer>

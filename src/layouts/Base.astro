@@ -121,7 +121,6 @@ const personSchema = {
     <script>
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
       const items = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal], .sh'));
-      const statement = document.querySelector<HTMLElement>('[data-statement]');
       const hero = document.querySelector<HTMLElement>('.hero');
 
       // ظاهر شدن تدریجی بخش‌ها هنگام اسکرول
@@ -142,7 +141,7 @@ const personSchema = {
         items.forEach((el) => el.classList.add('is-in'));
       }
 
-      // حرکت‌های وابسته به اسکرول: پارالاکس بخش نخست + روشن شدن جملهٔ کلیدی
+      // حرکت‌های وابسته به اسکرول: پارالاکس آرام بخش نخست
       let queued = false;
 
       function frame() {
@@ -156,12 +155,6 @@ const personSchema = {
           const fade = Math.min(y / (vh * 0.9), 1) * 0.32;
           hero.style.setProperty('--hero-shift', shift.toFixed(1));
           hero.style.setProperty('--hero-fade', fade.toFixed(3));
-        }
-
-        if (statement) {
-          const rect = statement.getBoundingClientRect();
-          const p = (vh * 0.92 - rect.top) / (vh * 0.72);
-          statement.style.setProperty('--p', Math.max(0, Math.min(1, p)).toFixed(3));
         }
       }
 
