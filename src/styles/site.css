@@ -25,25 +25,25 @@
 /* ---------- توکن‌ها ---------- */
 
 :root {
-  /* پایه: مشکیِ عمیق و گرم، یک تاکید زندهٔ سبز */
-  --paper: #0a0b0d;
-  --paper-2: #12141a;
-  --ink: #ecebe6;
-  --ink-2: #bcbfba;
-  --muted: #8b9198;
-  --rule: rgba(236, 235, 230, 0.11);
-  --rule-strong: rgba(236, 235, 230, 0.22);
+  /* پایه: مشکیِ عمیق + عنابی؛ یک رنگ تاکید، بقیه سکوت */
+  --paper: #08080a;
+  --paper-2: #131013;
+  --ink: #f2ede7;
+  --ink-2: #c9c2bb;
+  --muted: #9b938c;
+  --rule: rgba(242, 237, 231, 0.1);
+  --rule-strong: rgba(242, 237, 231, 0.2);
 
-  --accent: #3ee08b;
-  --accent-light: #7bf0b4;
-  --accent-deep: #1f9c60;
-  --verdigris: #6f8dff;
+  --accent: #8b322c;
+  --accent-light: #d06a62;
+  --accent-deep: #5e1f1b;
+  --ember: #b8735c;
 
-  --night: #060709;
-  --night-2: #0b0d11;
-  --cream: #f2f1ec;
-  --cream-muted: rgba(242, 241, 236, 0.62);
-  --night-rule: rgba(242, 241, 236, 0.13);
+  --night: #060607;
+  --night-2: #0b0a0b;
+  --cream: #f2ede7;
+  --cream-muted: rgba(242, 237, 231, 0.62);
+  --night-rule: rgba(242, 237, 231, 0.12);
 
   --font-display: 'Estedad', 'Vazirmatn', system-ui, sans-serif;
   --font-text: 'Vazirmatn', 'Estedad', system-ui, sans-serif;
@@ -121,11 +121,11 @@ li {
 
 ::selection {
   background: var(--accent);
-  color: #05070a;
+  color: var(--cream);
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--accent-light);
   outline-offset: 3px;
   border-radius: 1px;
 }
@@ -145,7 +145,7 @@ li {
   transform: translate(-50%, -130%);
   z-index: 300;
   background: var(--accent);
-  color: #05070a;
+  color: var(--cream);
   padding: 0.55rem 1.15rem;
   font-size: 0.82rem;
   border-radius: 0 0 2px 2px;
@@ -200,7 +200,7 @@ li {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 0.8rem;
-  color: var(--accent);
+  color: var(--accent-light);
 }
 
 .sh__num::after {
@@ -253,11 +253,12 @@ li {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.7rem 1.25rem;
+  padding: 0.72rem 1.3rem;
   border: 1px solid transparent;
-  border-radius: 2px;
+  border-radius: 5px;
   background: var(--accent);
-  color: #05070a;
+  box-shadow: 0 12px 30px -14px rgba(139, 50, 44, 0.9);
+  color: var(--cream);
   font-family: inherit;
   font-size: 0.86rem;
   font-weight: 700;
@@ -280,7 +281,7 @@ li {
 
 .btn--light {
   background: var(--accent);
-  color: #05070a;
+  color: var(--cream);
 }
 
 .ico {
@@ -302,13 +303,15 @@ li {
 }
 
 .link-line:hover {
-  color: var(--accent);
+  color: var(--accent-light);
+  border-color: var(--accent-light);
 }
 
 .hero .link-line:hover,
 .contact .link-line:hover,
 .site-footer .link-line:hover {
   color: var(--accent-light);
+  border-color: var(--accent-light);
 }
 
 /* ---------- هدر ---------- */
@@ -641,9 +644,9 @@ html.is-intro-open {
   inset: 0;
   z-index: -2;
   background:
-    radial-gradient(70% 62% at 86% -14%, rgba(62, 224, 139, 0.17), transparent 66%),
-    radial-gradient(65% 55% at -6% 102%, rgba(111, 141, 255, 0.15), transparent 70%),
-    linear-gradient(180deg, #06070a 0%, #0a0c10 58%, #07080b 100%);
+    radial-gradient(66% 60% at 88% -16%, rgba(139, 50, 44, 0.42), transparent 64%),
+    radial-gradient(60% 52% at -8% 104%, rgba(184, 115, 92, 0.16), transparent 70%),
+    linear-gradient(180deg, #070607 0%, #0d0a0b 58%, #08070a 100%);
 }
 
 .hero::after {
@@ -654,6 +657,32 @@ html.is-intro-open {
   opacity: 0.05;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
   pointer-events: none;
+}
+
+.hero__rail {
+  position: absolute;
+  left: calc(var(--gutter) * 0.34);
+  top: 50%;
+  translate: 0 -50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  writing-mode: vertical-rl;
+  font-family: var(--font-display);
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.34em;
+  color: var(--cream-muted);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.hero__rail i {
+  display: block;
+  width: 1px;
+  height: 64px;
+  background: linear-gradient(to bottom, rgba(139, 50, 44, 0), var(--accent-light));
 }
 
 .hero__top {
@@ -678,13 +707,13 @@ html.is-intro-open {
   height: 6px;
   border-radius: 50%;
   background: var(--accent-light);
-  box-shadow: 0 0 0 3px rgba(211, 120, 79, 0.18);
+  box-shadow: 0 0 0 3px rgba(208, 106, 98, 0.2);
   animation: dot-pulse 3.2s ease-in-out infinite;
 }
 
 @keyframes dot-pulse {
   50% {
-    box-shadow: 0 0 0 6px rgba(211, 120, 79, 0.06);
+    box-shadow: 0 0 0 6px rgba(208, 106, 98, 0.07);
   }
 }
 
@@ -741,6 +770,143 @@ html.is-intro-open {
 
 .hero__mid.has-portrait .hero__name {
   font-size: clamp(2.6rem, 9.2vw, 7.6rem);
+}
+
+/* بدون عکس: هیرو تمام‌تایپوگرافی، نام بزرگ‌تر و سه نشانه در یک ردیف پایین */
+.hero__mid.is-typo {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  gap: clamp(16px, 3vh, 34px);
+  align-content: space-between;
+}
+
+/* نام سمت راست، معرفی و دکمه‌ها سمت چپ، هر دو روی یک خط پایانی */
+.hero__mid.is-typo .hero__type {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: clamp(20px, 3.4vw, 64px);
+  align-items: end;
+  max-width: none;
+}
+
+.hero__mid.is-typo .hero__kicker {
+  grid-column: 1 / -1;
+}
+
+.hero__mid.is-typo .hero__title {
+  grid-column: 1;
+  margin: 0;
+}
+
+.hero__mid.is-typo .hero__lead {
+  grid-column: 2;
+  align-self: end;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(12px, 1.6vh, 20px);
+  max-width: 34rem;
+}
+
+.hero__mid.is-typo .hero__name {
+  font-size: clamp(2.4rem, 6.9vw, 6rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+}
+
+.hero__mid.is-typo .hero__side {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 0 0;
+  border-top: 1px solid var(--night-rule);
+}
+
+.hero__mid.is-typo .hero__facts {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.8rem 1.6rem;
+  width: 100%;
+}
+
+.hero__mid.is-typo .hero__scroll {
+  display: none;
+}
+
+/* نشان‌های ابزار: زیر متن، بدون عکس */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: clamp(14px, 2.6vh, 24px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chips__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.42rem 0.78rem 0.42rem 0.62rem;
+  border: 1px solid var(--night-rule);
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(242, 237, 231, 0.06), rgba(242, 237, 231, 0.02));
+  color: var(--cream);
+  font-family: var(--font-text);
+  font-size: 0.74rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  animation: chip-in 0.5s cubic-bezier(0.2, 0.9, 0.25, 1) both;
+  animation-delay: calc(0.3s + var(--i) * 0.06s);
+  transition:
+    border-color 0.3s var(--ease),
+    transform 0.3s var(--ease),
+    background-color 0.3s var(--ease);
+}
+
+.chips__item:hover {
+  border-color: rgba(208, 106, 98, 0.55);
+  transform: translateY(-2px);
+}
+
+@keyframes chip-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.chips__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent-light);
+}
+
+.chips__dot--html {
+  background: #e34f26;
+}
+
+.chips__dot--css {
+  background: #4a7bff;
+}
+
+.chips__dot--js {
+  background: #e8c81c;
+}
+
+.chips__dot--py {
+  background: #4b8bbe;
+}
+
+.chips__label {
+  display: inline-block;
 }
 
 .hero__type {
@@ -939,8 +1105,8 @@ html.is-intro-open {
   z-index: -1;
   border-radius: 50%;
   background:
-    radial-gradient(54% 48% at 50% 40%, rgba(62, 224, 139, 0.22), rgba(62, 224, 139, 0) 72%),
-    radial-gradient(42% 36% at 72% 82%, rgba(111, 141, 255, 0.17), rgba(111, 141, 255, 0) 74%);
+    radial-gradient(54% 48% at 50% 40%, rgba(139, 50, 44, 0.3), rgba(139, 50, 44, 0) 72%),
+    radial-gradient(42% 36% at 72% 82%, rgba(184, 115, 92, 0.16), rgba(184, 115, 92, 0) 74%);
   filter: blur(10px);
   animation: glow-breathe 9s ease-in-out infinite alternate;
 }
@@ -1243,7 +1409,7 @@ html.is-intro-open {
 }
 
 .is-course {
-  --dot: var(--verdigris);
+  --dot: var(--ember);
 }
 
 .is-learning {
@@ -1550,8 +1716,8 @@ html.is-intro-open {
   inset: 0;
   z-index: -1;
   background:
-    radial-gradient(60% 60% at 92% 8%, rgba(62, 224, 139, 0.13), transparent 70%),
-    radial-gradient(55% 55% at 4% 96%, rgba(111, 141, 255, 0.14), transparent 72%);
+    radial-gradient(60% 60% at 92% 8%, rgba(139, 50, 44, 0.26), transparent 70%),
+    radial-gradient(55% 55% at 4% 96%, rgba(184, 115, 92, 0.13), transparent 72%);
 }
 
 .contact .sh__aside {
@@ -1559,6 +1725,9 @@ html.is-intro-open {
 }
 
 .contact__email {
+  transition:
+    color 0.3s var(--ease),
+    text-decoration-color 0.3s var(--ease);
   display: block;
   max-width: 100%;
   text-align: right;
@@ -1705,11 +1874,11 @@ html.is-intro-open {
 
 .notfound .btn {
   background: var(--accent);
-  color: #05070a;
+  color: var(--cream);
 }
 
 .notfound .btn:hover {
-  background: var(--accent);
+  background: var(--accent-deep);
 }
 
 /* ---------- انیمیشن ورود ---------- */
@@ -1784,6 +1953,28 @@ html.js [data-reveal].is-in {
 
   .hero__scroll {
     display: none;
+  }
+}
+
+@media (max-width: 1100px) {
+  .hero__rail {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero__mid.is-typo .hero__type {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .hero__mid.is-typo .hero__title,
+  .hero__mid.is-typo .hero__lead {
+    grid-column: 1;
+  }
+
+  .hero__mid.is-typo .hero__name {
+    font-size: clamp(2.4rem, 11vw, 4.4rem);
   }
 }
 
@@ -2156,7 +2347,7 @@ html.js .sh.is-in .sh__aside {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: var(--accent);
+  background: var(--cream);
   transform: translate3d(0, 101%, 0);
   transition: transform 0.45s var(--ease-out);
 }
@@ -2168,8 +2359,8 @@ html.js .sh.is-in .sh__aside {
 
 .btn:hover,
 .btn:focus-visible {
-  background: var(--cream);
-  color: var(--cream);
+  background: var(--accent);
+  color: #120a09;
 }
 
 .btn svg,
@@ -2364,7 +2555,8 @@ html.js .sh.is-in .sh__aside {
   .portrait__frame img,
   .stack__item,
   .stack__chip,
-  .portrait__glow {
+  .portrait__glow,
+  .chips__item {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;

@@ -18,6 +18,14 @@ const kickerItems = hero.kicker
 const [firstName, ...rest] = identity.name_fa.split(' ');
 const lastName = rest.join(' ');
 const hasPortrait = Boolean(hero.portrait_image);
+
+// نشان‌های ابزار: فقط چیزهایی که در بخش مهارت‌ها هم با همان وضعیت آمده‌اند
+const toolChips = [
+  { label: 'HTML', talk: 'html' },
+  { label: 'CSS', talk: 'css' },
+  { label: 'JavaScript', talk: 'js' },
+  { label: 'Python', talk: 'py' },
+];
 ---
 
 <div class="intro" id="intro" hidden aria-hidden="true">
@@ -30,15 +38,19 @@ const hasPortrait = Boolean(hero.portrait_image);
 </div>
 
 <section class="hero" id="top" aria-labelledby="hero-title">
+  <span class="hero__rail" aria-hidden="true">
+    <i></i>
+    <span>PORTFOLIO / CV</span>
+  </span>
+
   <div class="hero__top wrap">
     <p class="hero__status">
       {identity.available && <span class="dot" aria-hidden="true"></span>}
       <span>{identity.available ? identity.availability_note || 'آمادهٔ همکاری' : identity.role_fa}</span>
     </p>
-    <p class="hero__loc" aria-label="محل زندگی">{identity.location_fa}</p>
   </div>
 
-  <div class={`hero__mid wrap${hasPortrait ? ' has-portrait' : ''}`}>
+  <div class={`hero__mid wrap${hasPortrait ? ' has-portrait' : ' is-typo'}`}>
     <div class="hero__type">
       {
         kickerItems.length > 0 && (
@@ -70,6 +82,21 @@ const hasPortrait = Boolean(hero.portrait_image);
           </a>
           <a class="link-line" href={mailTo}>{hero.secondary_cta_label}</a>
         </div>
+
+        {
+          toolChips.length > 0 && (
+            <ul class="chips" aria-label="ابزارها و زبان‌هایی که با آن‌ها کار می‌کنم">
+              {toolChips.map((item, i) => (
+                <li class="chips__item" style={`--i:${i}`}>
+                  <span class={`chips__dot chips__dot--${item.talk}`} aria-hidden="true" />
+                  <span class="chips__label" dir="ltr" lang="en">
+                    {item.label}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )
+        }
       </div>
     </div>
 

@@ -110,24 +110,20 @@ test('کد عمومی سایت به CMS وابسته نیست', () => {
   assert.ok(!/<script[^>]+src="[^"]*admin/i.test(html));
 });
 
-test('پرترهٔ واقعی با نسخهٔ ریسپانسیو و ابعاد مشخص در بخش نخست می‌آید', () => {
+test('تا عکس تازه نرسیده، هیچ عکسی در سایت نمایش داده نمی‌شود', () => {
   const html = readDist('index.html');
-  assert.match(html, /<img[^>]+src="\/media\/portrait-960\.webp"/);
-  assert.match(html, /srcset="[^"]*\/media\/portrait-480\.webp 480w[^"]*\/media\/portrait-960\.webp 960w"/);
-  assert.match(html, /width="960" height="1200"/);
-  assert.match(html, /alt="[^"]*امیرمحمود خاکنه[^"]*"/);
+  assert.doesNotMatch(html, /class="portrait/);
+  assert.doesNotMatch(html, /\/media\/portrait-/);
   for (const file of ['portrait-480.webp', 'portrait-960.webp', 'portrait-print.webp']) {
-    const full = path.join(dist, 'media', file);
-    assert.ok(fs.existsSync(full), `تصویر ${file} در خروجی نیست`);
-    assert.ok(fs.statSync(full).size > 4000, `تصویر ${file} خالی یا ناقص است`);
+    assert.equal(fs.existsSync(path.join(dist, 'media', file)), false, `تصویر ${file} نباید در خروجی باشد`);
   }
 });
 
-test('رزومهٔ چاپی پرترهٔ کوچک را با متن جانشین دارد', () => {
+test('رزومهٔ چاپی بدون عکس ساخته می‌شود و عنوان‌هایش سرجایش است', () => {
   const html = readDist('resume/index.html');
-  assert.match(html, /class="cv-photo"/);
-  assert.match(html, /\/media\/portrait-print\.webp/);
-  assert.match(html, /width="360" height="450"/);
+  assert.doesNotMatch(html, /class="cv-photo"/);
+  assert.match(html, /class="cv-name"/);
+  assert.match(html, /خلاصهٔ حرفه‌ای/);
 });
 
 test('بخش جملهٔ کلیدی حذف شده و دیگر در هیچ صفحه‌ای رندر نمی‌شود', () => {
@@ -140,12 +136,9 @@ test('بخش جملهٔ کلیدی حذف شده و دیگر در هیچ صفح�
   assert.equal(fs.existsSync(path.join(process.cwd(), 'src/components/Statement.astro')), false);
 });
 
-test('پرترهٔ بخش نخست با نشان‌های شناور و تصویر واقعی رندر می‌شود', () => {
+test('ردیف نشان‌های ابزار در بخش نخست رندر می‌شود', () => {
   const html = readDist('index.html');
-  assert.match(html, /class="portrait__frame"/);
-  assert.match(html, /class="stack"/);
-  assert.match(html, /\/media\/portrait-960\.webp/);
-  assert.match(html, /\/media\/portrait-480\.webp/);
+  assert.match(html, /class="chips"/);
   for (const label of ['HTML', 'CSS', 'JavaScript', 'Python']) {
     assert.match(html, new RegExp(`>\\s*${label}\\s*<`));
   }
