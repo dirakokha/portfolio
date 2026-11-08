@@ -2,6 +2,7 @@
 import { site, activeSections } from '../lib/content';
 import { asset } from '../lib/urls';
 import Arrow from './Arrow.astro';
+import Mark from './Mark.astro';
 
 const sections = activeSections();
 const resumeHref = asset('/resume/');
@@ -10,8 +11,11 @@ const resumeHref = asset('/resume/');
 <header class="site-header" id="site-header">
   <div class="wrap site-header__inner">
     <a class="brand" href={asset('/')} aria-label={`${site.identity.name_fa} — صفحهٔ اصلی`}>
-      <span class="brand__name">{site.identity.name_fa}</span>
-      <span class="brand__latin" lang="en" dir="ltr">{site.identity.name_en}</span>
+      <Mark size={24} class="brand__mark" />
+      <span class="brand__text">
+        <span class="brand__name">{site.identity.name_fa}</span>
+        <span class="brand__latin" lang="en" dir="ltr">{site.identity.name_en}</span>
+      </span>
     </a>
 
     <nav class="nav" aria-label="بخش‌های صفحه">
