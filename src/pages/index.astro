@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
+import Rail from '../components/Rail.astro';
 import Hero from '../components/Hero.astro';
 import About from '../components/About.astro';
 import Skills from '../components/Skills.astro';
@@ -12,33 +13,40 @@ import Footer from '../components/Footer.astro';
 import { activeSections } from '../lib/content';
 
 const sections = activeSections();
-const sectionOf = (id: string) => sections.find((section) => section.id === id);
+const paperSections = sections.filter((section) => section.id !== 'contact');
+const contactSection = sections.find((section) => section.id === 'contact');
 ---
 
 <Base>
   <Header />
+  <Rail />
+
   <main id="main">
     <Hero />
-    {
-      sections.map((section) => {
-        switch (section.id) {
-          case 'about':
-            return <About index={section.index} />;
-          case 'skills':
-            return <Skills index={section.index} />;
-          case 'experience':
-            return <Experience index={section.index} />;
-          case 'projects':
-            return <Projects index={section.index} />;
-          case 'education':
-            return <Education index={section.index} />;
-          case 'contact':
-            return <Contact index={section.index} />;
-          default:
-            return null;
-        }
-      })
-    }
+
+    <div class="paper">
+      {
+        paperSections.map((section) => {
+          switch (section.id) {
+            case 'about':
+              return <About index={section.index} />;
+            case 'skills':
+              return <Skills index={section.index} />;
+            case 'experience':
+              return <Experience index={section.index} />;
+            case 'projects':
+              return <Projects index={section.index} />;
+            case 'education':
+              return <Education index={section.index} />;
+            default:
+              return null;
+          }
+        })
+      }
+    </div>
+
+    {contactSection && <Contact index={contactSection.index} />}
   </main>
+
   <Footer />
 </Base>

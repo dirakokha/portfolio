@@ -1,7 +1,6 @@
 ---
 import { experience } from '../lib/content';
-import SectionHead from './SectionHead.astro';
-import { fa } from '../lib/digits';
+import EntryHead from './EntryHead.astro';
 
 interface Props {
   index: number;
@@ -9,73 +8,54 @@ interface Props {
 const { index } = Astro.props;
 ---
 
-<section class="section" id="experience" aria-labelledby="experience-heading">
-  <div class="wrap section__grid">
-    <SectionHead
-      index={index}
-      title="تجربه"
-      id="experience-heading"
-      aside="تجربهٔ کاری واقعی، با همان اندازهٔ واقعی‌اش."
-    />
+<section class="entry" id="experience" aria-labelledby={`head-${index}`} data-entry>
+  <div class="wrap entry__grid">
+    <EntryHead index={index} title="تجربهٔ کاری" meta="ENTRY / WORK" />
 
-    <div class="section__body">
+    <div class="entry__body">
       {
-        experience.items.map((job) => {
-          const dates = [job.start_label, job.end_label && job.end_label !== job.start_label ? job.end_label : '']
-            .filter(Boolean)
-            .join(' — ');
-          const meta = [job.duration_label, job.employment, job.location].filter(Boolean);
-          return (
-            <article class="job" data-reveal>
-              <header class="job__head">
-                <p class="job__when">
-                  {dates && <span class="job__date">{dates}</span>}
-                  {meta.length > 0 && <span class="job__meta">{meta.join(' · ')}</span>}
-                </p>
+        experience.items.map((job) => (
+          <article class="job">
+            <div class="job__top">
+              <div>
                 <h3 class="job__org">{job.organization}</h3>
                 <p class="job__role">{job.role}</p>
-              </header>
+              </div>
+              <div class="job__when">
+                <span>{job.start_label}</span>
+                {job.duration_label && <span>{job.duration_label}</span>}
+                {job.employment && <span>{job.employment}</span>}
+              </div>
+            </div>
 
-              {job.summary && <p class="job__summary">{job.summary}</p>}
+            {job.summary && <p class="job__summary">{job.summary}</p>}
 
+            {job.groups.length > 0 && (
               <div class="job__groups">
-                {job.groups.map((group, groupIndex) => (
-                  <section class="group">
-                    <h4 class="group__title">
-                      <span aria-hidden="true">{fa(String(groupIndex + 1).padStart(2, '0'))}</span>
-                      {group.title}
-                    </h4>
-                    <ul class="group__list">
+                {job.groups.map((group) => (
+                  <div>
+                    <h4>{group.title}</h4>
+                    <ul>
                       {group.items.map((item) => (
                         <li>{item}</li>
                       ))}
                     </ul>
-                  </section>
+                  </div>
                 ))}
               </div>
+            )}
 
-              {job.note && (
-                <aside class="job__note">
-                  <b>یادداشت</b>
-                  <p>{job.note}</p>
-                </aside>
-              )}
+            {job.note && <p class="job__note">{job.note}</p>}
 
-              {job.tags.length > 0 && (
-                <p class="job__tags" aria-label="واژه‌های کلیدی">
-                  {job.tags.join(' · ')}
-                </p>
-              )}
-            </article>
-          );
-        })
-      }
-      {
-        experience.items.length === 0 && (
-          <p class="prose">
-            <span>در حال حاضر تجربهٔ کاری ثبت‌شده‌ای برای نمایش وجود ندارد.</span>
-          </p>
-        )
+            {job.tags.length > 0 && (
+              <ul class="tags">
+                {job.tags.map((tag) => (
+                  <li>{tag}</li>
+                ))}
+              </ul>
+            )}
+          </article>
+        ))
       }
     </div>
   </div>

@@ -1,7 +1,6 @@
 ---
 import { contact, publicPhone, socialLinks } from '../lib/content';
-import { mailtoHref, asset } from '../lib/urls';
-import { fa } from '../lib/digits';
+import { asset, mailtoHref } from '../lib/urls';
 
 interface Props {
   index: number;
@@ -10,68 +9,57 @@ const { index } = Astro.props;
 const mailTo = mailtoHref(contact.email, contact.email_subject);
 ---
 
-<section class="contact" id="contact" aria-labelledby="contact-heading">
-  <div class="wrap section__grid">
-    <header class="sh">
-      <p class="sh__num" aria-hidden="true">{fa(String(index).padStart(2, '0'))}</p>
-      <h2 class="sh__title" id="contact-heading">تماس</h2>
-      <p class="sh__aside">{contact.response_note}</p>
-    </header>
-
-    <div class="section__body">
-      <a class="contact__email" href={mailTo} dir="ltr" data-reveal>{contact.email}</a>
-
-      <div class="contact__actions" data-reveal style="--i:1">
-        <a class="btn btn--light" href={mailTo}>
-          نوشتن ایمیل
-          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <path d="M2 4h12v8H2z" stroke="currentColor" stroke-width="1.3"></path>
-            <path d="m2.4 4.4 5.6 4 5.6-4" stroke="currentColor" stroke-width="1.3"></path>
-          </svg>
-        </a>
-        <a class="link-line" href={asset('/resume/')}>نسخهٔ چاپی / PDF</a>
-      </div>
-
-      <dl class="contact__facts">
-        {
-          contact.location_label && (
-            <div>
-              <dt>محل</dt>
-              <dd>{contact.location_label}</dd>
-            </div>
-          )
-        }
-        {
-          publicPhone && (
-            <div>
-              <dt>تلفن</dt>
-              <dd dir="ltr">{publicPhone}</dd>
-            </div>
-          )
-        }
-        {
-          contact.availability && (
-            <div>
-              <dt>نوع همکاری</dt>
-              <dd>{contact.availability}</dd>
-            </div>
-          )
-        }
-        {
-          socialLinks.length > 0 && (
-            <div>
-              <dt>شبکه‌ها</dt>
-              <dd class="contact__socials">
-                {socialLinks.map((social) => (
-                  <a class="link-line" href={social.url} rel="noopener noreferrer me" target="_blank">
-                    {social.label || social.handle}
-                  </a>
-                ))}
-              </dd>
-            </div>
-          )
-        }
-      </dl>
+<section class="contact" id="contact" aria-labelledby="contact-title" data-tone="dark">
+  <div class="wrap">
+    <div class="contact__head">
+      <h2 class="contact__title" id="contact-title">تماس</h2>
+      {contact.response_note && <p class="contact__note">{contact.response_note}</p>}
     </div>
+
+    <a class="contact__email" href={mailTo}>{contact.email}</a>
+
+    <div class="contact__actions">
+      <a class="btn" href={mailTo}>
+        نوشتن ایمیل
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M2 4h12v8H2z" stroke="currentColor" stroke-width="1.3"></path>
+          <path d="m2.4 4.4 5.6 4 5.6-4" stroke="currentColor" stroke-width="1.3"></path>
+        </svg>
+      </a>
+      <a class="link-line" href={asset('/resume/')}>نسخهٔ چاپی / PDF</a>
+    </div>
+
+    <dl class="contact__grid">
+      {contact.location_label && (
+        <div>
+          <dt>محل</dt>
+          <dd>{contact.location_label}</dd>
+        </div>
+      )}
+      {contact.availability && (
+        <div>
+          <dt>نوع همکاری</dt>
+          <dd>{contact.availability}</dd>
+        </div>
+      )}
+      {publicPhone && (
+        <div>
+          <dt>تلفن</dt>
+          <dd dir="ltr">{publicPhone}</dd>
+        </div>
+      )}
+      {socialLinks.length > 0 && (
+        <div>
+          <dt>شبکه‌ها</dt>
+          <dd>
+            {socialLinks.map((social) => (
+              <a class="link-line" href={social.url} rel="noopener noreferrer me" target="_blank">
+                {social.label || social.handle}
+              </a>
+            ))}
+          </dd>
+        </div>
+      )}
+    </dl>
   </div>
 </section>

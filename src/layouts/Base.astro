@@ -1,5 +1,5 @@
 ---
-import '../styles/site.css';
+import '../styles/notebook.css';
 import { site, contact, socialLinks } from '../lib/content';
 import { asset, absolute } from '../lib/urls';
 
@@ -56,8 +56,8 @@ const personSchema = {
     <link rel="canonical" href={canonical.href} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <meta name="author" content={site.identity.name_fa} />
-    <meta name="theme-color" content="#0f1514" />
-    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#0d0b0a" />
+    <meta name="color-scheme" content="light dark" />
 
     <meta property="og:type" content="profile" />
     <meta property="og:site_name" content={site.identity.name_fa} />
@@ -99,18 +99,11 @@ const personSchema = {
       (function () {
         var html = document.documentElement;
         try {
-          if (!('IntersectionObserver' in window)) return;
           if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+          if (!('IntersectionObserver' in window)) return;
           html.classList.add('js');
-          window.addEventListener('load', function () {
-            setTimeout(function () {
-              document.querySelectorAll('[data-reveal]:not(.is-in)').forEach(function (el) {
-                el.classList.add('is-in');
-              });
-            }, 2600);
-          });
         } catch (error) {
-          /* اگر جاوااسکریپت ناقص اجرا شود، محتوا بدون انیمیشن نمایش داده می‌شود */
+          /* بدون جاوااسکریپت هم همه‌چیز خوانده می‌شود */
         }
       })();
     </script>
@@ -118,14 +111,15 @@ const personSchema = {
   <body>
     <a class="skip-link" href="#main">رفتن به محتوای اصلی</a>
     <slot />
+
     <script>
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-      const items = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal], .sh'));
-      const hero = document.querySelector<HTMLElement>('.hero');
+      const targets = Array.from(
+        document.querySelectorAll<HTMLElement>('[data-reveal], [data-mask], [data-entry]'),
+      );
 
-      // ظاهر شدن تدریجی بخش‌ها هنگام اسکرول
-      if (items.length && 'IntersectionObserver' in window && !reduceMotion.matches) {
-        document.documentElement.classList.add('js');
+      // ظاهر شدن هنگام رسیدن به بخش
+      if (targets.length && 'IntersectionObserver' in window && !reduceMotion.matches) {
         const io = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
@@ -134,39 +128,58 @@ const personSchema = {
               io.unobserve(entry.target);
             });
           },
-          { rootMargin: '0px 0px -10% 0px', threshold: 0.08 },
+          // آستانه صفر: عنصرهای دارای clip-path در لحظهٔ ورود نسبت صفر دارند
+          { rootMargin: '0px 0px -10% 0px', threshold: 0 },
         );
-        items.forEach((el) => io.observe(el));
+        targets.forEach((el) => io.observe(el));
       } else {
-        items.forEach((el) => el.classList.add('is-in'));
+        targets.forEach((el) => el.classList.add('is-in'));
       }
 
-      // حرکت‌های وابسته به اسکرول: پارالاکس آرام بخش نخست
+      // رنگ هدر و ریل بر اساس بخشی که زیر آن است + شمارهٔ بخش فعال
+      const header = document.getElementById('site-header');
+      const rail = document.getElementById('rail');
+      const hero = document.querySelector<HTMLElement>('.hero');
+      const contact = document.querySelector<HTMLElement>('.contact');
+      const entries = Array.from(document.querySelectorAll<HTMLElement>('[data-entry]'));
+      const railLinks = new Map<string, HTMLElement>();
+      rail?.querySelectorAll<HTMLElement>('[data-rail]').forEach((link) => {
+        railLinks.set(link.dataset.rail || '', link);
+      });
+
       let queued = false;
 
-      function frame() {
+      function paint() {
         queued = false;
-        if (reduceMotion.matches) return;
         const y = window.scrollY;
-        const vh = window.innerHeight;
+        const probe = y + window.innerHeight * 0.38;
 
-        if (hero) {
-          const shift = Math.min(y * 0.07, 56);
-          const fade = Math.min(y / (vh * 0.9), 1) * 0.32;
-          hero.style.setProperty('--hero-shift', shift.toFixed(1));
-          hero.style.setProperty('--hero-fade', fade.toFixed(3));
-        }
+        const heroBottom = hero ? hero.offsetHeight - 40 : 0;
+        const contactTop = contact ? contact.offsetTop - 80 : Number.POSITIVE_INFINITY;
+        const overDark = y < heroBottom || y > contactTop;
+
+        header?.classList.toggle('is-paper', !overDark && y > 24);
+        header?.classList.toggle('is-dark', overDark && y > 24);
+        rail?.classList.toggle('is-on-night', overDark);
+
+        let activeId = 'about';
+        entries.forEach((entry) => {
+          if (entry.offsetTop <= probe) activeId = entry.id;
+        });
+        if (contact && contact.offsetTop <= probe) activeId = 'contact';
+
+        railLinks.forEach((link, id) => link.classList.toggle('is-active', id === activeId));
       }
 
       function queue() {
         if (queued) return;
         queued = true;
-        requestAnimationFrame(frame);
+        requestAnimationFrame(paint);
       }
 
       window.addEventListener('scroll', queue, { passive: true });
       window.addEventListener('resize', queue, { passive: true });
-      frame();
+      paint();
     </script>
   </body>
 </html>

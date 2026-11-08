@@ -1,0 +1,17 @@
+---
+import { fa } from '../lib/digits';
+
+interface Props {
+  index: number;
+  title: string;
+  meta: string;
+}
+
+const { index, title, meta } = Astro.props;
+---
+
+<header class="entry__head">
+  <p class="entry__num">{fa(String(index).padStart(2, '0'))}</p>
+  <h2 class="entry__title" id={`head-${index}`}>{title}</h2>
+  <p class="entry__meta">{meta}</p>
+</header>

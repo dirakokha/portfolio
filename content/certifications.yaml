@@ -1,13 +1,15 @@
 # دوره‌ها و گواهینامه‌ها
-# فایل گواهی و شمارهٔ تأیید فقط وقتی نمایش داده می‌شود که واقعاً وارد شود.
+# این اطلاعات از خودِ صفحهٔ گواهی مکتب‌خونه خوانده شده است.
 
 items:
-  - title: دورهٔ جامع پایتون
+  - title: پایتون جامع
     provider: مکتب‌خونه
     year_label: ۱۴۰۵
     status: گذرانده‌شده
+    instructor: جادی میرمیرانی
+    issued_label: ۱۴۰۵/۰۳/۲۴
+    duration_label: ۱۸ ساعت
+    credential_id: MK-YM38BP
+    credential_url: https://www.maktabkhooneh.org/certificates/MK-YM38BP
     certificate_file: ''
-    credential_url: ''
-    note: >-
-      دورهٔ مقدماتی جامع پایتون. فایل گواهی هنوز بارگذاری نشده است؛ پس از
-      بارگذاری در همین بخش نمایش داده می‌شود.
+    note: ''

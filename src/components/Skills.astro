@@ -1,72 +1,50 @@
 ---
-import { skills, stateLabels } from '../lib/content';
-import SectionHead from './SectionHead.astro';
+import { skills } from '../lib/content';
+import EntryHead from './EntryHead.astro';
 
 interface Props {
   index: number;
 }
 const { index } = Astro.props;
 
-const legend = [
-  { state: 'working', label: 'در کار واقعی' },
-  { state: 'course', label: 'دوره دیده‌شده' },
-  { state: 'learning', label: 'در حال یادگیری' },
-  { state: 'academic', label: 'دانش آکادمیک' },
-  { state: 'familiar', label: 'آشنایی مقدماتی' },
-];
+const stateLabels: Record<string, string> = {
+  working: 'در کار واقعی',
+  course: 'دوره گذرانده',
+  learning: 'در حال یادگیری',
+  familiar: 'آشنایی مقدماتی',
+  academic: 'دانش آکادمیک',
+};
 ---
 
-<section class="section" id="skills" aria-labelledby="skills-heading">
-  <div class="wrap section__grid">
-    <SectionHead
-      index={index}
-      title="مهارت‌ها"
-      id="skills-heading"
-      aside="برای هر مهارت یک وضعیت واقعی ثبت شده است؛ نمره و درصد در کار نیست."
-    />
+<section class="entry" id="skills" aria-labelledby={`head-${index}`} data-entry>
+  <div class="wrap entry__grid">
+    <EntryHead index={index} title="مهارت‌ها" meta="ENTRY / SKILLS" />
 
-    <div class="section__body">
-      <div class="skills">
+    <div class="entry__body">
+      <div class="spec">
         {
-          skills.categories.map((category, i) => (
-            <section class="cat" data-reveal style={`--i:${i}`}>
-              <header class="cat__head">
-                <h3 class="cat__title">{category.title}</h3>
-                {category.note && <p class="cat__note">{category.note}</p>}
-              </header>
-              <ul class="cat__list">
-                {category.items.map((skill) => (
-                  <li class="skill">
-                    <span class="skill__name">
-                      {skill.name}
-                      {skill.name_en && (
-                        <span class="skill__en" lang="en" dir="ltr">
-                          {skill.name_en}
-                        </span>
-                      )}
-                    </span>
-                    <span class="skill__lead" aria-hidden="true"></span>
-                    <span class={`skill__state is-${skill.state}`}>
-                      {stateLabels[skill.state]}
-                    </span>
-                  </li>
+          skills.categories.map((category) => (
+            <div class="spec__cat">
+              <div class="spec__title">
+                <h3>{category.title}</h3>
+                {category.note && <p>{category.note}</p>}
+              </div>
+              <dl class="spec__list">
+                {category.items.map((item) => (
+                  <div class="spec__item">
+                    <dt class="spec__name">
+                      <span>{item.name}</span>
+                      {item.name_en && <span class="spec__en">{item.name_en}</span>}
+                      <span class={`state state--${item.state}`}>{stateLabels[item.state]}</span>
+                    </dt>
+                    {item.context && <dd>{item.context}</dd>}
+                  </div>
                 ))}
-              </ul>
-            </section>
+              </dl>
+            </div>
           ))
         }
       </div>
-
-      <ul class="legend" aria-label="راهنمای وضعیت مهارت‌ها">
-        {
-          legend.map((item) => (
-            <li class={`is-${item.state}`}>
-              <i aria-hidden="true" />
-              {item.label}
-            </li>
-          ))
-        }
-      </ul>
     </div>
   </div>
 </section>
