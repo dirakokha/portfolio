@@ -45,9 +45,11 @@ test('فونت‌ها و دارایی‌ها محلی هستند و از CDN ب�
   assert.match(html, /\/fonts\/Vazirmatn-Variable\.woff2/);
 });
 
-test('بخش نمونه‌کارها در نبود پروژه رندر نمی‌شود', () => {
+test('بخش نمونه‌کارها با کار منتشرشده رندر می‌شود و لینکش کار می‌کند', () => {
   const html = readDist('index.html');
-  assert.ok(!html.includes('id="projects"'), 'بخش نمونه‌کارها نباید وقتی خالی است دیده شود');
+  assert.match(html, /id="projects"/);
+  assert.match(html, /href="[^"]*lab\/windows-checklist\/"/, 'لینک نمونه‌کار در صفحه نیست');
+  assert.ok(fs.existsSync(path.join(dist, 'lab/windows-checklist/index.html')), 'صفحهٔ نمونه‌کار باید ساخته شود');
 });
 
 test('شمارهٔ تلفن با لینک تماس در صفحه و رزومه هست', () => {
@@ -180,4 +182,24 @@ test('لایهٔ حرکت در دسترس است و حالت کاهش حرکت �
   assert.match(html, /classList\.add\('js'\)/);
   assert.match(html, /matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
   assert.match(html, /IntersectionObserver/);
+});
+
+test('فوتر سایت به پنل مدیریت لینک نمی‌دهد', () => {
+  const html = readDist('index.html');
+  assert.doesNotMatch(html, /\/admin\//, 'لینک پنل نباید در صفحهٔ عمومی باشد');
+});
+
+test('نمونه‌کار در رزومهٔ چاپی با عنوان و لینک واقعی فهرست می‌شود', () => {
+  const html = readDist('resume/index.html');
+  assert.match(html, /نمونه‌کارها<\/h2>/);
+  assert.match(html, /چک‌لیست نصب ویندوز/);
+  assert.doesNotMatch(html, /نمونه‌کارها<\/h2>\s*<ul class="cv-list">\s*<\/ul>/, 'بخش نمونه‌کارها نباید خالی بماند');
+});
+
+test('صفحهٔ نمونه‌کار چک‌لیست کامل و دکمهٔ پاک‌کردن را می‌سازد', () => {
+  const html = readDist('lab/windows-checklist/index.html');
+  const boxes = (html.match(/class="lab-step__box"/g) || []).length;
+  assert.equal(boxes, 12, 'همهٔ مراحل چک‌لیست باید رندر شوند');
+  assert.match(html, /data-reset/);
+  assert.match(html, /data-done/);
 });

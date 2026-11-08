@@ -112,6 +112,7 @@ const experienceSchema = z.object({
 });
 
 const skillsSchema = z.object({
+  lead: z.string().default(''),
   categories: z
     .array(
       z.object({
