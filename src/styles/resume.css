@@ -1,10 +1,10 @@
 /* نسخهٔ چاپی رزومه — کاغذ A4، بدون عناصر تزئینی */
 
 :root {
-  --cv-ink: #12181a;
-  --cv-muted: #5b6360;
+  --cv-ink: #16100f;
+  --cv-muted: #615855;
   --cv-line: rgba(18, 24, 26, 0.2);
-  --cv-copper: #a8451f;
+  --cv-copper: #8b322c;
 }
 
 body {
@@ -60,7 +60,7 @@ body {
 .sheet {
   width: min(210mm, calc(100% - 2rem));
   margin: clamp(1.25rem, 4vw, 2.75rem) auto 4rem;
-  background: #fbf7ee;
+  background: #faf6f1;
   color: var(--cv-ink);
   padding: 16mm 15mm 13mm;
   box-shadow: 0 34px 70px -46px rgba(18, 24, 26, 0.6);

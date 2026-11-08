@@ -53,17 +53,17 @@ const H = 630;
 const ogSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="0.4" y2="1">
-      <stop offset="0" stop-color="#0c1211"/>
-      <stop offset="0.55" stop-color="#0f1514"/>
-      <stop offset="1" stop-color="#0c1312"/>
+      <stop offset="0" stop-color="#0c0909"/>
+      <stop offset="0.55" stop-color="#120d0d"/>
+      <stop offset="1" stop-color="#0b0a0c"/>
     </linearGradient>
     <radialGradient id="glow" cx="0.92" cy="0" r="0.75">
-      <stop offset="0" stop-color="#a8451f" stop-opacity="0.34"/>
-      <stop offset="1" stop-color="#a8451f" stop-opacity="0"/>
+      <stop offset="0" stop-color="#8b322c" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#8b322c" stop-opacity="0"/>
     </radialGradient>
     <radialGradient id="glow2" cx="0.05" cy="1" r="0.6">
-      <stop offset="0" stop-color="#2c6a5e" stop-opacity="0.28"/>
-      <stop offset="1" stop-color="#2c6a5e" stop-opacity="0"/>
+      <stop offset="0" stop-color="#b8735c" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#b8735c" stop-opacity="0"/>
     </radialGradient>
   </defs>
 
@@ -71,25 +71,25 @@ const ogSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}
   <rect width="${W}" height="${H}" fill="url(#glow)"/>
   <rect width="${W}" height="${H}" fill="url(#glow2)"/>
 
-  <line x1="1136" y1="72" x2="1136" y2="558" stroke="#f4eee1" stroke-opacity="0.14"/>
-  <line x1="88" y1="470" x2="1100" y2="470" stroke="#f4eee1" stroke-opacity="0.16"/>
+  <line x1="1136" y1="72" x2="1136" y2="558" stroke="#f2ede7" stroke-opacity="0.14"/>
+  <line x1="88" y1="470" x2="1100" y2="470" stroke="#f2ede7" stroke-opacity="0.16"/>
 
   ${
     portraitUri
       ? `<image href="${portraitUri}" x="88" y="96" width="216" height="270" preserveAspectRatio="xMidYMid slice" clip-path="inset(0)"/>
-  <rect x="88" y="366" width="216" height="1" fill="#d3784f" fill-opacity="0.55"/>`
+  <rect x="88" y="366" width="216" height="1" fill="#d06a62" fill-opacity="0.55"/>`
       : ''
   }
 
-  <circle cx="1096" cy="94" r="5" fill="#d3784f"/>
-  <text x="1060" y="100" text-anchor="end" font-family="Estedad" font-size="19" fill="#f4eee1" fill-opacity="0.6">آمادهٔ همکاری — ${location}</text>
+  <circle cx="1096" cy="94" r="5" fill="#d06a62"/>
+  <text x="1060" y="100" text-anchor="end" font-family="Estedad" font-size="19" fill="#f2ede7" fill-opacity="0.6">آمادهٔ همکاری</text>
 
-  <text x="1100" y="300" text-anchor="end" font-family="Estedad" font-weight="900" font-size="92" letter-spacing="-2" fill="#f4eee1">${nameFa}</text>
-  <text x="1100" y="352" text-anchor="end" font-family="Estedad" font-weight="500" font-size="21" letter-spacing="9" fill="#d3784f">${nameEn}</text>
-  <text x="1100" y="420" text-anchor="end" font-family="Estedad" font-size="27" fill="#f4eee1" fill-opacity="0.72">${role} — پشتیبانی سیستم، تولید محتوا، در حال یادگیری وب</text>
+  <text x="1100" y="300" text-anchor="end" font-family="Estedad" font-weight="900" font-size="92" letter-spacing="-2" fill="#f2ede7">${nameFa}</text>
+  <text x="1100" y="352" text-anchor="end" font-family="Estedad" font-weight="500" font-size="21" letter-spacing="9" fill="#d06a62">${nameEn}</text>
+  <text x="1100" y="420" text-anchor="end" font-family="Estedad" font-size="27" fill="#f2ede7" fill-opacity="0.72">${role} — پشتیبانی سیستم، تولید محتوا، در حال یادگیری برنامه‌نویسی</text>
 
-  <text x="88" y="524" font-family="Estedad" font-weight="500" font-size="20" letter-spacing="5" fill="#f4eee1" fill-opacity="0.42">PORTFOLIO / CV</text>
-  <text x="1100" y="524" text-anchor="end" font-family="Estedad" font-size="21" fill="#f4eee1" fill-opacity="0.66">${contact.email}</text>
+  <text x="88" y="524" font-family="Estedad" font-weight="500" font-size="20" letter-spacing="5" fill="#f2ede7" fill-opacity="0.42">PORTFOLIO / CV</text>
+  <text x="1100" y="524" text-anchor="end" font-family="Estedad" font-size="21" fill="#f2ede7" fill-opacity="0.66">${contact.email}</text>
 </svg>`;
 
 save('og.png', render(ogSvg, W));
@@ -103,14 +103,14 @@ function iconSvg(size) {
     .map(([x, y]) => `${(x * k).toFixed(2)},${(y * k).toFixed(2)}`)
     .join(' ');
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${s}" height="${s}" viewBox="0 0 ${s} ${s}">
-  <rect width="${s}" height="${s}" rx="${r}" fill="#0a0b0d"/>
-  <polygon points="${pts}" fill="none" stroke="#ecebe6" stroke-width="${(1.6 * k).toFixed(2)}" stroke-linejoin="round"/>
-  <g stroke="#ecebe6" stroke-width="${(1.2 * k).toFixed(2)}" stroke-linecap="round" opacity="0.5">
+  <rect width="${s}" height="${s}" rx="${r}" fill="#08080a"/>
+  <polygon points="${pts}" fill="none" stroke="#f2ede7" stroke-width="${(1.6 * k).toFixed(2)}" stroke-linejoin="round"/>
+  <g stroke="#f2ede7" stroke-width="${(1.2 * k).toFixed(2)}" stroke-linecap="round" opacity="0.5">
     <path d="M${16 * k} ${16 * k}V${5.5 * k}"/>
     <path d="m${16 * k} ${16 * k} ${8.6 * k} ${5 * k}"/>
     <path d="m${16 * k} ${16 * k} ${-8.6 * k} ${5 * k}"/>
   </g>
-  <circle cx="${16 * k}" cy="${16 * k}" r="${2.8 * k}" fill="#3ee08b"/>
+  <circle cx="${16 * k}" cy="${16 * k}" r="${2.8 * k}" fill="#d06a62"/>
 </svg>`;
 }
 

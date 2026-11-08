@@ -18,8 +18,9 @@ hero:
     برنامه‌نویسی است و در حال یادگیری؛ تولید محتوا هم بخشی از مهارت‌های من است.
   primary_cta_label: مشاهدهٔ رزومه
   secondary_cta_label: گفت‌وگو با ایمیل
-  portrait_image: /media/portrait-960.webp
-  portrait_alt: پرترهٔ امیرمحمود خاکنه، پس‌زمینهٔ تیره
+  # عکس فعلاً گذاشته نشده؛ وقتی عکس تازه رسید همین‌جا آدرس داده می‌شود.
+  portrait_image: ''
+  portrait_alt: ''
   portrait_caption: ''
   # سه نشانهٔ کوتاه که در پایین بخش نخست نمایش داده می‌شوند
   highlights:

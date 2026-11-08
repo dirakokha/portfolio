@@ -19,7 +19,13 @@ const identity = site.identity;
 const mailTo = mailtoHref(contact.email, contact.email_subject);
 const hasProjects = activeSections().some((section) => section.id === 'projects');
 // نسخهٔ کوچک و بهینهٔ پرتره فقط وقتی وجود دارد که مالک سایت تصویر را بارگذاری کرده باشد.
-const cvPhoto = site.hero.portrait_image ? '/media/portrait-print.webp' : '';
+// اگر تصویر پیش‌فرض سایت باشد، نسخهٔ مخصوص چاپ استفاده می‌شود؛
+// برای عکسی که از پنل بارگذاری شود، همان فایل خودش.
+const cvPhoto = !site.hero.portrait_image
+  ? ''
+  : site.hero.portrait_image === '/media/portrait-960.webp'
+    ? '/media/portrait-print.webp'
+    : site.hero.portrait_image;
 ---
 
 <Base
