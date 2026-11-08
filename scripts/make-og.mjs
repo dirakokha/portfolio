@@ -95,19 +95,22 @@ const ogSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}
 save('og.png', render(ogSvg, W));
 
 /* ── آیکون‌ها ─────────────────────────────────────────────────────────── */
-function iconSvg(size, padded = true) {
+function iconSvg(size) {
   const s = size;
-  const inset = padded ? s * 0.13 : 0;
-  const w = s - inset * 2;
-  const radius = w * 0.5;
-  const top = inset + w * 0.06;
-  const pathTop = top;
-  const base = s - inset;
+  const k = s / 32;              // نشان در فضای ۳۲×۳۲ طراحی شده است
+  const r = Math.round(s * 0.22);
+  const pts = [[16, 5.2], [25, 10.4], [25, 21.6], [16, 26.8], [7, 21.6], [7, 10.4]]
+    .map(([x, y]) => `${(x * k).toFixed(2)},${(y * k).toFixed(2)}`)
+    .join(' ');
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${s}" height="${s}" viewBox="0 0 ${s} ${s}">
-  <rect width="${s}" height="${s}" fill="#0f1514"/>
-  <path d="M${inset},${base} L${inset},${pathTop + radius * 0.55} A${radius},${radius * 0.78} 0 0 1 ${inset + w},${pathTop + radius * 0.55} L${inset + w},${base}"
-        fill="none" stroke="#f4eee1" stroke-width="${Math.max(1.6, s * 0.045)}"/>
-  <circle cx="${s / 2}" cy="${base - w * 0.3}" r="${s * 0.062}" fill="#d3784f"/>
+  <rect width="${s}" height="${s}" rx="${r}" fill="#0a0b0d"/>
+  <polygon points="${pts}" fill="none" stroke="#ecebe6" stroke-width="${(1.6 * k).toFixed(2)}" stroke-linejoin="round"/>
+  <g stroke="#ecebe6" stroke-width="${(1.2 * k).toFixed(2)}" stroke-linecap="round" opacity="0.5">
+    <path d="M${16 * k} ${16 * k}V${5.5 * k}"/>
+    <path d="m${16 * k} ${16 * k} ${8.6 * k} ${5 * k}"/>
+    <path d="m${16 * k} ${16 * k} ${-8.6 * k} ${5 * k}"/>
+  </g>
+  <circle cx="${16 * k}" cy="${16 * k}" r="${2.8 * k}" fill="#3ee08b"/>
 </svg>`;
 }
 
