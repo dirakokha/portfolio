@@ -367,8 +367,8 @@ svg {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: clamp(18px, 3.4vh, 44px);
-  padding-block: calc(var(--header-h) + clamp(18px, 4vh, 40px)) clamp(18px, 3vh, 32px);
+  gap: clamp(14px, 2.6vh, 38px);
+  padding-block: calc(var(--header-h) + clamp(14px, 2.8vh, 32px)) clamp(16px, 2.6vh, 28px);
   background: var(--night);
   color: var(--night-ink);
 }
@@ -469,7 +469,7 @@ svg {
 .hero__title {
   font-family: var(--font-display);
   font-weight: 900;
-  font-size: clamp(2.9rem, 9vw, 8.4rem);
+  font-size: clamp(2.9rem, 8.2vw, 8rem);
   line-height: 1.02;
   letter-spacing: -0.03em;
 }
@@ -490,7 +490,7 @@ svg {
 }
 
 .hero__latin {
-  margin-top: clamp(0.8rem, 1.6vh, 1.3rem);
+  margin-top: clamp(0.6rem, 1.2vh, 1.1rem);
   font-family: var(--font-mono);
   font-size: clamp(0.6rem, 0.9vw, 0.72rem);
   letter-spacing: 0.42em;
@@ -502,7 +502,7 @@ svg {
   grid-template-columns: minmax(0, 1fr) auto;
   gap: clamp(14px, 2vh, 22px) clamp(18px, 3vw, 48px);
   align-items: end;
-  padding-top: clamp(14px, 2.2vh, 22px);
+  padding-top: clamp(10px, 1.8vh, 20px);
   border-top: 1px solid var(--rule-night);
 }
 
@@ -1412,9 +1412,14 @@ html.js [data-mask].is-in {
   }
 
   .hero__facts {
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     display: grid;
-    gap: 0.8rem 1.4rem;
+    gap: 1rem 1.6rem;
+  }
+
+  .hero__facts div + div {
+    padding-inline-start: 0;
+    border-inline-start: 0;
   }
 
   .facts {

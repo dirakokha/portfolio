@@ -148,6 +148,12 @@ test('بخش نخست وضعیت واقعی و تازه‌ترین دستاور�
   assert.match(visible, /مسیر روشن/);
 });
 
+test('جملهٔ توضیح حساب شبکه‌های اجتماعی حذف شده است', () => {
+  const html = readDist('index.html');
+  assert.doesNotMatch(html, /حساب شخصی من/);
+  assert.doesNotMatch(html, /صفحه‌های اینستاگرام و یوتیوب مجموعه/);
+});
+
 test('ادعای زبان مادری فارسی در سایت و رزومه وجود ندارد', () => {
   for (const file of ['index.html', 'resume/index.html']) {
     const html = readDist(file);

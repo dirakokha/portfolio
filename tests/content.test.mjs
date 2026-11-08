@@ -76,6 +76,12 @@ test('گواهینامه فقط از دادهٔ تأییدشده استفاده 
   assert.equal(python.duration_label, '۱۸ ساعت');
 });
 
+test('تجربهٔ کاری یادداشت توجیهی ندارد', () => {
+  for (const job of experience.items) {
+    assert.ok(!/حساب شخصی|اینستاگرام و یوتیوب مجموعه/.test(job.note || ''), 'یادداشت اضافه حذف شود');
+  }
+});
+
 test('تحصیلات مطابق اطلاعات واقعی است', () => {
   assert.equal(education.items.length, 1);
   assert.match(education.items[0].institution, /گسترش انفورماتیک/);
