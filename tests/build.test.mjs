@@ -50,11 +50,11 @@ test('بخش نمونه‌کارها در نبود پروژه رندر نمی‌
   assert.ok(!html.includes('id="projects"'), 'بخش نمونه‌کارها نباید وقتی خالی است دیده شود');
 });
 
-test('شمارهٔ تلفن در هیچ خروجی‌ای وجود ندارد', () => {
-  const files = ['index.html', 'resume/index.html'];
-  for (const file of files) {
+test('شمارهٔ تلفن با لینک تماس در صفحه و رزومه هست', () => {
+  for (const file of ['index.html', 'resume/index.html']) {
     const html = readDist(file);
-    assert.ok(!/tel:\+?\d/.test(html), `لینک تلفن در ${file} پیدا شد`);
+    assert.match(html, /tel:\+989928865372/, `لینک تماس در ${file} نیست`);
+    assert.match(html, /0992 886 5372/, `شمارهٔ خوانا در ${file} نیست`);
   }
 });
 

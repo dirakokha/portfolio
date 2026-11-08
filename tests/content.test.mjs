@@ -21,9 +21,11 @@ test('نام انگلیسی دقیقاً همان چیزی است که باید 
   assert.equal(site.identity.name_fa, 'امیرمحمود خاکنه');
 });
 
-test('شمارهٔ تلفن به‌صورت پیش‌فرض عمومی نیست', () => {
-  assert.equal(contact.phone_visible, false);
-  assert.equal((contact.phone || '').trim(), '');
+test('شمارهٔ تلفن با فرمت درست و به انتخاب مالک نمایش داده می‌شود', () => {
+  assert.equal(typeof contact.phone_visible, 'boolean');
+  if (contact.phone_visible) {
+    assert.match((contact.phone || '').trim(), /^09\d{9}$/, 'شمارهٔ موبایل باید ۱۱ رقم و با ۰۹ شروع شود');
+  }
 });
 
 test('هیچ شبکهٔ اجتماعی تأییدنشده‌ای نمایش داده نمی‌شود', () => {
