@@ -1,0 +1,14 @@
+---
+import { activeSections } from '../lib/content';
+import { fa } from '../lib/digits';
+
+const sections = activeSections();
+---
+
+<nav class="rail" id="rail" aria-label="موقعیت در صفحه" aria-hidden="true">
+  {sections.map((section) => (
+    <a class="rail__num" href={`#${section.id}`} data-rail={section.id} tabindex="-1">
+      {fa(String(section.index).padStart(2, '0'))}
+    </a>
+  ))}
+</nav>

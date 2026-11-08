@@ -36,9 +36,11 @@ test('متادیتای فارسی و Open Graph کامل است', () => {
 
 test('فونت‌ها و دارایی‌ها محلی هستند و از CDN بیرونی استفاده نمی‌شود', () => {
   const html = readDist('index.html');
+  // دامنهٔ خودمان + لینک تأیید گواهی مکتب‌خونه (تنها منبع بیرونی مجاز است)
+  const allowed = [/^https:\/\/khakneh\.pages\.dev/, /^https:\/\/www\.maktabkhooneh\.org\/certificates\//];
   const external = [...html.matchAll(/(?:src|href)="(https?:\/\/[^"]+)"/g)]
     .map((match) => match[1])
-    .filter((url) => !url.startsWith('https://khakneh.pages.dev'));
+    .filter((url) => !allowed.some((pattern) => pattern.test(url)));
   assert.deepEqual(external, [], `منابع بیرونی یافت شد: ${external.join(', ')}`);
   assert.match(html, /\/fonts\/Vazirmatn-Variable\.woff2/);
 });
@@ -136,12 +138,14 @@ test('بخش جملهٔ کلیدی حذف شده و دیگر در هیچ صفح�
   assert.equal(fs.existsSync(path.join(process.cwd(), 'src/components/Statement.astro')), false);
 });
 
-test('ردیف نشان‌های ابزار در بخش نخست رندر می‌شود', () => {
+test('بخش نخست وضعیت واقعی و تازه‌ترین دستاوردها را نشان می‌دهد', () => {
   const html = readDist('index.html');
-  assert.match(html, /class="chips"/);
-  for (const label of ['HTML', 'CSS', 'JavaScript', 'Python']) {
-    assert.match(html, new RegExp(`>\\s*${label}\\s*<`));
-  }
+  const visible = html.replace(/<script[\s\S]*?<\/script>/g, '');
+  assert.match(html, /class="hero__facts"/);
+  assert.match(visible, /در حال یادگیری/);
+  assert.match(visible, /CSS و JavaScript/);
+  assert.match(visible, /پایتون/);
+  assert.match(visible, /مسیر روشن/);
 });
 
 test('ادعای زبان مادری فارسی در سایت و رزومه وجود ندارد', () => {
@@ -159,8 +163,15 @@ test('لایهٔ حرکت در دسترس است و حالت کاهش حرکت �
     .map((f) => fs.readFileSync(path.join(cssDir, f), 'utf8'))
     .join('\n');
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
-  assert.match(css, /--hero-shift/);
   assert.match(css, /data-reveal/);
+  assert.match(css, /data-mask/);
+  assert.match(css, /html\.js/);
+
   const html = readDist('index.html');
-  assert.match(html, /--hero-shift/, 'پارالاکس باید از اسکریپت تنظیم شود');
+  assert.match(html, /data-reveal/);
+  assert.match(html, /data-mask/);
+  // پیش از فعال‌شدن اسکریپت هیچ‌چیز پنهان نمی‌ماند؛ حالت سکون فقط با کلاس js اعمال می‌شود
+  assert.match(html, /classList\.add\('js'\)/);
+  assert.match(html, /matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
+  assert.match(html, /IntersectionObserver/);
 });

@@ -1,6 +1,6 @@
 ---
 import { about } from '../lib/content';
-import SectionHead from './SectionHead.astro';
+import EntryHead from './EntryHead.astro';
 
 interface Props {
   index: number;
@@ -8,28 +8,24 @@ interface Props {
 const { index } = Astro.props;
 ---
 
-<section class="section" id="about" aria-labelledby="about-heading">
-  <div class="wrap section__grid">
-    <SectionHead index={index} title={about.title} id="about-heading" aside="کوتاه دربارهٔ مسیر و تمرکز فعلی" />
+<section class="entry" id="about" aria-labelledby={`head-${index}`} data-entry>
+  <div class="wrap entry__grid">
+    <EntryHead index={index} title={about.title} meta="ENTRY / ABOUT" />
 
-    <div class="section__body">
-      {about.lead && <p class="lead" data-reveal>{about.lead}</p>}
+    <div class="entry__body">
+      {about.lead && <p class="entry__lead" data-mask>{about.lead}</p>}
 
       <div class="prose">
-        {
-          about.paragraphs.map((paragraph, i) => (
-            <p data-reveal style={`--i:${i}`}>
-              {paragraph}
-            </p>
-          ))
-        }
+        {about.paragraphs.map((paragraph, i) => (
+          <p data-reveal style={`--delay: ${i * 40}ms`}>{paragraph}</p>
+        ))}
       </div>
 
       {
         about.facts.length > 0 && (
-          <dl class="facts" data-reveal>
+          <dl class="facts">
             {about.facts.map((fact) => (
-              <div class="facts__row">
+              <div>
                 <dt>{fact.label}</dt>
                 <dd>{fact.value}</dd>
               </div>
@@ -37,7 +33,6 @@ const { index } = Astro.props;
           </dl>
         )
       }
-
     </div>
   </div>
 </section>

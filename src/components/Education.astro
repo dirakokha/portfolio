@@ -1,8 +1,6 @@
 ---
 import { education, certifications } from '../lib/content';
-import SectionHead from './SectionHead.astro';
-import { asset } from '../lib/urls';
-import Arrow from './Arrow.astro';
+import EntryHead from './EntryHead.astro';
 
 interface Props {
   index: number;
@@ -10,83 +8,97 @@ interface Props {
 const { index } = Astro.props;
 ---
 
-<section class="section" id="education" aria-labelledby="education-heading">
-  <div class="wrap section__grid">
-    <SectionHead
-      index={index}
-      title="تحصیلات و گواهینامه‌ها"
-      id="education-heading"
-      aside="مدرک و دوره‌های واقعی؛ گواهی‌ای که وجود ندارد نمایش داده نمی‌شود."
-    />
+<section class="entry" id="education" aria-labelledby={`head-${index}`} data-entry>
+  <div class="wrap entry__grid">
+    <EntryHead index={index} title="تحصیلات و گواهی" meta="ENTRY / EDUCATION" />
 
-    <div class="section__body">
-      <div class="edu-grid">
-      <section class="edu" data-reveal style="--i:0">
-        <h3 class="edu__label">تحصیلات</h3>
-        {
-          education.items.map((item) => (
-            <article class="edu__item">
-              <h4 class="edu__field">{item.field}</h4>
-              <p class="edu__line">
-                {item.degree}
-                {item.institution && <span> — {item.institution}</span>}
-              </p>
-              <p class="edu__meta">
-                {item.status && <span class="is-strong">{item.status}</span>}
-                {item.period_label && item.period_label !== item.status && <span>{item.period_label}</span>}
-                {item.location && <span>{item.location}</span>}
-              </p>
-              {item.note && <p class="edu__note">{item.note}</p>}
-            </article>
-          ))
-        }
-        {education.items.length === 0 && <p class="edu__note">موردی ثبت نشده است.</p>}
-      </section>
+    <div class="entry__body">
+      {
+        education.items.map((item) => (
+          <article class="edu">
+            {item.status && <p class="edu__status">{item.status}</p>}
+            <h3 class="edu__field">{item.field}</h3>
+            <p class="edu__inst">
+              {[item.degree, item.institution].filter(Boolean).join(' — ')}
+            </p>
+            {item.note && <p class="edu__note">{item.note}</p>}
+          </article>
+        ))
+      }
 
-      <section class="edu" data-reveal style="--i:1">
-        <h3 class="edu__label">دوره‌ها و گواهینامه‌ها</h3>
-        {
-          certifications.items.map((cert) => (
-            <article class="edu__item">
-              <h4 class="edu__field">{cert.title}</h4>
-              <p class="edu__line">
-                {cert.provider}
-                {cert.year_label && <span> — {cert.year_label}</span>}
-              </p>
-              {cert.status && (
-                <p class="edu__meta">
-                  <span class="is-strong">{cert.status}</span>
-                </p>
-              )}
-              {cert.note && <p class="edu__note">{cert.note}</p>}
-              {cert.credential_url && (
-                <a
-                  class="link-line"
-                  href={cert.credential_url}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  صفحهٔ تأیید گواهی
-                  <Arrow dir="external" />
-                </a>
-              )}
-              {cert.certificate_file && (
-                <a
-                  class="link-line"
-                  href={asset(cert.certificate_file)}
-                  target="_blank"
-                  rel="noopener"
-                >
-                  مشاهدهٔ فایل گواهی
-                  <Arrow dir="external" />
-                </a>
-              )}
-            </article>
-          ))
-        }
-        {certifications.items.length === 0 && <p class="edu__note">موردی ثبت نشده است.</p>}
-      </section>
-      </div>
+      {
+        certifications.items.map((cert) => (
+          <article class="cert">
+            <p class="cert__head">
+              <span dir="ltr">CERTIFICATE</span>
+              <span>{cert.provider}</span>
+            </p>
+
+            <div class="cert__body">
+              <div>
+                <h3 class="cert__title">{cert.title}</h3>
+                {cert.provider && (
+                  <p class="cert__provider">
+                    گواهی {cert.provider}
+                    {cert.status ? ` — ${cert.status}` : ''}
+                  </p>
+                )}
+
+                <dl class="cert__rows">
+                  {cert.instructor && (
+                    <div>
+                      <dt>مدرس</dt>
+                      <dd>{cert.instructor}</dd>
+                    </div>
+                  )}
+                  {cert.issued_label && (
+                    <div>
+                      <dt>تاریخ صدور</dt>
+                      <dd>{cert.issued_label}</dd>
+                    </div>
+                  )}
+                  {cert.duration_label && (
+                    <div>
+                      <dt>مدت دوره</dt>
+                      <dd>{cert.duration_label}</dd>
+                    </div>
+                  )}
+                  {cert.credential_id && (
+                    <div>
+                      <dt>شمارهٔ گواهی</dt>
+                      <dd class="cert__id">{cert.credential_id}</dd>
+                    </div>
+                  )}
+                </dl>
+              </div>
+
+              <div class="seal" aria-hidden="true">
+                <svg viewBox="0 0 100 100" fill="none">
+                  <circle cx="50" cy="50" r="46" stroke="currentColor" stroke-width="1" stroke-dasharray="2 4" />
+                  <circle cx="50" cy="50" r="36" stroke="currentColor" stroke-width="1" />
+                  <path d="M50 20l27 15.5v29L50 80 23 64.5v-29z" stroke="currentColor" stroke-width="1.3" />
+                </svg>
+                <span class="seal__text">
+                  <span>VERIFIED</span>
+                  <b>مکتب‌خونه</b>
+                  {cert.credential_id && <span>{cert.credential_id}</span>}
+                </span>
+              </div>
+            </div>
+
+            {
+              cert.credential_url && (
+                <div class="cert__foot">
+                  <a class="link-line" href={cert.credential_url} rel="noopener noreferrer" target="_blank">
+                    مشاهدهٔ گواهی در مکتب‌خونه
+                  </a>
+                  {cert.credential_id && <span class="mono">{cert.credential_id} / OFFICIAL</span>}
+                </div>
+              )
+            }
+          </article>
+        ))
+      }
     </div>
   </div>
 </section>

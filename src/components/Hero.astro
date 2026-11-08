@@ -1,15 +1,14 @@
 ---
 import { site, contact } from '../lib/content';
 import { asset, mailtoHref } from '../lib/urls';
-import Portrait from './Portrait.astro';
+import { faYear } from '../lib/digits';
 import Arrow from './Arrow.astro';
 
-const hero = site.hero;
 const identity = site.identity;
-const mailTo = mailtoHref(contact.email, contact.email_subject);
+const hero = site.hero;
 const resumeHref = asset('/resume/');
+const mailTo = mailtoHref(contact.email, contact.email_subject);
 
-// خط بالای عنوان در محتوا با «—» جدا شده است؛ همان‌جا به سه نشانهٔ کوتاه تبدیل می‌شود.
 const kickerItems = hero.kicker
   .split(/[—–]/)
   .map((item) => item.trim())
@@ -17,188 +16,57 @@ const kickerItems = hero.kicker
 
 const [firstName, ...rest] = identity.name_fa.split(' ');
 const lastName = rest.join(' ');
-const hasPortrait = Boolean(hero.portrait_image);
-
-// نشان‌های ابزار: فقط چیزهایی که در بخش مهارت‌ها هم با همان وضعیت آمده‌اند
-const toolChips = [
-  { label: 'HTML', talk: 'html' },
-  { label: 'CSS', talk: 'css' },
-  { label: 'JavaScript', talk: 'js' },
-  { label: 'Python', talk: 'py' },
-];
 ---
 
-<div class="intro" id="intro" hidden aria-hidden="true">
-  <div class="intro__inner">
-    <span class="intro__name">{identity.name_fa}</span>
-    <span class="intro__latin" lang="en" dir="ltr">{identity.name_en}</span>
-    <span class="intro__bar" aria-hidden="true"><i></i></span>
-  </div>
-  <button class="intro__skip" type="button" id="intro-skip">رد کردن مقدمه</button>
-</div>
-
 <section class="hero" id="top" aria-labelledby="hero-title">
-  <span class="hero__rail" aria-hidden="true">
-    <i></i>
-    <span>PORTFOLIO / CV</span>
-  </span>
-
   <div class="hero__top wrap">
     <p class="hero__status">
-      {identity.available && <span class="dot" aria-hidden="true"></span>}
+      {identity.available && <span class="dot" aria-hidden="true" />}
       <span>{identity.available ? identity.availability_note || 'آمادهٔ همکاری' : identity.role_fa}</span>
     </p>
+    <p class="hero__year" dir="ltr">{faYear(new Date())} / PORTFOLIO</p>
   </div>
 
-  <div class={`hero__mid wrap${hasPortrait ? ' has-portrait' : ' is-typo'}`}>
-    <div class="hero__type">
-      {
-        kickerItems.length > 0 && (
-          <p class="hero__kicker">
-            {kickerItems.map((item, i) => (
-              <>
-                <span>{item}</span>
-                {i < kickerItems.length - 1 && <i aria-hidden="true">/</i>}
-              </>
-            ))}
-          </p>
-        )
-      }
+  <div class="hero__mid wrap">
+    {
+      kickerItems.length > 0 && (
+        <p class="hero__kicker">
+          {kickerItems.map((item) => (
+            <span>{item}</span>
+          ))}
+        </p>
+      )
+    }
 
-      <div class="hero__title">
-        <h1 class="hero__name" id="hero-title">
-          <span class="ln"><span>{firstName}</span></span>
-          <span class="ln ln--out"><span>{lastName}</span></span>
-        </h1>
-        <p class="hero__latin" lang="en" dir="ltr">{identity.name_en}</p>
-      </div>
+    <h1 class="hero__title" id="hero-title">
+      <span class="hero__line"><span data-mask>{firstName}</span></span>
+      <span class="hero__line hero__line--out"><span data-mask style="--delay: 0.08s">{lastName}</span></span>
+    </h1>
+    <p class="hero__latin" dir="ltr">{identity.name_en}</p>
+  </div>
 
-      <div class="hero__lead">
-        <p class="hero__intro">{hero.intro}</p>
-        <div class="hero__actions">
-          <a class="btn" href={resumeHref}>
-            {hero.primary_cta_label}
-            <Arrow dir="forward" />
-          </a>
-          <a class="link-line" href={mailTo}>{hero.secondary_cta_label}</a>
-        </div>
+  <div class="hero__foot wrap">
+    <p class="hero__intro">{hero.intro}</p>
 
-        {
-          toolChips.length > 0 && (
-            <ul class="chips" aria-label="ابزارها و زبان‌هایی که با آن‌ها کار می‌کنم">
-              {toolChips.map((item, i) => (
-                <li class="chips__item" style={`--i:${i}`}>
-                  <span class={`chips__dot chips__dot--${item.talk}`} aria-hidden="true" />
-                  <span class="chips__label" dir="ltr" lang="en">
-                    {item.label}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )
-        }
-      </div>
+    <div class="hero__actions">
+      <a class="btn" href={resumeHref}>
+        {hero.primary_cta_label}
+        <Arrow dir="forward" />
+      </a>
+      <a class="link-line" href={mailTo}>{hero.secondary_cta_label}</a>
     </div>
 
-    <div class="hero__side">
-      {
-        hero.highlights.length > 0 && (
-          <dl class="hero__facts">
-            {hero.highlights.map((item, i) => (
-              <div style={`--i:${i}`}>
-                <dt>{item.label}</dt>
-                <dd>{item.value}</dd>
-              </div>
-            ))}
-          </dl>
-        )
-      }
-      <p class="hero__scroll" aria-hidden="true">
-        <span class="hero__scroll-line"></span>
-        ادامه
-      </p>
-    </div>
-
-    <Portrait />
+    {
+      hero.highlights.length > 0 && (
+        <dl class="hero__facts">
+          {hero.highlights.map((item) => (
+            <div>
+              <dt>{item.label}</dt>
+              <dd>{item.value}</dd>
+            </div>
+          ))}
+        </dl>
+      )
+    }
   </div>
 </section>
-
-<script is:inline>
-  (function () {
-    var intro = document.getElementById('intro');
-    var skip = document.getElementById('intro-skip');
-    var html = document.documentElement;
-    var done = false;
-
-    function finish() {
-      if (done) return;
-      done = true;
-      if (intro && intro.parentNode) intro.parentNode.removeChild(intro);
-      html.classList.remove('is-intro-open');
-    }
-
-    try {
-      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var small = window.innerWidth < 760;
-      var seen = false;
-      try {
-        seen = window.sessionStorage.getItem('akh-intro-seen') === '1';
-      } catch (error) {
-        seen = false;
-      }
-      if (intro && !reduced && !small && !seen) {
-        intro.removeAttribute('hidden');
-        intro.removeAttribute('aria-hidden');
-        html.classList.add('is-intro-open');
-        try {
-          window.sessionStorage.setItem('akh-intro-seen', '1');
-        } catch (error) {}
-        intro.addEventListener('animationend', function (event) {
-          if (event.animationName === 'intro-out') finish();
-        });
-        if (skip) skip.addEventListener('click', finish);
-        setTimeout(finish, 1900);
-      }
-    } catch (error) {
-      finish();
-    }
-  })();
-</script>
-
-<script>
-  // پیوندهای داخلی، با احترام به تنظیم «کاهش حرکت»
-  document.querySelectorAll<HTMLAnchorElement>('[data-scroll]').forEach((link) => {
-    link.addEventListener('click', (event) => {
-      const id = link.getAttribute('href');
-      if (!id || !id.startsWith('#')) return;
-      const target = document.querySelector(id);
-      if (!target) return;
-      event.preventDefault();
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
-      history.replaceState(null, '', id);
-    });
-  });
-
-  // ژرفانمایی بسیار ملایم نام هنگام رد شدن از بخش نخست
-  const name = document.querySelector<HTMLElement>('.hero__name');
-  const kicker = document.querySelector<HTMLElement>('.hero__kicker');
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-  if (name && !reduce.matches) {
-    let raf = 0;
-    const update = () => {
-      raf = 0;
-      const y = Math.min(window.scrollY, window.innerHeight);
-      const shift = (y / window.innerHeight) * 26;
-      name.style.transform = `translate3d(0, ${(-shift).toFixed(2)}px, 0)`;
-      if (kicker) kicker.style.transform = `translate3d(0, ${(-shift * 0.5).toFixed(2)}px, 0)`;
-    };
-    window.addEventListener(
-      'scroll',
-      () => {
-        if (!raf) raf = requestAnimationFrame(update);
-      },
-      { passive: true },
-    );
-  }
-</script>

@@ -2,18 +2,16 @@
 import { contact } from '../lib/content';
 import { asset, mailtoHref } from '../lib/urls';
 import { faYear } from '../lib/digits';
-
 ---
 
 <footer class="site-footer">
   <div class="wrap site-footer__inner">
-    <nav class="site-footer__links" aria-label="پیوندهای پای‌برگ">
+    <p class="mono" dir="ltr">{contact.email}</p>
+    <nav class="site-footer__links" aria-label="پیوندهای پایین صفحه">
       <a class="link-line" href={asset('/resume/')}>رزومهٔ چاپی</a>
       <a class="link-line" href={mailtoHref(contact.email, contact.email_subject)}>ایمیل</a>
       <a class="link-line" href={asset('/admin/')} rel="nofollow">پنل مدیریت</a>
     </nav>
-    <p class="site-footer__sign">
-      <span>{faYear(new Date())}</span>
-    </p>
+    <p class="mono">{faYear(new Date())}</p>
   </div>
 </footer>

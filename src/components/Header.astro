@@ -1,7 +1,6 @@
 ---
 import { site, activeSections } from '../lib/content';
 import { asset } from '../lib/urls';
-import Arrow from './Arrow.astro';
 import Mark from './Mark.astro';
 
 const sections = activeSections();
@@ -11,112 +10,24 @@ const resumeHref = asset('/resume/');
 <header class="site-header" id="site-header">
   <div class="wrap site-header__inner">
     <a class="brand" href={asset('/')} aria-label={`${site.identity.name_fa} — صفحهٔ اصلی`}>
-      <Mark size={24} class="brand__mark" />
-      <span class="brand__text">
-        <span class="brand__name">{site.identity.name_fa}</span>
-        <span class="brand__latin" lang="en" dir="ltr">{site.identity.name_en}</span>
-      </span>
+      <Mark size={20} class="brand__mark" />
+      <span class="brand__name">{site.identity.name_fa}</span>
     </a>
 
-    <nav class="nav" aria-label="بخش‌های صفحه">
-      <ul>
-        {
-          sections.map((section) => (
-            <li>
-              <a href={`#${section.id}`} data-nav-link={section.id}>
-                {section.label}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
+    <nav class="header-nav" aria-label="بخش‌های صفحه">
+      {sections.map((section) => <a href={`#${section.id}`}>{section.label}</a>)}
     </nav>
 
-    <a class="header-resume" href={resumeHref}>
-      رزومه
-      <Arrow dir="forward" />
-    </a>
+    <a class="header-cta" href={resumeHref}>رزومه</a>
 
     <details class="drawer">
-      <summary aria-label="فهرست بخش‌ها">
-        <span class="drawer__bars" aria-hidden="true"><i></i><i></i></span>
-      </summary>
+      <summary aria-label="فهرست بخش‌ها">فهرست</summary>
       <div class="drawer__panel">
         <nav aria-label="فهرست بخش‌ها (موبایل)">
-          <ul>
-            {
-              sections.map((section) => (
-                <li>
-                  <a href={`#${section.id}`}>{section.label}</a>
-                </li>
-              ))
-            }
-            <li>
-              <a href={resumeHref}>رزومهٔ چاپی</a>
-            </li>
-          </ul>
+          {sections.map((section) => <a href={`#${section.id}`}>{section.label}</a>)}
+          <a href={resumeHref}>رزومهٔ چاپی</a>
         </nav>
       </div>
     </details>
   </div>
-  <div class="header-progress" aria-hidden="true"><i id="read-progress"></i></div>
 </header>
-
-<script>
-  const header = document.getElementById('site-header');
-  const progress = document.getElementById('read-progress');
-  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]'));
-  const drawer = document.querySelector<HTMLDetailsElement>('.drawer');
-
-  let queued = false;
-  function onScroll() {
-    if (queued) return;
-    queued = true;
-    requestAnimationFrame(() => {
-      queued = false;
-      const y = window.scrollY;
-      const heroHeight = window.innerHeight * 0.7;
-      header?.classList.toggle('is-solid', y > heroHeight);
-      header?.classList.toggle('is-scrolled', y > 8);
-      const doc = document.documentElement;
-      const max = doc.scrollHeight - window.innerHeight;
-      const ratio = max > 0 ? Math.min(1, Math.max(0, y / max)) : 0;
-      progress?.style.setProperty('--read', String(ratio));
-    });
-  }
-
-  onScroll();
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
-
-  // بخش فعال در فهرست
-  const targets = links
-    .map((link) => ({ link, section: document.getElementById(link.dataset.navLink || '') }))
-    .filter((entry): entry is { link: HTMLAnchorElement; section: HTMLElement } => !!entry.section);
-
-  if ('IntersectionObserver' in window && targets.length) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const target = targets.find((item) => item.section === entry.target);
-          if (!target || !entry.isIntersecting) return;
-          links.forEach((link) => link.removeAttribute('aria-current'));
-          target.link.setAttribute('aria-current', 'true');
-        });
-      },
-      { rootMargin: '-45% 0px -45% 0px', threshold: 0 },
-    );
-    targets.forEach((target) => observer.observe(target.section));
-  }
-
-  // بستن فهرست موبایل پس از انتخاب یک بخش
-  drawer?.querySelectorAll('a').forEach((a) =>
-    a.addEventListener('click', () => {
-      drawer.open = false;
-    }),
-  );
-
-  document.addEventListener('click', (event) => {
-    if (drawer?.open && !drawer.contains(event.target as Node)) drawer.open = false;
-  });
-</script>
