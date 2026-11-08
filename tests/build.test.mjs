@@ -130,11 +130,32 @@ test('رزومهٔ چاپی پرترهٔ کوچک را با متن جانشین 
   assert.match(html, /width="360" height="450"/);
 });
 
-test('جملهٔ کلیدی به‌صورت تمام‌عرض و با متن واقعی خودش رندر می‌شود', () => {
+test('بخش جملهٔ کلیدی حذف شده و دیگر در هیچ صفحه‌ای رندر نمی‌شود', () => {
+  for (const file of ['index.html', 'about/index.html']) {
+    if (!fs.existsSync(path.join(dist, file))) continue;
+    const html = readDist(file);
+    assert.doesNotMatch(html, /class="statement"/);
+    assert.doesNotMatch(html, /data-statement/);
+  }
+  assert.equal(fs.existsSync(path.join(process.cwd(), 'src/components/Statement.astro')), false);
+});
+
+test('پرترهٔ بخش نخست با نشان‌های شناور و تصویر واقعی رندر می‌شود', () => {
   const html = readDist('index.html');
-  assert.match(html, /class="statement"/);
-  assert.match(html, /data-statement/);
-  assert.match(html, /فناوری وقتی ارزش دارد/);
+  assert.match(html, /class="portrait__frame"/);
+  assert.match(html, /class="stack"/);
+  assert.match(html, /\/media\/portrait-960\.webp/);
+  assert.match(html, /\/media\/portrait-480\.webp/);
+  for (const label of ['HTML', 'CSS', 'JavaScript', 'Python']) {
+    assert.match(html, new RegExp(`>\\s*${label}\\s*<`));
+  }
+});
+
+test('ادعای زبان مادری فارسی در سایت و رزومه وجود ندارد', () => {
+  for (const file of ['index.html', 'resume/index.html']) {
+    const html = readDist(file);
+    assert.doesNotMatch(html, /زبان مادری/);
+  }
 });
 
 test('لایهٔ حرکت در دسترس است و حالت کاهش حرکت را احترام می‌گذارد', () => {
