@@ -34,7 +34,10 @@ const stateLabels: Record<string, string> = {
                   <div class="spec__item">
                     <dt class="spec__name">
                       <span>{item.name}</span>
-                      {item.name_en && <span class="spec__en">{item.name_en}</span>}
+                      {item.name_en &&
+                        !item.name.trim().toLowerCase().includes(item.name_en.trim().toLowerCase()) && (
+                          <span class="spec__en">{item.name_en}</span>
+                        )}
                       <span class={`state state--${item.state}`}>{stateLabels[item.state]}</span>
                     </dt>
                     {item.context && <dd>{item.context}</dd>}
