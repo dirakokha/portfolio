@@ -1,6 +1,6 @@
 ---
 import { contact, publicPhone, socialLinks } from '../lib/content';
-import { asset, mailtoHref } from '../lib/urls';
+import { asset, formatPhone, mailtoHref, telHref } from '../lib/urls';
 
 interface Props {
   index: number;
@@ -45,7 +45,9 @@ const mailTo = mailtoHref(contact.email, contact.email_subject);
       {publicPhone && (
         <div>
           <dt>تلفن</dt>
-          <dd dir="ltr">{publicPhone}</dd>
+          <dd dir="ltr">
+            <a class="link-line" href={telHref(publicPhone)}>{formatPhone(publicPhone)}</a>
+          </dd>
         </div>
       )}
       {socialLinks.length > 0 && (

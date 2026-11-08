@@ -20,3 +20,19 @@ export function mailtoHref(email: string, subject = ''): string {
   const query = subject ? `?subject=${encodeURIComponent(subject)}` : '';
   return `mailto:${email}${query}`;
 }
+
+/** شمارهٔ تلفن را برای نمایش گروه‌بندی می‌کند: 0992 886 5372 */
+export function formatPhone(raw: string): string {
+  const digits = (raw || '').replace(/\D/g, '');
+  if (digits.length === 11 && digits.startsWith('0')) {
+    return `${digits.slice(0, 4)} ${digits.slice(4, 7)} ${digits.slice(7)}`;
+  }
+  return raw.trim();
+}
+
+/** لینک تماس با پیش‌شمارهٔ بین‌المللی */
+export function telHref(raw: string): string {
+  const digits = (raw || '').replace(/\D/g, '');
+  if (digits.length === 11 && digits.startsWith('0')) return `tel:+98${digits.slice(1)}`;
+  return `tel:${digits || raw.trim()}`;
+}

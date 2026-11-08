@@ -11,7 +11,7 @@ import {
   certifications,
   activeSections,
 } from '../lib/content';
-import { mailtoHref, asset } from '../lib/urls';
+import { mailtoHref, asset, formatPhone, telHref } from '../lib/urls';
 import { fa } from '../lib/digits';
 import '../styles/resume.css';
 
@@ -51,7 +51,14 @@ const cvPhoto = !site.hero.portrait_image
       <ul class="cv-contact">
         <li><span>ایمیل</span><a href={mailTo} dir="ltr">{contact.email}</a></li>
         <li><span>محل</span><b>{contact.location_label || identity.location_fa}</b></li>
-        {publicPhone && <li><span>تلفن</span><b dir="ltr">{publicPhone}</b></li>}
+        {publicPhone && (
+          <li>
+            <span>تلفن</span>
+            <a href={telHref(publicPhone)} dir="ltr">
+              {formatPhone(publicPhone)}
+            </a>
+          </li>
+        )}
       </ul>
       {cvPhoto && (
         <figure class="cv-photo">
