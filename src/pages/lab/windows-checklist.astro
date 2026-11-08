@@ -1,0 +1,411 @@
+---
+import Base from '../../layouts/Base.astro';
+import Mark from '../../components/Mark.astro';
+import { asset } from '../../lib/urls';
+
+const groups = [
+  {
+    title: 'قبل از نصب',
+    items: [
+      'از فایل‌های مهم بکاپ بگیر',
+      'لیست نرم‌افزارها و درایورهای لازم را بنویس',
+      'فلش بوت را با Media Creation Tool یا Ventoy آماده کن',
+      'کلید ویندوز و اطلاعات حساب کاربری را کنار دستت بگذار',
+    ],
+  },
+  {
+    title: 'نصب',
+    items: [
+      'از فلش بوت کن (ترتیب بوت در BIOS یا UEFI)',
+      'پارتیشن قبلی را پاک کن و پارتیشن تازه بساز',
+      'نصب را بدون اتصال به شبکه تمام کن',
+      'درایور چیپست، کارت شبکه و گرافیک را نصب کن',
+    ],
+  },
+  {
+    title: 'بعد از نصب',
+    items: [
+      'آپدیت ویندوز را کامل بگیر',
+      'مرورگر، آفیس و بقیهٔ نرم‌افزارهای پایه را نصب کن',
+      'بکاپ و بازگردانی سیستم را تنظیم کن',
+      'صدا، شبکه، پرینتر و USB را تست کن',
+    ],
+  },
+];
+
+const total = groups.reduce((sum, group) => sum + group.items.length, 0);
+---
+
+<Base
+  title="چک‌لیست نصب ویندوز — امیرمحمود خاکنه"
+  description="چک‌لیست کوچک و کارآمد برای نصب ویندوز؛ ساخته‌شده با HTML، CSS و JavaScript بدون هیچ کتابخانه."
+>
+  <header class="lab-bar">
+    <div class="wrap lab-bar__inner">
+      <a class="lab-brand" href={asset('/')}>
+        <Mark class="lab-brand__mark" />
+        <span>امیرمحمود خاکنه</span>
+      </a>
+      <a class="lab-back" href={asset('/#projects')}>بازگشت به نمونه‌کارها</a>
+    </div>
+  </header>
+
+  <main class="lab" id="main">
+    <div class="wrap lab__wrap">
+      <p class="lab__meta" dir="ltr">LAB / 01 — VANILLA JS</p>
+
+      <h1 class="lab__title">چک‌لیست نصب ویندوز</h1>
+
+      <p class="lab__lead">
+        این چک‌لیست را برای کارهای نصب ویندوز خودم نوشتم. تیک‌ها در مرورگر می‌مانند و
+        با «از نو» پاک می‌شوند.
+      </p>
+
+      <div class="lab-progress" role="status" aria-live="polite">
+        <p class="lab-progress__count">
+          <b data-done>۰</b> از <span data-total>{total}</span> انجام شد
+        </p>
+        <div class="lab-progress__track" aria-hidden="true">
+          <i class="lab-progress__bar" data-bar></i>
+        </div>
+        <button class="lab-progress__reset" type="button" data-reset>از نو</button>
+      </div>
+
+      <form class="lab-list" data-list>
+        {
+          groups.map((group, groupIndex) => (
+            <fieldset class="lab-group">
+              <legend class="lab-group__title">
+                <span class="lab-group__num">{String(groupIndex + 1).padStart(2, '0')}</span>
+                {group.title}
+              </legend>
+              {group.items.map((item, itemIndex) => {
+                const id = `step-${groupIndex + 1}-${itemIndex + 1}`;
+                return (
+                  <label class="lab-step" for={id}>
+                    <input class="lab-step__box" type="checkbox" id={id} name={id} />
+                    <span class="lab-step__mark" aria-hidden="true" />
+                    <span class="lab-step__text">{item}</span>
+                  </label>
+                );
+              })}
+            </fieldset>
+          ))
+        }
+      </form>
+
+      <p class="lab__foot">
+        <span class="lab__foot-label">ساخته‌شده با</span>
+        HTML، CSS و JavaScript — بدون کتابخانه و بدون بک‌اند.
+      </p>
+    </div>
+  </main>
+
+  <script>
+    const STORAGE_KEY = 'khakneh:windows-checklist';
+    const list = document.querySelector('[data-list]');
+    const boxes = list ? [...list.querySelectorAll('input[type="checkbox"]')] : [];
+    const doneEl = document.querySelector('[data-done]');
+    const barEl = document.querySelector('[data-bar]');
+    const resetBtn = document.querySelector('[data-reset]');
+
+    const toPersian = (value) => value.toLocaleString('fa-IR', { useGrouping: false });
+
+    const read = () => {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        return new Set(Array.isArray(saved) ? saved : []);
+      } catch {
+        return new Set();
+      }
+    };
+
+    const save = () => {
+      try {
+        const checked = boxes.filter((box) => box.checked).map((box) => box.id);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(checked));
+      } catch {
+        /* حالت خصوصی مرورگر: بی‌صدا رد شو */
+      }
+    };
+
+    const paint = () => {
+      const done = boxes.filter((box) => box.checked).length;
+      if (doneEl) doneEl.textContent = toPersian(done);
+      if (barEl) barEl.style.transform = `scaleX(${boxes.length ? done / boxes.length : 0})`;
+    };
+
+    const saved = read();
+    boxes.forEach((box) => {
+      box.checked = saved.has(box.id);
+      box.addEventListener('change', () => {
+        save();
+        paint();
+      });
+    });
+
+    resetBtn?.addEventListener('click', () => {
+      boxes.forEach((box) => {
+        box.checked = false;
+      });
+      save();
+      paint();
+    });
+
+    paint();
+  </script>
+</Base>
+
+<style>
+  .lab-bar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(243, 236, 226, 0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--rule-ink);
+  }
+
+  .lab-bar__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 62px;
+  }
+
+  .lab-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 0.92rem;
+  }
+
+  .lab-brand__mark {
+    width: 20px;
+    height: 20px;
+  }
+
+  .lab-back {
+    font-size: 0.82rem;
+    color: var(--ink-3);
+    border-bottom: 1px solid var(--rule-ink-strong);
+    padding-bottom: 2px;
+  }
+
+  .lab-back:hover {
+    color: var(--maroon);
+    border-color: var(--maroon);
+  }
+
+  .lab {
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100svh;
+    padding-block: clamp(28px, 5vw, 64px) clamp(40px, 7vw, 96px);
+  }
+
+  .lab__wrap {
+    max-width: 820px;
+    margin-inline: auto;
+  }
+
+  .lab__meta {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    color: var(--maroon);
+  }
+
+  .lab__title {
+    margin-top: 0.5rem;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(1.9rem, 4.6vw, 3.1rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  .lab__lead {
+    margin-top: 0.9rem;
+    max-width: 52ch;
+    font-size: 0.95rem;
+    line-height: 2;
+    color: var(--ink-2);
+  }
+
+  .lab-progress {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem 1.2rem;
+    flex-wrap: wrap;
+    margin-top: clamp(22px, 3.4vw, 34px);
+    padding-block: 0.9rem;
+    border-block: 1px solid var(--rule-ink);
+  }
+
+  .lab-progress__count {
+    font-size: 0.86rem;
+    color: var(--ink-2);
+  }
+
+  .lab-progress__count b {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--maroon);
+  }
+
+  .lab-progress__track {
+    flex: 1 1 8rem;
+    height: 2px;
+    background: var(--paper-3);
+    overflow: hidden;
+  }
+
+  .lab-progress__bar {
+    display: block;
+    height: 100%;
+    background: var(--maroon);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.35s var(--ease);
+  }
+
+  .lab-progress__reset {
+    font: inherit;
+    font-size: 0.78rem;
+    color: var(--ink-3);
+    background: none;
+    border: 0;
+    border-bottom: 1px solid var(--rule-ink-strong);
+    padding: 0 0 2px;
+    cursor: pointer;
+  }
+
+  .lab-progress__reset:hover,
+  .lab-progress__reset:focus-visible {
+    color: var(--maroon);
+    border-color: var(--maroon);
+  }
+
+  .lab-list {
+    display: grid;
+    gap: clamp(24px, 3.6vw, 40px);
+    margin-top: clamp(24px, 3.6vw, 40px);
+  }
+
+  .lab-group {
+    border: 0;
+    padding: 0;
+  }
+
+  .lab-group__title {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    padding-bottom: 0.55rem;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1rem;
+    border-bottom: 1px solid var(--rule-ink);
+  }
+
+  .lab-group__num {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    color: var(--maroon);
+  }
+
+  .lab-step {
+    display: grid;
+    grid-template-columns: 1.05rem minmax(0, 1fr);
+    align-items: start;
+    gap: 0.75rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px dotted var(--rule-ink);
+    cursor: pointer;
+  }
+
+  .lab-step__box {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .lab-step__mark {
+    width: 1.05rem;
+    height: 1.05rem;
+    margin-top: 0.22rem;
+    border: 1px solid var(--rule-ink-strong);
+    display: grid;
+    place-items: center;
+    transition:
+      background-color 0.2s var(--ease),
+      border-color 0.2s var(--ease);
+  }
+
+  .lab-step__mark::after {
+    content: '';
+    width: 0.5rem;
+    height: 0.28rem;
+    border-inline-start: 1.5px solid var(--paper);
+    border-block-end: 1.5px solid var(--paper);
+    rotate: -45deg;
+    translate: 0 -0.06rem;
+    opacity: 0;
+    transition: opacity 0.2s var(--ease);
+  }
+
+  .lab-step__text {
+    font-size: 0.92rem;
+    line-height: 1.9;
+    color: var(--ink-2);
+  }
+
+  .lab-step__box:checked + .lab-step__mark {
+    background: var(--maroon);
+    border-color: var(--maroon);
+  }
+
+  .lab-step__box:checked + .lab-step__mark::after {
+    opacity: 1;
+  }
+
+  .lab-step__box:checked ~ .lab-step__text {
+    color: var(--ink-3);
+    text-decoration: line-through;
+    text-decoration-color: var(--paper-3);
+  }
+
+  .lab-step__box:focus-visible + .lab-step__mark {
+    outline: 2px solid var(--maroon);
+    outline-offset: 2px;
+  }
+
+  .lab__foot {
+    margin-top: clamp(24px, 3.6vw, 36px);
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule-ink);
+    font-size: 0.8rem;
+    color: var(--ink-3);
+  }
+
+  .lab__foot-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.16em;
+    color: var(--ink-2);
+    margin-inline-end: 0.5rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lab-progress__bar,
+    .lab-step__mark,
+    .lab-step__mark::after {
+      transition: none;
+    }
+  }
+</style>

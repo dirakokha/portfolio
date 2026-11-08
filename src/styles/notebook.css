@@ -986,6 +986,27 @@ svg {
   direction: ltr;
 }
 
+/* ---------- نمونه‌کارها ---------- */
+
+.project {
+  display: grid;
+  gap: clamp(12px, 1.8vw, 20px);
+  padding-top: clamp(16px, 2.4vw, 26px);
+  border-top: 1px solid var(--rule-ink);
+}
+
+.project:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.project__links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem 1.4rem;
+}
+
 /* ---------- تحصیلات و گواهی ---------- */
 
 .edu {

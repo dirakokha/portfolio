@@ -9,6 +9,7 @@ import {
   skills,
   education,
   certifications,
+  projects,
   activeSections,
 } from '../lib/content';
 import { mailtoHref, asset, formatPhone, telHref } from '../lib/urls';
@@ -17,7 +18,7 @@ import '../styles/resume.css';
 
 const identity = site.identity;
 const mailTo = mailtoHref(contact.email, contact.email_subject);
-const hasProjects = activeSections().some((section) => section.id === 'projects');
+const hasProjects = projects.length > 0 && activeSections().some((section) => section.id === 'projects');
 // نسخهٔ کوچک و بهینهٔ پرتره فقط وقتی وجود دارد که مالک سایت تصویر را بارگذاری کرده باشد.
 // اگر تصویر پیش‌فرض سایت باشد، نسخهٔ مخصوص چاپ استفاده می‌شود؛
 // برای عکسی که از پنل بارگذاری شود، همان فایل خودش.
@@ -140,9 +141,21 @@ const cvPhoto = !site.hero.portrait_image
           hasProjects && (
             <section class="cv-section">
               <h2 class="cv-h2">نمونه‌کارها</h2>
-              <ul class="cv-list">
-                {/* نمونه‌کارها فقط با دادهٔ واقعی و منتشرشده نمایش داده می‌شوند */}
-              </ul>
+              {projects.map((project) => (
+                <article class="cv-job">
+                  <div class="cv-job__head">
+                    <h3>{project.title}</h3>
+                    <p class="cv-org">
+                      {project.status}
+                      {project.year_label ? ` · ${project.year_label}` : ''}
+                    </p>
+                  </div>
+                  {project.summary && <p class="cv-text">{project.summary}</p>}
+                  {project.technologies.length > 0 && (
+                    <p class="cv-meta">{project.technologies.join(' · ')}</p>
+                  )}
+                </article>
+              ))}
             </section>
           )
         }

@@ -21,6 +21,7 @@ const stateLabels: Record<string, string> = {
     <EntryHead index={index} title="مهارت‌ها" meta="ENTRY / SKILLS" />
 
     <div class="entry__body">
+      {skills.lead && <p class="entry__lead" data-mask>{skills.lead}</p>}
       <div class="spec">
         {
           skills.categories.map((category) => (

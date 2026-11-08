@@ -1,47 +1,65 @@
 ---
 import { projects } from '../lib/content';
+import { asset } from '../lib/urls';
 import EntryHead from './EntryHead.astro';
 
 interface Props {
   index: number;
 }
 const { index } = Astro.props;
+
+const isExternal = (url: string) => /^https?:/i.test(url);
+const href = (url: string) => (isExternal(url) ? url : asset(url));
 ---
 
 {
   projects.length > 0 && (
     <section class="entry" id="projects" aria-labelledby={`head-${index}`} data-entry>
       <div class="wrap entry__grid">
-        <EntryHead index={index} title="نمونه‌کارها" meta="ENTRY / WORK OUT" />
+        <EntryHead index={index} title="نمونه‌کارها" meta="ENTRY / PROJECTS" />
         <div class="entry__body">
-          <div class="spec">
+          <div class="job">
             {projects.map((project) => (
-              <article class="spec__cat">
-                <div class="spec__title">
-                  <h3>{project.title}</h3>
-                  {project.year_label && <p>{project.year_label}</p>}
-                </div>
-                <div>
-                  {project.summary && <p class="job__summary">{project.summary}</p>}
-                  {project.technologies.length > 0 && (
-                    <ul class="tags">
-                      {project.technologies.map((tech) => (
-                        <li>{tech}</li>
-                      ))}
-                    </ul>
-                  )}
-                  <div class="hero__actions">
-                    {project.demo_url && (
-                      <a class="link-line" href={project.demo_url} rel="noopener noreferrer" target="_blank">
-                        مشاهده
-                      </a>
-                    )}
-                    {project.source_url && (
-                      <a class="link-line" href={project.source_url} rel="noopener noreferrer" target="_blank">
-                        کد
-                      </a>
-                    )}
+              <article class="project">
+                <div class="job__top">
+                  <div>
+                    <h3 class="job__org">{project.title}</h3>
+                    {project.status && <p class="job__role">{project.status}</p>}
                   </div>
+                  {project.year_label && <p class="job__when">{project.year_label}</p>}
+                </div>
+
+                {project.summary && <p class="job__summary">{project.summary}</p>}
+
+                {project.technologies.length > 0 && (
+                  <ul class="tags">
+                    {project.technologies.map((tech) => (
+                      <li>{tech}</li>
+                    ))}
+                  </ul>
+                )}
+
+                <div class="project__links">
+                  {project.demo_url && (
+                    <a
+                      class="link-line"
+                      href={href(project.demo_url)}
+                      target={isExternal(project.demo_url) ? '_blank' : undefined}
+                      rel={isExternal(project.demo_url) ? 'noopener noreferrer' : undefined}
+                    >
+                      {isExternal(project.demo_url) ? 'مشاهده' : 'باز کردن'}
+                    </a>
+                  )}
+                  {project.source_url && (
+                    <a
+                      class="link-line"
+                      href={href(project.source_url)}
+                      target={isExternal(project.source_url) ? '_blank' : undefined}
+                      rel={isExternal(project.source_url) ? 'noopener noreferrer' : undefined}
+                    >
+                      کد
+                    </a>
+                  )}
                 </div>
               </article>
             ))}

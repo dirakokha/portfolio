@@ -35,9 +35,13 @@ test('هیچ شبکهٔ اجتماعی تأییدنشده‌ای نمایش دا
   }
 });
 
-test('پروژه‌ای وجود ندارد و بخش نمونه‌کارها باید پنهان باشد', () => {
+test('هر نمونه‌کار منتشرشده لینک و توضیح واقعی دارد', () => {
   const published = (projects.items || []).filter((item) => item.published);
-  assert.equal(published.length, 0);
+  for (const project of published) {
+    assert.ok(project.title.trim().length > 2, 'عنوان نمونه‌کار لازم است');
+    assert.ok(project.summary.trim().length > 20, 'توضیح نمونه‌کار لازم است');
+    assert.ok(/^(https?:|\/)/.test(project.demo_url || ''), 'لینک نمونه‌کار لازم است');
+  }
 });
 
 test('تجربهٔ کاری یک ماه است و ادعای بیشتری ندارد', () => {
